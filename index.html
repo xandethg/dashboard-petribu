@@ -29,11 +29,35 @@
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
+    /* --- TELA DE LOGIN --- */
+    #login-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: var(--sidebar-bg); z-index: 99999;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .login-box {
+        background: white; padding: 40px 30px; border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center;
+    }
+    .login-box h2 { color: var(--header-blue); margin-top: 0; margin-bottom: 5px; font-weight: 900;}
+    .login-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 25px;}
+    .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none;}
+    .login-box input:focus { border-color: var(--primary-blue); }
+    .login-box button { width: 100%; background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px;}
+    .login-box button:hover { background: #1e3a6d; }
+    .login-error { color: #ef4444; font-size: 12px; font-weight: bold; display: none; margin-bottom: 10px; }
+
     /* --- SIDEBAR --- */
+    #app-container { display: none; width: 100%; } /* Esconde o painel até logar */
     .sidebar { width: 240px; background-color: var(--sidebar-bg); color: white; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
     .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
     .logo-area h2 { margin: 0; color: #fff; font-weight: 800; font-size: 24px; letter-spacing: 1px;}
     .logo-area span { font-size: 11px; color: #94a3b8; }
+    
+    .user-profile { text-align: center; padding: 0 20px 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;}
+    .user-profile span { display: block; color: #cbd5e1; font-size: 12px;}
+    .user-profile strong { color: white; font-size: 14px; text-transform: capitalize; }
+
     .menu { list-style: none; padding: 0; margin: 0; flex: 1; }
     .menu li { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #cbd5e1; transition: 0.2s; }
     .menu li:hover { background-color: var(--sidebar-hover); color: white; }
@@ -42,6 +66,8 @@
     .btn-export { width: 100%; padding: 8px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; margin-bottom: 8px; font-size: 13px; background-color: #dc2626; transition: 0.2s; }
     .btn-export:hover { filter: brightness(0.9); }
     .btn-clear { background-color: #475569; }
+    .btn-logout { background-color: transparent; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-logout:hover { background-color: rgba(255,255,255,0.1); }
     
     /* --- MAIN CONTENT --- */
     .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; }
@@ -149,7 +175,7 @@
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
-        .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay { display: none !important; }
+        .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay, #login-screen { display: none !important; }
         .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; }
         .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 12px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
         .col { display: flex !important; flex-direction: column !important; gap: 12px !important; }
@@ -185,317 +211,341 @@
 </head>
 <body>
 
-    <!-- MODAL DE HISTÓRICO -->
-    <div id="history-modal" class="modal-overlay no-print">
-        <div class="modal-content">
-            <h3>🗄️ Histórico da Safra</h3>
-            <ul id="history-list" style="list-style:none; padding:0; margin-bottom: 20px;">
-                <!-- Itens serão injetados aqui -->
-            </ul>
-            <button onclick="closeHistoryModal()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button>
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>PETRIBU</h2>
+            <p>Acesso Restrito - Relatório de Safra</p>
+            <div id="login-error" class="login-error">Usuário ou senha incorretos!</div>
+            <input type="text" id="login-username" placeholder="Seu Nome (ex: alexandre)" onkeypress="handleLoginEnter(event)">
+            <input type="password" id="login-password" placeholder="Sua Senha" onkeypress="handleLoginEnter(event)">
+            <button onclick="efetuarLogin()">ENTRAR</button>
         </div>
     </div>
 
-    <div class="sidebar no-print">
-        <div class="logo-area">
-            <h2>PETRIBU</h2><span>Desde 1729</span>
-        </div>
-        <ul class="menu">
-            <li class="active">🏠 Resumo Geral</li>
-            <li onclick="alert('Página em desenvolvimento!')">🚚 Expedição</li>
-            <li onclick="alert('Página em desenvolvimento!')">🏭 Armazenagem</li>
-            <li onclick="alert('Página em desenvolvimento!')">📦 Pátio e Estoque</li>
-            <li onclick="alert('Página em desenvolvimento!')">⚙️ Operação</li>
-            <li onclick="alert('Página em desenvolvimento!')">📋 Atividades</li>
-            <li onclick="openHistoryModal()">📄 Histórico da Safra</li>
-        </ul>
-        <div class="sidebar-footer">
-            <div style="font-size: 11px; margin-bottom: 15px; color: #94a3b8; text-align:center;">
-                <strong>Versão 1.0.0.1</strong><br>
-                Desenvolvedor:<br>Alexandre Henrique
-            </div>
-            <button class="btn-export" style="background-color: #10b981;" onclick="saveDay()">💾 Salvar Dia (Histórico)</button>
-            <button class="btn-export btn-clear" onclick="clearDashboard()">🗑️ Limpar Painel</button>
-            <button class="btn-export btn-pdf" onclick="window.print()">🖨️ Imprimir / PDF</button>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="top-header">
-            <div class="title-area">
-                <h1>RELATÓRIO DIÁRIO DE SAFRA</h1>
-                <h3>Armazenagem e Logística</h3>
-            </div>
-            <div class="header-widgets">
-                <div class="widget no-print" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
-                    <span>⏱️ Escala de Turnos:</span>
-                    <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
-                        <option value="seg-qui" style="color: black;">Seg-Qui (3 Turnos)</option>
-                        <option value="sex" style="color: black;">Sexta (3 Turnos)</option>
-                        <option value="sab-dom" style="color: black;">Sáb-Dom (2 Turnos)</option>
-                    </select>
-                </div>
-                <div class="widget">
-                    <span style="font-size:16px;">📅</span>
-                    <div><div style="color:var(--text-muted); font-size:10px;">DATA</div><div class="widget-value" id="dash-date">--/--/----</div></div>
-                </div>
-                <div class="widget">
-                    <span style="font-size:16px;">⏱️</span>
-                    <div><div style="color:var(--text-muted); font-size:10px;">ÚLTIMA ATUALIZAÇÃO</div><div class="widget-value" id="dash-time">--:--</div></div>
-                </div>
-                <div class="widget">
-                    <span style="font-size:16px;" class="status-emoji">🟢</span>
-                    <div>
-                        <div style="color:var(--text-muted); font-size:10px; font-weight:bold;">STATUS DA OPERAÇÃO</div>
-                        <div class="badge badge-normal badge-inline" onclick="cycleStatus(this, 'operacaoGlobal')" style="margin-top:2px;">OPERAÇÃO NORMAL</div>
-                    </div>
-                </div>
+    <!-- TODO O CONTEÚDO DO PAINEL FICA AQUI DENTRO (ESCONDIDO ATÉ LOGAR) -->
+    <div id="app-container">
+        
+        <!-- MODAL DE HISTÓRICO -->
+        <div id="history-modal" class="modal-overlay no-print">
+            <div class="modal-content">
+                <h3>🗄️ Histórico da Safra</h3>
+                <ul id="history-list" style="list-style:none; padding:0; margin-bottom: 20px;">
+                    <!-- Itens serão injetados aqui -->
+                </ul>
+                <button onclick="closeHistoryModal()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button>
             </div>
         </div>
 
-        <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#3b82f6;">🚚</div>
-                <div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+        <div class="sidebar no-print">
+            <div class="logo-area">
+                <h2>PETRIBU</h2><span>Desde 1729</span>
             </div>
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#8b5cf6;">🌾</div>
-                <div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#3b82f6;">🌾</div>
-                <div class="kpi-info"><h4>Total de Sacos</h4><p contenteditable="true">0</p> <span>unid.</span></div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#8b5cf6;">🌾</div>
-                <div class="kpi-info"><h4>Total de Big Bags</h4><p contenteditable="true">0</p> <span>unid.</span></div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#f97316;">🔧</div>
-                <div class="kpi-info"><h4>Máquinas Paradas</h4><p contenteditable="true">0</p> <span>unid.</span></div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon" style="color:#14b8a6;">👥</div>
-                <div class="kpi-info"><h4>Colab. Ausentes</h4><p contenteditable="true">0</p> <span>hoje</span></div>
-            </div>
-        </div>
-
-        <div class="dashboard-grid">
             
-            <!-- COLUNA 1 -->
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        ℹ️ INFORMATIVO DA SAFRA
-                        <button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento Externo</button>
-                    </div>
-                    <div class="card-body" id="informativo-container" style="padding: 15px;">
-                        <div class="info-box">
-                            <div class="info-title">
-                                <span>🟢 MOAGEM</span>
-                                <button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button>
-                            </div>
-                            <ul class="simple-list" id="lista-moagem" style="padding-left:15px; margin:0;">
-                                <li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
-                            <div style="display: flex; justify-content: space-between; gap: 5px; flex-wrap: nowrap;">
-                                <div class="flex-col">
-                                    <strong>00:00h</strong>
-                                    <ul class="simple-list" style="padding-left:10px;">
-                                        <li><span contenteditable="true">S1: Vazio</span></li>
-                                        <li><span contenteditable="true">S2: Vazio</span></li>
-                                    </ul>
-                                </div>
-                                <div class="flex-col">
-                                    <strong>05:00h</strong>
-                                    <ul class="simple-list" style="padding-left:10px;">
-                                        <li><span contenteditable="true">S1: Vazio</span></li>
-                                        <li><span contenteditable="true">S2: Vazio</span></li>
-                                    </ul>
-                                </div>
-                                <div class="flex-col">
-                                    <strong>12:00h</strong>
-                                    <ul class="simple-list" style="padding-left:10px;">
-                                        <li><span contenteditable="true">S1: Vazio</span></li>
-                                        <li><span contenteditable="true">S2: Vazio</span></li>
-                                    </ul>
-                                </div>
-                                <div class="flex-col">
-                                    <strong>18:00h</strong>
-                                    <ul class="simple-list" style="padding-left:10px;">
-                                        <li><span contenteditable="true">S1: Vazio</span></li>
-                                        <li><span contenteditable="true">S2: Vazio</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex-row" id="row-ausentes-paradas">
-                            <div class="info-box flex-col">
-                                <div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div>
-                                <ul class="simple-list" id="lista-ausentes" style="padding-left:15px; margin:0;">
-                                    <li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
-                                </ul>
-                            </div>
-                            <div class="info-box flex-col">
-                                <div class="info-title">🔧 PARADAS <button class="btn-add" onclick="addSimpleItem('lista-paradas')">+ Item</button></div>
-                                <ul class="simple-list" id="lista-paradas" style="padding-left:15px; margin:0;">
-                                    <li><span contenteditable="true">Nenhuma parada.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" style="margin-top: auto;">
-                    <div class="card-header">📊 STATUS OPERACIONAL <button class="btn-add" onclick="addStatusItem('lista-status')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Linha</button></div>
-                    <div class="card-body" style="padding: 10px 15px;" id="lista-status">
-                        <div class="status-item"><span class="status-name" contenteditable="true">🏢 Silos</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
-                        <div class="status-item"><span class="status-name" contenteditable="true">⚙️ Moagem</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
-                        <div class="status-item"><span class="status-name" contenteditable="true">🚚 Expedição</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
-                        <div class="status-item"><span class="status-name" contenteditable="true">🏭 Pátio Externo</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
-                    </div>
-                </div>
+            <div class="user-profile">
+                <span>Bem-vindo,</span>
+                <strong id="display-username">Carregando...</strong>
             </div>
 
-            <!-- COLUNA 2 -->
-            <div class="col">
-                <div class="card flex-grow-1">
-                    <div class="card-header">🚚 EXPEDIÇÃO DE AÇÚCAR</div>
-                    <div class="card-body" style="padding: 15px; display: flex; flex-direction: column;">
-                        
-                        <div class="table-title">Carregamento de Fardo (Mercado Interno)</div>
-                        <table class="expedicao-table">
-                            <tr>
-                                <th class="col-turno">TURNO</th>
-                                <th class="shift-1">23h às 07h</th>
-                                <th class="shift-2">07h às 15h</th>
-                                <th class="shift-3">15h às 23h</th>
-                                <th class="col-total">TOTAL</th>
-                            </tr>
-                            <tr class="data-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">FARDOS</td>
-                                <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">-</div></td>
-                                <td class="shift-2 cell-left">
-                                    <div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">
-                                        • Cristal: 0<br>
-                                        • Demerara: 0<br>
-                                        <strong style="color:var(--text-dark);">Total: 0</strong>
-                                    </div>
-                                </td>
-                                <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">-</div></td>
-                                <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                            </tr>
-                            <tr class="status-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                            </tr>
-                        </table>
-                        
-                        <div class="table-title" style="margin-top:20px;">Carregamento de Saco (Indústria)</div>
-                        <table class="expedicao-table">
-                            <tr>
-                                <th class="col-turno">TURNO</th>
-                                <th class="shift-1">23h às 07h</th>
-                                <th class="shift-2">07h às 15h</th>
-                                <th class="shift-3">15h às 23h</th>
-                                <th class="col-total">TOTAL</th>
-                            </tr>
-                            <tr class="data-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">SACOS</td>
-                                <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="shift-2 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                            </tr>
-                            <tr class="status-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                            </tr>
-                        </table>
-                        
-                        <div class="table-title" style="margin-top:20px;">Carregamento de Big Bag (Indústria)</div>
-                        <table class="expedicao-table">
-                            <tr>
-                                <th class="col-turno">TURNO</th>
-                                <th class="shift-1">23h às 07h</th>
-                                <th class="shift-2">07h às 15h</th>
-                                <th class="shift-3">15h às 23h</th>
-                                <th class="col-total">TOTAL</th>
-                            </tr>
-                            <tr class="data-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">BIG BAGS</td>
-                                <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="shift-2 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
-                                <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                            </tr>
-                            <tr class="status-row">
-                                <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                            </tr>
-                        </table>
-                        
-                        <div class="info-box" style="margin-top:auto !important; display:flex; flex-direction:column; justify-content:center;">
-                            <div class="info-title" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
-                                <span>PÁTIO EXTERNO</span>
-                                <button class="btn-add" onclick="addSimpleItem('lista-patio')">+ Item</button>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
-                                <ul class="simple-list" id="lista-patio" style="padding-left:15px; margin:0; flex:1;">
-                                    <li><span contenteditable="true">Vazio.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
-                                </ul>
-                                <div style="font-size:30px; line-height:1; padding-left:10px;">🚛</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COLUNA 3 -->
-            <div class="col">
-                <div class="card" style="flex: 1;">
-                    <div class="card-header">📋 OBSERVAÇÕES GERAIS</div>
-                    <div class="card-body" style="padding: 10px 15px;">
-                        
-                        <div class="table-title" style="margin-top:0; display:flex; justify-content:space-between;">Limpeza e Organização <button class="btn-add" onclick="addCheckItem('list-limpeza')">+ Adicionar Tarefa</button></div>
-                        <div id="list-limpeza">
-                            <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
-                        </div>
-
-                        <div class="table-title" style="display:flex; justify-content:space-between;">Operação <button class="btn-add" onclick="addCheckItem('list-operacao')">+ Adicionar Tarefa</button></div>
-                        <div id="list-operacao">
-                            <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
-                        </div>
-
-                        <div class="table-title" style="display:flex; justify-content:space-between;">Manutenção <button class="btn-add" onclick="addCheckItem('list-manut')">+ Adicionar Tarefa</button></div>
-                        <div id="list-manut">
-                            <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
-                        </div>
-
-                    </div>
+            <ul class="menu">
+                <li class="active">🏠 Resumo Geral</li>
+                <li onclick="alert('Página em desenvolvimento!')">🚚 Expedição</li>
+                <li onclick="alert('Página em desenvolvimento!')">🏭 Armazenagem</li>
+                <li onclick="alert('Página em desenvolvimento!')">📦 Pátio e Estoque</li>
+                <li onclick="alert('Página em desenvolvimento!')">⚙️ Operação</li>
+                <li onclick="alert('Página em desenvolvimento!')">📋 Atividades</li>
+                <li onclick="openHistoryModal()">📄 Histórico da Safra</li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="btn-export" style="background-color: #10b981;" onclick="saveDay()">💾 Salvar Dia (Histórico)</button>
+                <button class="btn-export btn-clear" onclick="clearDashboard()">🗑️ Limpar Painel</button>
+                <button class="btn-export btn-pdf" onclick="window.print()">🖨️ Imprimir / PDF</button>
+                
+                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                    <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
+                    <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="main-content">
+            <div class="top-header">
+                <div class="title-area">
+                    <h1>RELATÓRIO DIÁRIO DE SAFRA</h1>
+                    <h3>Armazenagem e Logística</h3>
+                </div>
+                <div class="header-widgets">
+                    <div class="widget no-print" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
+                        <span>⏱️ Escala de Turnos:</span>
+                        <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
+                            <option value="seg-qui" style="color: black;">Seg-Qui (3 Turnos)</option>
+                            <option value="sex" style="color: black;">Sexta (3 Turnos)</option>
+                            <option value="sab-dom" style="color: black;">Sáb-Dom (2 Turnos)</option>
+                        </select>
+                    </div>
+                    <div class="widget">
+                        <span style="font-size:16px;">📅</span>
+                        <div><div style="color:var(--text-muted); font-size:10px;">DATA</div><div class="widget-value" id="dash-date">--/--/----</div></div>
+                    </div>
+                    <div class="widget">
+                        <span style="font-size:16px;">⏱️</span>
+                        <div><div style="color:var(--text-muted); font-size:10px;">ÚLTIMA ATUALIZAÇÃO</div><div class="widget-value" id="dash-time">--:--</div></div>
+                    </div>
+                    <div class="widget">
+                        <span style="font-size:16px;" class="status-emoji">🟢</span>
+                        <div>
+                            <div style="color:var(--text-muted); font-size:10px; font-weight:bold;">STATUS DA OPERAÇÃO</div>
+                            <div class="badge badge-normal badge-inline" onclick="cycleStatus(this, 'operacaoGlobal')" style="margin-top:2px;">OPERAÇÃO NORMAL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Importando o Firebase (Versão Compat) -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#3b82f6;">🚚</div>
+                    <div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#8b5cf6;">🌾</div>
+                    <div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#3b82f6;">🌾</div>
+                    <div class="kpi-info"><h4>Total de Sacos</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#8b5cf6;">🌾</div>
+                    <div class="kpi-info"><h4>Total de Big Bags</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#f97316;">🔧</div>
+                    <div class="kpi-info"><h4>Máquinas Paradas</h4><p contenteditable="true">0</p> <span>unid.</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="color:#14b8a6;">👥</div>
+                    <div class="kpi-info"><h4>Colab. Ausentes</h4><p contenteditable="true">0</p> <span>hoje</span></div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                
+                <!-- COLUNA 1 -->
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            ℹ️ INFORMATIVO DA SAFRA
+                            <button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento Externo</button>
+                        </div>
+                        <div class="card-body" id="informativo-container" style="padding: 15px;">
+                            <div class="info-box">
+                                <div class="info-title">
+                                    <span>🟢 MOAGEM</span>
+                                    <button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button>
+                                </div>
+                                <ul class="simple-list" id="lista-moagem" style="padding-left:15px; margin:0;">
+                                    <li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
+                                <div style="display: flex; justify-content: space-between; gap: 5px; flex-wrap: nowrap;">
+                                    <div class="flex-col">
+                                        <strong>00:00h</strong>
+                                        <ul class="simple-list" style="padding-left:10px;">
+                                            <li><span contenteditable="true">S1: Vazio</span></li>
+                                            <li><span contenteditable="true">S2: Vazio</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex-col">
+                                        <strong>05:00h</strong>
+                                        <ul class="simple-list" style="padding-left:10px;">
+                                            <li><span contenteditable="true">S1: Vazio</span></li>
+                                            <li><span contenteditable="true">S2: Vazio</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex-col">
+                                        <strong>12:00h</strong>
+                                        <ul class="simple-list" style="padding-left:10px;">
+                                            <li><span contenteditable="true">S1: Vazio</span></li>
+                                            <li><span contenteditable="true">S2: Vazio</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex-col">
+                                        <strong>18:00h</strong>
+                                        <ul class="simple-list" style="padding-left:10px;">
+                                            <li><span contenteditable="true">S1: Vazio</span></li>
+                                            <li><span contenteditable="true">S2: Vazio</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row" id="row-ausentes-paradas">
+                                <div class="info-box flex-col">
+                                    <div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div>
+                                    <ul class="simple-list" id="lista-ausentes" style="padding-left:15px; margin:0;">
+                                        <li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
+                                    </ul>
+                                </div>
+                                <div class="info-box flex-col">
+                                    <div class="info-title">🔧 PARADAS <button class="btn-add" onclick="addSimpleItem('lista-paradas')">+ Item</button></div>
+                                    <ul class="simple-list" id="lista-paradas" style="padding-left:15px; margin:0;">
+                                        <li><span contenteditable="true">Nenhuma parada.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: auto;">
+                        <div class="card-header">📊 STATUS OPERACIONAL <button class="btn-add" onclick="addStatusItem('lista-status')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Linha</button></div>
+                        <div class="card-body" style="padding: 10px 15px;" id="lista-status">
+                            <div class="status-item"><span class="status-name" contenteditable="true">🏢 Silos</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
+                            <div class="status-item"><span class="status-name" contenteditable="true">⚙️ Moagem</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
+                            <div class="status-item"><span class="status-name" contenteditable="true">🚚 Expedição</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
+                            <div class="status-item"><span class="status-name" contenteditable="true">🏭 Pátio Externo</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUNA 2 -->
+                <div class="col">
+                    <div class="card flex-grow-1">
+                        <div class="card-header">🚚 EXPEDIÇÃO DE AÇÚCAR</div>
+                        <div class="card-body" style="padding: 15px; display: flex; flex-direction: column;">
+                            
+                            <div class="table-title">Carregamento de Fardo (Mercado Interno)</div>
+                            <table class="expedicao-table">
+                                <tr>
+                                    <th class="col-turno">TURNO</th>
+                                    <th class="shift-1">23h às 07h</th>
+                                    <th class="shift-2">07h às 15h</th>
+                                    <th class="shift-3">15h às 23h</th>
+                                    <th class="col-total">TOTAL</th>
+                                </tr>
+                                <tr class="data-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">FARDOS</td>
+                                    <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">-</div></td>
+                                    <td class="shift-2 cell-left">
+                                        <div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">
+                                            • Cristal: 0<br>
+                                            • Demerara: 0<br>
+                                            <strong style="color:var(--text-dark);">Total: 0</strong>
+                                        </div>
+                                    </td>
+                                    <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">-</div></td>
+                                    <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
+                                </tr>
+                                <tr class="status-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
+                                    <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                </tr>
+                            </table>
+                            
+                            <div class="table-title" style="margin-top:20px;">Carregamento de Saco (Indústria)</div>
+                            <table class="expedicao-table">
+                                <tr>
+                                    <th class="col-turno">TURNO</th>
+                                    <th class="shift-1">23h às 07h</th>
+                                    <th class="shift-2">07h às 15h</th>
+                                    <th class="shift-3">15h às 23h</th>
+                                    <th class="col-total">TOTAL</th>
+                                </tr>
+                                <tr class="data-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">SACOS</td>
+                                    <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="shift-2 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
+                                </tr>
+                                <tr class="status-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
+                                    <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                </tr>
+                            </table>
+                            
+                            <div class="table-title" style="margin-top:20px;">Carregamento de Big Bag (Indústria)</div>
+                            <table class="expedicao-table">
+                                <tr>
+                                    <th class="col-turno">TURNO</th>
+                                    <th class="shift-1">23h às 07h</th>
+                                    <th class="shift-2">07h às 15h</th>
+                                    <th class="shift-3">15h às 23h</th>
+                                    <th class="col-total">TOTAL</th>
+                                </tr>
+                                <tr class="data-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center; vertical-align: middle;">BIG BAGS</td>
+                                    <td class="shift-1 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="shift-2 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="shift-3 cell-left"><div contenteditable="true" style="line-height:1.6; outline:none; min-height: 20px;">0</div></td>
+                                    <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
+                                </tr>
+                                <tr class="status-row">
+                                    <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
+                                    <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                    <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
+                                </tr>
+                            </table>
+                            
+                            <div class="info-box" style="margin-top:auto !important; display:flex; flex-direction:column; justify-content:center;">
+                                <div class="info-title" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+                                    <span>PÁTIO EXTERNO</span>
+                                    <button class="btn-add" onclick="addSimpleItem('lista-patio')">+ Item</button>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
+                                    <ul class="simple-list" id="lista-patio" style="padding-left:15px; margin:0; flex:1;">
+                                        <li><span contenteditable="true">Vazio.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
+                                    </ul>
+                                    <div style="font-size:30px; line-height:1; padding-left:10px;">🚛</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUNA 3 -->
+                <div class="col">
+                    <div class="card" style="flex: 1;">
+                        <div class="card-header">📋 OBSERVAÇÕES GERAIS</div>
+                        <div class="card-body" style="padding: 10px 15px;">
+                            
+                            <div class="table-title" style="margin-top:0; display:flex; justify-content:space-between;">Limpeza e Organização <button class="btn-add" onclick="addCheckItem('list-limpeza')">+ Adicionar Tarefa</button></div>
+                            <div id="list-limpeza">
+                                <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
+                            </div>
+
+                            <div class="table-title" style="display:flex; justify-content:space-between;">Operação <button class="btn-add" onclick="addCheckItem('list-operacao')">+ Adicionar Tarefa</button></div>
+                            <div id="list-operacao">
+                                <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
+                            </div>
+
+                            <div class="table-title" style="display:flex; justify-content:space-between;">Manutenção <button class="btn-add" onclick="addCheckItem('list-manut')">+ Adicionar Tarefa</button></div>
+                            <div id="list-manut">
+                                <div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- FIM DO APP-CONTAINER -->
+
+    <!-- Importando o Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+    <!-- Novo link para a Autenticação -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
 
     <!-- SCRIPTS DE LÓGICA -->
     <script>
@@ -510,9 +560,81 @@
             measurementId: "G-VJ0WLT8RDD"
         };
 
-        // Inicializando o Firebase
+        // Inicializando
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // --- SISTEMA DE LOGIN ---
+        
+        // Fica observando se tem alguém logado ou não
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Esconde a tela de login, mostra o painel
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                
+                // Coloca o nome do usuário na barra lateral (tira o @petribu.local)
+                let nomeFormatado = user.email.split('@')[0];
+                document.getElementById('display-username').innerText = nomeFormatado;
+            } else {
+                // Mostra a tela de login, esconde o painel
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+            }
+        });
+
+        // Função de apertar ENTER para logar
+        function handleLoginEnter(e) {
+            if (e.key === 'Enter') efetuarLogin();
+        }
+
+        function efetuarLogin() {
+            const userBox = document.getElementById('login-username').value.trim().toLowerCase().replace(/\s/g, '');
+            const passBox = document.getElementById('login-password').value;
+            const errorMsg = document.getElementById('login-error');
+            
+            if(!userBox || !passBox) {
+                errorMsg.innerText = "Preencha o usuário e a senha!";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            // Junta o nome que ele digitou com o email falso
+            const emailFake = userBox + "@petribu.local";
+
+            auth.signInWithEmailAndPassword(emailFake, passBox)
+                .then(() => {
+                    errorMsg.style.display = "none";
+                    document.getElementById('login-username').value = "";
+                    document.getElementById('login-password').value = "";
+                })
+                .catch((error) => {
+                    errorMsg.innerText = "Usuário ou senha incorretos!";
+                    errorMsg.style.display = "block";
+                });
+        }
+
+        function efetuarLogout() {
+            auth.signOut();
+        }
+
+        // Permitir que o próprio funcionário altere a senha de 123456 para outra
+        function alterarMinhaSenha() {
+            const novaSenha = prompt("Digite a sua NOVA senha (obrigatório ter no mínimo 6 caracteres):");
+            if(novaSenha) {
+                if(novaSenha.length < 6) {
+                    alert("Erro: A nova senha precisa ter 6 caracteres ou mais.");
+                    return;
+                }
+                const user = auth.currentUser;
+                user.updatePassword(novaSenha).then(() => {
+                    alert("✅ Senha alterada com sucesso! Use esta nova senha no próximo acesso.");
+                }).catch((error) => {
+                    alert("Erro ao alterar senha. Por segurança, você precisa sair do sistema, fazer login novamente e tentar de novo.");
+                });
+            }
+        }
 
         // VARIAVEL GLOBAL DE MODO HISTÓRICO
         let isHistoryMode = false;
@@ -563,13 +685,11 @@
             
             const mainContent = document.querySelector('.main-content');
             
-            // Salva um molde zerado no armazenamento local do PC para a função "Limpar Painel"
             if (!localStorage.getItem(STORAGE_KEY_TEMPLATE)) {
                 const clone = mainContent.cloneNode(true);
                 localStorage.setItem(STORAGE_KEY_TEMPLATE, clone.innerHTML);
             }
 
-            // Busca os dados temporários atuais da nuvem
             try {
                 const docSnap = await db.collection('estado_atual').doc('dashboard_temporario').get();
                 if (docSnap.exists) {
@@ -577,7 +697,7 @@
                     updateClock(); 
                 }
             } catch(error) {
-                console.log("Iniciando com painel em branco. (Erro ou primeiro acesso)", error);
+                console.log("Iniciando com painel em branco. (Erro ou primeiro acesso)");
             }
 
             const savedShift = localStorage.getItem('petribu_shift_type_v5');
@@ -589,7 +709,6 @@
                 }
             }
 
-            // Observer para salvar automaticamente na NUVEM enquanto você preenche
             let saveTimeout;
             const observer = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; 
@@ -625,7 +744,6 @@
                 if (template) {
                     document.querySelector('.main-content').innerHTML = template;
                     
-                    // Limpa também na nuvem
                     await db.collection('estado_atual').doc('dashboard_temporario').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
