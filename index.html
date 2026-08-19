@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Safra - Petribu</title>
-<!-- Ícone da Aba -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚜</text></svg>">
 <style>
     :root {
@@ -164,12 +163,18 @@
     .history-item-date:hover { text-decoration: underline; }
 
     /* ========================================================================= */
-    /* QUADRO DE PESSOAL - Ajuste de Larguras                                    */
+    /* QUADRO DE PESSOAL - Ajuste de Larguras e Layout Fixo                      */
     /* ========================================================================= */
     .tabela-pessoal { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; table-layout: fixed;}
     .tabela-pessoal th { background: #f1f5f9; padding: 8px; border: 1px solid var(--border); text-align: left; color: var(--text-muted);}
-    .tabela-pessoal td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; }
-    .col-mat { font-weight: bold; color: var(--primary-blue); }
+    .tabela-pessoal td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    
+    /* Colunas fixadas para não esmagar o nome */
+    .col-mat { width: 15%; font-weight: bold; color: var(--primary-blue); }
+    .col-nome { width: 45%; }
+    .col-cargo { width: 35%; }
+    .col-acao { width: 5%; text-align: center; }
+
     .select-cargo { width: 100%; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background-color: #ffffff; color: var(--text-dark); cursor: pointer; outline: none; }
     .select-cargo:focus { border-color: var(--primary-blue); }
     
@@ -243,7 +248,11 @@
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         
         .tabela-pessoal { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
-        .tabela-pessoal th, .tabela-pessoal td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; }
+        /* Redistribui o espaço após esconder a coluna de ação */
+        .tabela-pessoal th, .tabela-pessoal td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; white-space: normal; overflow: visible; }
+        .col-mat { width: 15% !important; }
+        .col-nome { width: 50% !important; }
+        .col-cargo { width: 35% !important; }
         
         /* Formata a caixa de seleção de cargo para parecer um texto normal na impressão */
         .select-cargo { border: none !important; -webkit-appearance: none; appearance: none; background: transparent !important; color: black !important; font-weight: bold; padding: 0 !important; font-size: 12px !important;}
@@ -306,7 +315,6 @@
         </div>
 
         <div class="main-content">
-            <!-- HEADER COMUM -->
             <div class="top-header">
                 <div class="title-area">
                     <h1>RELATÓRIO DIÁRIO DE SAFRA</h1>
@@ -497,7 +505,7 @@
                                     <strong>🛠️ Assistente:</strong> Silvio
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
+                                    <thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead>
                                     <tbody id="tb-ta"></tbody>
                                 </table>
                             </div>
@@ -517,7 +525,7 @@
                                     <strong>🛠️ Assistente:</strong> João Victor
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
+                                    <thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead>
                                     <tbody id="tb-tb"></tbody>
                                 </table>
                             </div>
@@ -537,7 +545,7 @@
                                     <strong>🛠️ Assistente:</strong> Alexandre
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
+                                    <thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead>
                                     <tbody id="tb-tc"></tbody>
                                 </table>
                             </div>
@@ -571,17 +579,23 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // MUDANÇA: Exige que a pessoa logue de novo caso feche o navegador!
+        // 1. OBRIGA A LOGAR TODA VEZ QUE ABRIR A ABA
         auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
             .catch((error) => { console.error("Erro na persistência:", error); });
 
-        auth.onAuthStateChanged(user => {
+        // 2. LÓGICA DE CARREGAMENTO SEGURO
+        auth.onAuthStateChanged(async user => {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
                 let nomeFormatado = user.email.split('@')[0];
                 document.getElementById('display-username').innerText = nomeFormatado;
                 document.body.setAttribute('data-user', nomeFormatado);
+                
+                // SÓ CARREGA OS DADOS DA NUVEM DEPOIS QUE SOUBER QUEM ESTÁ LOGADO
+                await carregarDadosDaNuvem();
+                iniciarSalvamentoAutomatico();
+                
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('app-container').style.display = 'none';
@@ -641,14 +655,13 @@
             menuElement.classList.add('active');
         }
 
-        // MUDANÇA: O select agora tem um "onchange" que avisa o HTML sobre a mudança de cargo
         function addEmployeeRow(tableBodyId) {
             let tbody = document.getElementById(tableBodyId);
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="col-mat"><div contenteditable="true" style="outline:none;">000000</div></td>
-                <td><div contenteditable="true" style="outline:none;">NOME DO FUNCIONÁRIO</div></td>
-                <td>
+                <td class="col-nome"><div contenteditable="true" style="outline:none;">NOME DO FUNCIONÁRIO</div></td>
+                <td class="col-cargo">
                     <select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected');">
                         <option>Líder de armazenagem e logística</option>
                         <option>Conferente</option>
@@ -657,7 +670,7 @@
                         <option>Operador de manipulador</option>
                     </select>
                 </td>
-                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
+                <td class="col-acao"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
             `;
             tbody.appendChild(tr);
         }
@@ -698,37 +711,42 @@
         }
 
         // =========================================================================================
-        // MUDANÇA: CÉREBROS SEPARADOS (Resumo salva em uma gaveta, Pessoal salva em outra gaveta)
+        // BANCO DE DADOS E SALVAMENTO (VERSÃO FINAL v10)
         // =========================================================================================
         
-        document.addEventListener('DOMContentLoaded', async () => {
+        async function carregarDadosDaNuvem() {
             updateClock();
             
-            // 1. Salva os arquivos originais (em branco) na memória do PC
+            // Grava uma cópia original na memória do PC caso precise "Limpar" depois
             if (!localStorage.getItem('template_resumo_v10')) {
                 localStorage.setItem('template_resumo_v10', document.getElementById('tab-resumo').innerHTML);
             }
 
-            // 2. Puxa da nuvem o Resumo Diário
+            // Puxa o Resumo Diário
             try {
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v10').get();
                 if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html;
             } catch(error) { console.log("Iniciando Resumo em branco."); }
 
-            // 3. Puxa da nuvem o Quadro de Pessoal (gaveta separada)
+            // Puxa o Quadro de Pessoal
             try {
                 const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v10').get();
-                if (docPessoal.exists) document.getElementById('tab-pessoal').innerHTML = docPessoal.data().html;
+                if (docPessoal.exists) {
+                    // Substituímos apenas o interior do GRID para não quebrar a estrutura da aba
+                    document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html;
+                }
             } catch(error) { console.log("Iniciando Pessoal em branco."); }
 
-            // Restaura o tipo de turno
+            // Restaura o tipo de turno selecionado
             const savedShift = localStorage.getItem('petribu_shift_type_v10');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
                 if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); }
             }
+        }
 
-            // 4. Salva APENAS o Resumo se o Resumo for editado
+        function iniciarSalvamentoAutomatico() {
+            // Observer do RESUMO
             let saveTimeoutResumo;
             const observerResumo = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; 
@@ -746,28 +764,28 @@
             });
             observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
 
-            // 5. Salva APENAS o Pessoal se o Pessoal for editado
+            // Observer do PESSOAL
             let saveTimeoutPessoal;
             const observerPessoal = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; 
                 clearTimeout(saveTimeoutPessoal);
                 saveTimeoutPessoal = setTimeout(() => {
                     db.collection('estado_atual').doc('quadro_pessoal_v10').set({
-                        html: document.getElementById('tab-pessoal').innerHTML,
+                        html: document.getElementById('grid-pessoal').innerHTML,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }, 1500); 
             });
-            observerPessoal.observe(document.getElementById('tab-pessoal'), { attributes: true, childList: true, subtree: true, characterData: true });
-        });
+            observerPessoal.observe(document.getElementById('grid-pessoal'), { attributes: true, childList: true, subtree: true, characterData: true });
+        }
 
-        // 6. O Limpar Painel agora SÓ APAGA O RESUMO
         async function clearDashboard() {
             if(isHistoryMode) {
                 alert("Você está visualizando o histórico. Volte para o dia atual para limpar o painel.");
                 return;
             }
-            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Não se preocupe, o Quadro de Pessoal continuará intacto!)")) {
+            // AVISA QUE VAI APAGAR SÓ O RESUMO
+            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Não se preocupe, o seu Quadro de Pessoal continuará intacto!)")) {
                 const template = localStorage.getItem('template_resumo_v10');
                 if (template) {
                     document.getElementById('tab-resumo').innerHTML = template;
@@ -778,7 +796,7 @@
                     const selector = document.getElementById('shift-selector');
                     if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); }
                     updateClock();
-                    alert("✅ O Resumo da Safra foi zerado. Bom trabalho!");
+                    alert("✅ O Resumo da Safra foi zerado com sucesso!");
                 } else {
                     location.reload();
                 }
@@ -789,15 +807,16 @@
             if(isHistoryMode) { alert("Atenção: Você já está visualizando um histórico!"); return; }
             let dateStr = document.getElementById('dash-date').innerText.trim();
             if(!dateStr || dateStr === '--/--/----') { alert("Erro: A data não está preenchida corretamente."); return; }
-            if(confirm(`Você quer salvar o relatório completo atual (incluindo o Quadro de Pessoal de hoje) como arquivo do dia ${dateStr} na nuvem?`)) {
+            
+            if(confirm(`Você quer salvar o relatório completo (incluindo a escala de pessoal de hoje) como registro do dia ${dateStr} na nuvem?`)) {
                 let currentHTML = document.querySelector('.main-content').innerHTML;
                 let docId = dateStr.replaceAll('/', '-'); 
                 try {
                     await db.collection('historico_safra').doc(docId).set({
                         html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    alert(`✅ O arquivo do dia ${dateStr} foi salvo com sucesso!`);
-                } catch(error) { alert("Erro ao salvar."); }
+                    alert(`✅ O relatório do dia ${dateStr} foi salvo com sucesso!`);
+                } catch(error) { alert("Erro ao salvar o histórico."); }
             }
         }
 
