@@ -168,6 +168,35 @@
     .tabela-pessoal td { border: 1px solid var(--border); padding: 4px 8px; }
     .col-mat { width: 25%; font-weight: bold; color: var(--primary-blue); }
     
+    /* ========================================================================= */
+    /* NOVA REGRA DE SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO      */
+    /* ========================================================================= */
+    
+    /* 1. Oculta TODAS as turmas por padrão no painel de pessoal */
+    .col-ta, .col-tb, .col-tc { display: none; }
+    
+    /* 2. Mostra apenas TA para a equipe da TA */
+    body[data-user="erivaldo"] .col-ta, 
+    body[data-user="silvio"] .col-ta { display: flex; }
+    
+    /* 3. Mostra apenas TB para a equipe da TB */
+    body[data-user="eduardo"] .col-tb, 
+    body[data-user="joaovictor"] .col-tb { display: flex; }
+    
+    /* 4. Mostra apenas TC para a equipe da TC */
+    body[data-user="victor"] .col-tc, 
+    body[data-user="victorguilherme"] .col-tc, 
+    body[data-user="alexandre"] .col-tc { display: flex; }
+
+    /* 5. SUPERVISORES (Vêem todas as turmas juntas) */
+    body[data-user="josemarcos"] .col-ta, body[data-user="josemarcos"] .col-tb, body[data-user="josemarcos"] .col-tc,
+    body[data-user="everaldo"] .col-ta, body[data-user="everaldo"] .col-tb, body[data-user="everaldo"] .col-tc,
+    body[data-user="everaldoarcanjo"] .col-ta, body[data-user="everaldoarcanjo"] .col-tb, body[data-user="everaldoarcanjo"] .col-tc { display: flex; }
+
+    /* Ajuste para as tabelas ficarem bonitas mesmo se tiver só 1 visível */
+    #grid-pessoal { display: flex; flex-wrap: wrap; gap: 15px; }
+    #grid-pessoal .col { flex: 1; min-width: 320px; max-width: 450px; }
+
     /* --- IMPRESSÃO --- */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
@@ -203,8 +232,8 @@
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;}
         .badge-inativo { border: none !important; } 
         .info-box[style*="margin-top:auto"] { margin-top: auto !important; }
-        /* Impressão Tab Pessoal */
-        #tab-pessoal .col { width: 33.3% !important; }
+        /* Impressão Tab Pessoal (permite que a coluna se adapte) */
+        #tab-pessoal .col { width: auto !important; flex: 1 !important; }
     }
 </style>
 </head>
@@ -540,10 +569,10 @@
 
             <!-- ================= ABA 2: QUADRO DE PESSOAL ================= -->
             <div id="tab-pessoal" style="display: none;">
-                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div id="grid-pessoal">
                     
                     <!-- TURMA A -->
-                    <div class="col">
+                    <div class="col col-ta">
                         <div class="card flex-grow-1">
                             <div class="card-header" style="background-color: #3b82f6;">
                                 TURMA A (TA)
@@ -565,7 +594,7 @@
                     </div>
 
                     <!-- TURMA B -->
-                    <div class="col">
+                    <div class="col col-tb">
                         <div class="card flex-grow-1">
                             <div class="card-header" style="background-color: #8b5cf6;">
                                 TURMA B (TB)
@@ -579,17 +608,7 @@
                                 <table class="tabela-pessoal">
                                     <thead><tr><th style="width:30%">MAT.</th><th>NOME</th><th style="width:10%"></th></tr></thead>
                                     <tbody id="tb-tb">
-                                        <!-- Exemplo baseado na foto para a Turma B -->
-                                        <tr>
-                                            <td class="col-mat"><div contenteditable="true" style="outline:none;">127644</div></td>
-                                            <td><div contenteditable="true" style="outline:none;">CARLOS EDUARDO DE ALBUQUERQUE</div></td>
-                                            <td style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-mat"><div contenteditable="true" style="outline:none;">128556</div></td>
-                                            <td><div contenteditable="true" style="outline:none;">EVERALDO SILVA ARCANJO DE FARIAS</div></td>
-                                            <td style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
-                                        </tr>
+                                        <!-- Os funcionários serão inseridos aqui -->
                                     </tbody>
                                 </table>
                             </div>
@@ -597,7 +616,7 @@
                     </div>
 
                     <!-- TURMA C -->
-                    <div class="col">
+                    <div class="col col-tc">
                         <div class="card flex-grow-1">
                             <div class="card-header" style="background-color: #f97316;">
                                 TURMA C (TC)
@@ -654,9 +673,14 @@
                 document.getElementById('app-container').style.display = 'flex';
                 let nomeFormatado = user.email.split('@')[0];
                 document.getElementById('display-username').innerText = nomeFormatado;
+                
+                // NOVO: Aplica o nome do usuário como uma "etiqueta" invisível no site.
+                // O nosso CSS usa essa etiqueta para saber qual tabela mostrar e qual esconder!
+                document.body.setAttribute('data-user', nomeFormatado);
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('app-container').style.display = 'none';
+                document.body.removeAttribute('data-user');
             }
         });
 
@@ -765,11 +789,11 @@
                 shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; });
                 shift3.forEach(el => { el.style.display = 'none'; });
             }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v5', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v6', type); 
         }
 
         // --- INICIALIZAÇÃO E AUTO-SAVE NA NUVEM ---
-        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v5'; 
+        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v6'; 
         
         document.addEventListener('DOMContentLoaded', async () => {
             updateClock();
@@ -781,7 +805,7 @@
             }
 
             try {
-                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario').get();
+                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v6').get();
                 if (docSnap.exists) {
                     mainContent.innerHTML = docSnap.data().html;
                     updateClock(); 
@@ -790,7 +814,7 @@
                 console.log("Iniciando com painel em branco.");
             }
 
-            const savedShift = localStorage.getItem('petribu_shift_type_v5');
+            const savedShift = localStorage.getItem('petribu_shift_type_v6');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
                 if(selector) {
@@ -812,7 +836,7 @@
                 if (shouldSave) {
                     clearTimeout(saveTimeout);
                     saveTimeout = setTimeout(() => {
-                        db.collection('estado_atual').doc('dashboard_temporario').set({
+                        db.collection('estado_atual').doc('dashboard_temporario_v6').set({
                             html: mainContent.innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         }).catch(err => console.error("Erro no auto-save:", err));
@@ -831,7 +855,7 @@
                 const template = localStorage.getItem(STORAGE_KEY_TEMPLATE);
                 if (template) {
                     document.querySelector('.main-content').innerHTML = template;
-                    await db.collection('estado_atual').doc('dashboard_temporario').set({
+                    await db.collection('estado_atual').doc('dashboard_temporario_v6').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
