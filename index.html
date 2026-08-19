@@ -306,6 +306,7 @@
         </div>
 
         <div class="main-content">
+            <!-- HEADER COMUM -->
             <div class="top-header">
                 <div class="title-area">
                     <h1>RELATÓRIO DIÁRIO DE SAFRA</h1>
@@ -640,6 +641,7 @@
             menuElement.classList.add('active');
         }
 
+        // MUDANÇA: O select agora tem um "onchange" que avisa o HTML sobre a mudança de cargo
         function addEmployeeRow(tableBodyId) {
             let tbody = document.getElementById(tableBodyId);
             let tr = document.createElement('tr');
@@ -647,7 +649,7 @@
                 <td class="col-mat"><div contenteditable="true" style="outline:none;">000000</div></td>
                 <td><div contenteditable="true" style="outline:none;">NOME DO FUNCIONÁRIO</div></td>
                 <td>
-                    <select class="select-cargo">
+                    <select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected');">
                         <option>Líder de armazenagem e logística</option>
                         <option>Conferente</option>
                         <option>Operador de empilhadeira</option>
@@ -692,79 +694,91 @@
                 shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; });
                 shift3.forEach(el => { el.style.display = 'none'; });
             }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v9', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v10', type); 
         }
 
-        // MUDANÇA PARA A VERSÃO v9 PARA FORÇAR O CACHE
-        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v9'; 
+        // =========================================================================================
+        // MUDANÇA: CÉREBROS SEPARADOS (Resumo salva em uma gaveta, Pessoal salva em outra gaveta)
+        // =========================================================================================
         
         document.addEventListener('DOMContentLoaded', async () => {
             updateClock();
-            const mainContent = document.querySelector('.main-content');
             
-            if (!localStorage.getItem(STORAGE_KEY_TEMPLATE)) {
-                const clone = mainContent.cloneNode(true);
-                localStorage.setItem(STORAGE_KEY_TEMPLATE, clone.innerHTML);
+            // 1. Salva os arquivos originais (em branco) na memória do PC
+            if (!localStorage.getItem('template_resumo_v10')) {
+                localStorage.setItem('template_resumo_v10', document.getElementById('tab-resumo').innerHTML);
             }
 
+            // 2. Puxa da nuvem o Resumo Diário
             try {
-                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v9').get();
-                if (docSnap.exists) {
-                    mainContent.innerHTML = docSnap.data().html;
-                    updateClock(); 
-                }
-            } catch(error) {
-                console.log("Iniciando com painel em branco.");
-            }
+                const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v10').get();
+                if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html;
+            } catch(error) { console.log("Iniciando Resumo em branco."); }
 
-            const savedShift = localStorage.getItem('petribu_shift_type_v9');
+            // 3. Puxa da nuvem o Quadro de Pessoal (gaveta separada)
+            try {
+                const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v10').get();
+                if (docPessoal.exists) document.getElementById('tab-pessoal').innerHTML = docPessoal.data().html;
+            } catch(error) { console.log("Iniciando Pessoal em branco."); }
+
+            // Restaura o tipo de turno
+            const savedShift = localStorage.getItem('petribu_shift_type_v10');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
-                if(selector) {
-                    selector.value = savedShift;
-                    changeShiftLayout(savedShift);
-                }
+                if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); }
             }
 
-            let saveTimeout;
-            const observer = new MutationObserver((mutations) => {
+            // 4. Salva APENAS o Resumo se o Resumo for editado
+            let saveTimeoutResumo;
+            const observerResumo = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; 
                 let shouldSave = false;
-                for(let m of mutations) {
-                    if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && !m.target.classList?.contains('menu')) {
-                        shouldSave = true;
-                        break;
-                    }
-                }
+                for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date') { shouldSave = true; break; } }
                 if (shouldSave) {
-                    clearTimeout(saveTimeout);
-                    saveTimeout = setTimeout(() => {
-                        db.collection('estado_atual').doc('dashboard_temporario_v9').set({
-                            html: mainContent.innerHTML,
+                    clearTimeout(saveTimeoutResumo);
+                    saveTimeoutResumo = setTimeout(() => {
+                        db.collection('estado_atual').doc('dashboard_temporario_v10').set({
+                            html: document.getElementById('tab-resumo').innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        }).catch(err => console.error("Erro no auto-save:", err));
+                        });
                     }, 1500); 
                 }
             });
-            observer.observe(mainContent, { attributes: true, childList: true, subtree: true, characterData: true });
+            observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
+
+            // 5. Salva APENAS o Pessoal se o Pessoal for editado
+            let saveTimeoutPessoal;
+            const observerPessoal = new MutationObserver((mutations) => {
+                if(isHistoryMode) return; 
+                clearTimeout(saveTimeoutPessoal);
+                saveTimeoutPessoal = setTimeout(() => {
+                    db.collection('estado_atual').doc('quadro_pessoal_v10').set({
+                        html: document.getElementById('tab-pessoal').innerHTML,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }, 1500); 
+            });
+            observerPessoal.observe(document.getElementById('tab-pessoal'), { attributes: true, childList: true, subtree: true, characterData: true });
         });
 
+        // 6. O Limpar Painel agora SÓ APAGA O RESUMO
         async function clearDashboard() {
             if(isHistoryMode) {
                 alert("Você está visualizando o histórico. Volte para o dia atual para limpar o painel.");
                 return;
             }
-            if (confirm("Tem certeza que deseja APAGAR TODOS OS DADOS e começar um relatório em branco?")) {
-                const template = localStorage.getItem(STORAGE_KEY_TEMPLATE);
+            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Não se preocupe, o Quadro de Pessoal continuará intacto!)")) {
+                const template = localStorage.getItem('template_resumo_v10');
                 if (template) {
-                    document.querySelector('.main-content').innerHTML = template;
-                    await db.collection('estado_atual').doc('dashboard_temporario_v9').set({
+                    document.getElementById('tab-resumo').innerHTML = template;
+                    await db.collection('estado_atual').doc('dashboard_temporario_v10').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     const selector = document.getElementById('shift-selector');
                     if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); }
                     updateClock();
+                    alert("✅ O Resumo da Safra foi zerado. Bom trabalho!");
                 } else {
                     location.reload();
                 }
@@ -775,14 +789,14 @@
             if(isHistoryMode) { alert("Atenção: Você já está visualizando um histórico!"); return; }
             let dateStr = document.getElementById('dash-date').innerText.trim();
             if(!dateStr || dateStr === '--/--/----') { alert("Erro: A data não está preenchida corretamente."); return; }
-            if(confirm(`Você quer salvar o relatório e o quadro de pessoal atuais como registro do dia ${dateStr} na nuvem?`)) {
+            if(confirm(`Você quer salvar o relatório completo atual (incluindo o Quadro de Pessoal de hoje) como arquivo do dia ${dateStr} na nuvem?`)) {
                 let currentHTML = document.querySelector('.main-content').innerHTML;
                 let docId = dateStr.replaceAll('/', '-'); 
                 try {
                     await db.collection('historico_safra').doc(docId).set({
                         html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    alert(`✅ O relatório do dia ${dateStr} foi salvo com sucesso!`);
+                    alert(`✅ O arquivo do dia ${dateStr} foi salvo com sucesso!`);
                 } catch(error) { alert("Erro ao salvar."); }
             }
         }
