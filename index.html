@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Safra - Petribu</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+<!-- Ícone da Aba -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚜</text></svg>">
 <style>
     :root {
         --sidebar-bg: #0b1c3a;
@@ -569,6 +570,10 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // MUDANÇA: Exige que a pessoa logue de novo caso feche o navegador!
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .catch((error) => { console.error("Erro na persistência:", error); });
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
@@ -687,11 +692,11 @@
                 shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; });
                 shift3.forEach(el => { el.style.display = 'none'; });
             }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v8', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v9', type); 
         }
 
-        // MUDANÇA PARA A VERSÃO v8 PARA FORÇAR O CACHE A LER AS MELHORIAS DE LARGURA
-        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v8'; 
+        // MUDANÇA PARA A VERSÃO v9 PARA FORÇAR O CACHE
+        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v9'; 
         
         document.addEventListener('DOMContentLoaded', async () => {
             updateClock();
@@ -703,7 +708,7 @@
             }
 
             try {
-                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v8').get();
+                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v9').get();
                 if (docSnap.exists) {
                     mainContent.innerHTML = docSnap.data().html;
                     updateClock(); 
@@ -712,7 +717,7 @@
                 console.log("Iniciando com painel em branco.");
             }
 
-            const savedShift = localStorage.getItem('petribu_shift_type_v8');
+            const savedShift = localStorage.getItem('petribu_shift_type_v9');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
                 if(selector) {
@@ -734,7 +739,7 @@
                 if (shouldSave) {
                     clearTimeout(saveTimeout);
                     saveTimeout = setTimeout(() => {
-                        db.collection('estado_atual').doc('dashboard_temporario_v8').set({
+                        db.collection('estado_atual').doc('dashboard_temporario_v9').set({
                             html: mainContent.innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         }).catch(err => console.error("Erro no auto-save:", err));
@@ -753,7 +758,7 @@
                 const template = localStorage.getItem(STORAGE_KEY_TEMPLATE);
                 if (template) {
                     document.querySelector('.main-content').innerHTML = template;
-                    await db.collection('estado_atual').doc('dashboard_temporario_v8').set({
+                    await db.collection('estado_atual').doc('dashboard_temporario_v9').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
