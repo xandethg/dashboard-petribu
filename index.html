@@ -162,7 +162,9 @@
     .history-item-date { font-weight:bold; color:var(--primary-blue); cursor:pointer; flex: 1; display:flex; align-items:center; gap:8px;}
     .history-item-date:hover { text-decoration: underline; }
 
-    /* Quadro de Pessoal - Tabela específica */
+    /* ========================================================================= */
+    /* QUADRO DE PESSOAL - Ajuste de Larguras                                    */
+    /* ========================================================================= */
     .tabela-pessoal { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; table-layout: fixed;}
     .tabela-pessoal th { background: #f1f5f9; padding: 8px; border: 1px solid var(--border); text-align: left; color: var(--text-muted);}
     .tabela-pessoal td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; }
@@ -170,10 +172,7 @@
     .select-cargo { width: 100%; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background-color: #ffffff; color: var(--text-dark); cursor: pointer; outline: none; }
     .select-cargo:focus { border-color: var(--primary-blue); }
     
-    /* ========================================================================= */
-    /* REGRA DE SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO           */
-    /* ========================================================================= */
-    
+    /* SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO */
     .col-ta, .col-tb, .col-tc { display: none; }
     
     /* TA */
@@ -191,17 +190,22 @@
     #grid-pessoal .col { flex: 1; min-width: 320px; max-width: 450px; }
 
     /* ========================================================================= */
-    /* IMPRESSÃO PERFEITA (TELA CHEIA)                                           */
+    /* IMPRESSÃO PERFEITA                                                        */
     /* ========================================================================= */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
+        
+        /* Esconde barra lateral e botões de ação */
         .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay, #login-screen { display: none !important; }
+        
+        /* A coluna de Ação do botão de apagar deve sumir inteira */
+        .col-acao { display: none !important; }
+
         .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; }
         
-        /* Ajuste do grid de resumo para impressão */
+        /* Resumo Geral */
         .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 12px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
-        .col { display: flex !important; flex-direction: column !important; gap: 12px !important; }
         .dashboard-grid > .col:nth-child(1) { width: 28% !important; }
         .dashboard-grid > .col:nth-child(2) { width: 38% !important; }
         .dashboard-grid > .col:nth-child(3) { width: 34% !important; }
@@ -210,27 +214,38 @@
         .flex-grow-1 { flex: 1 !important; } 
         .card-header { padding: 4px 8px !important; font-size: 10px !important; border-bottom: 0.5px solid #cbd5e1 !important; }
         .card-body { padding: 6px 8px !important; flex: 1 !important; display: flex !important; flex-direction: column !important;}
+        .top-header { margin-bottom: 12px !important; }
+        .title-area h1 { font-size: 20px !important; margin: 0 !important; }
+        .title-area h3 { font-size: 12px !important; margin: 0 !important; }
+        .kpi-grid { display: flex !important; gap: 8px !important; margin-bottom: 15px !important;}
+        .kpi-card { flex: 1 !important; padding: 8px 10px !important; gap: 8px !important; border: 0.5px solid #cbd5e1 !important; box-shadow: none !important; border-top: none !important;}
+        .kpi-icon { font-size: 18px !important; }
+        .kpi-info h4 { font-size: 9px !important;}
+        .kpi-info p { font-size: 16px !important; margin: 0 !important; }
+        .kpi-info span { font-size: 9px !important; }
+        .info-box { padding: 4px 6px !important; margin-bottom: 5px !important; font-size: 9px !important; border: 0.5px solid #e2e8f0 !important;}
+        .info-title { font-size: 9px !important; margin-bottom: 2px !important;}
+        ul.simple-list li { margin-bottom: 1px !important; font-size: 8.5px !important; }
+        .table-title { margin: 6px 0 2px 0 !important; font-size: 9px !important; }
+        .expedicao-table { margin-bottom: 4px !important; font-size: 8.5px !important; border-collapse: collapse !important; table-layout: fixed !important; width: 100% !important; }
+        .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; }
+        .total-cell { font-size: 11px !important; }
+        .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
+        .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;}
+        .badge-inativo { border: none !important; } 
         
-        /* Ajuste específico do Quadro de Pessoal na Impressão */
+        /* Quadro de Pessoal - Impressão */
         #tab-pessoal { display: block !important; width: 100% !important; }
         #grid-pessoal { display: block !important; width: 100% !important; }
         
-        /* Oculta as turmas, remove largura máxima e faz ocupar 100% da folha */
-        #grid-pessoal .col { display: none; width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
-        
-        /* Lógica para imprimir apenas a turma do usuário */
-        body[data-user="erivaldo"] .col-ta, body[data-user="silvio"] .col-ta { display: block !important; }
-        body[data-user="eduardo"] .col-tb, body[data-user="joaovictor"] .col-tb { display: block !important; }
-        body[data-user="victor"] .col-tc, body[data-user="victorguilherme"] .col-tc, body[data-user="alexandre"] .col-tc { display: block !important; }
-        body[data-user="josemarcos"] .col-ta, body[data-user="josemarcos"] .col-tb, body[data-user="josemarcos"] .col-tc,
-        body[data-user="everaldo"] .col-ta, body[data-user="everaldo"] .col-tb, body[data-user="everaldo"] .col-tc,
-        body[data-user="everaldoarcanjo"] .col-ta, body[data-user="everaldoarcanjo"] .col-tb, body[data-user="everaldoarcanjo"] .col-tc { display: block !important; }
+        /* Força o card da turma a usar a folha toda na largura */
+        #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         
         .tabela-pessoal { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
-        .tabela-pessoal th, .tabela-pessoal td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 11px !important; }
+        .tabela-pessoal th, .tabela-pessoal td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; }
         
-        /* Esconde a setinha do dropdown na hora de imprimir para ficar parecendo um texto normal */
-        .select-cargo { border: none !important; -webkit-appearance: none; appearance: none; background: transparent !important; color: black !important; font-weight: bold; padding: 0 !important; }
+        /* Formata a caixa de seleção de cargo para parecer um texto normal na impressão */
+        .select-cargo { border: none !important; -webkit-appearance: none; appearance: none; background: transparent !important; color: black !important; font-weight: bold; padding: 0 !important; font-size: 12px !important;}
     }
 </style>
 </head>
@@ -248,14 +263,15 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO DO PAINEL -->
+    <!-- TODO O CONTEÚDO DO PAINEL FICA AQUI DENTRO -->
     <div id="app-container">
         
         <!-- MODAL DE HISTÓRICO -->
         <div id="history-modal" class="modal-overlay no-print">
             <div class="modal-content">
                 <h3>🗄️ Histórico da Safra</h3>
-                <ul id="history-list" style="list-style:none; padding:0; margin-bottom: 20px;"></ul>
+                <ul id="history-list" style="list-style:none; padding:0; margin-bottom: 20px;">
+                </ul>
                 <button onclick="closeHistoryModal()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button>
             </div>
         </div>
@@ -336,7 +352,7 @@
                     <!-- COLUNA 1 -->
                     <div class="col">
                         <div class="card">
-                            <div class="card-header">ℹ️ INFORMATIVO DA SAFRA<button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento</button></div>
+                            <div class="card-header">ℹ️ INFORMATIVO DA SAFRA<button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento Externo</button></div>
                             <div class="card-body" id="informativo-container" style="padding: 15px;">
                                 <div class="info-box"><div class="info-title"><span>🟢 MOAGEM</span><button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button></div><ul class="simple-list" id="lista-moagem"><li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
                                 <div class="info-box">
@@ -354,7 +370,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card" style="margin-top: auto;">
                             <div class="card-header">📊 STATUS OPERACIONAL <button class="btn-add" onclick="addStatusItem('lista-status')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Linha</button></div>
                             <div class="card-body" style="padding: 10px 15px;" id="lista-status">
@@ -371,7 +386,6 @@
                         <div class="card flex-grow-1">
                             <div class="card-header">🚚 EXPEDIÇÃO DE AÇÚCAR</div>
                             <div class="card-body" style="padding: 15px; display: flex; flex-direction: column;">
-                                
                                 <div class="table-title">Carregamento de Fardo (Mercado Interno)</div>
                                 <table class="expedicao-table">
                                     <tr><th class="col-turno">TURNO</th><th class="shift-1">23h às 07h</th><th class="shift-2">07h às 15h</th><th class="shift-3">15h às 23h</th><th class="col-total">TOTAL</th></tr>
@@ -481,7 +495,7 @@
                                     <strong>🛠️ Assistente:</strong> Silvio
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:40%">NOME</th><th style="width:35%">CARGO</th><th style="width:10%"></th></tr></thead>
+                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
                                     <tbody id="tb-ta"></tbody>
                                 </table>
                             </div>
@@ -501,7 +515,7 @@
                                     <strong>🛠️ Assistente:</strong> João Victor
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:40%">NOME</th><th style="width:35%">CARGO</th><th style="width:10%"></th></tr></thead>
+                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
                                     <tbody id="tb-tb"></tbody>
                                 </table>
                             </div>
@@ -521,7 +535,7 @@
                                     <strong>🛠️ Assistente:</strong> Alexandre
                                 </div>
                                 <table class="tabela-pessoal">
-                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:40%">NOME</th><th style="width:35%">CARGO</th><th style="width:10%"></th></tr></thead>
+                                    <thead><tr><th style="width:15%">MAT.</th><th style="width:48%">NOME</th><th style="width:32%">CARGO</th><th class="col-acao" style="width:5%"></th></tr></thead>
                                     <tbody id="tb-tc"></tbody>
                                 </table>
                             </div>
@@ -636,7 +650,7 @@
                         <option>Operador de manipulador</option>
                     </select>
                 </td>
-                <td style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
             `;
             tbody.appendChild(tr);
         }
@@ -673,11 +687,11 @@
                 shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; });
                 shift3.forEach(el => { el.style.display = 'none'; });
             }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v7', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v8', type); 
         }
 
-        // MUDANÇA PARA A VERSÃO v7 PARA FORÇAR O CACHE A LER A NOVA TABELA
-        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v7'; 
+        // MUDANÇA PARA A VERSÃO v8 PARA FORÇAR O CACHE A LER AS MELHORIAS DE LARGURA
+        const STORAGE_KEY_TEMPLATE = 'petribu_dashboard_template_v8'; 
         
         document.addEventListener('DOMContentLoaded', async () => {
             updateClock();
@@ -689,7 +703,7 @@
             }
 
             try {
-                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v7').get();
+                const docSnap = await db.collection('estado_atual').doc('dashboard_temporario_v8').get();
                 if (docSnap.exists) {
                     mainContent.innerHTML = docSnap.data().html;
                     updateClock(); 
@@ -698,7 +712,7 @@
                 console.log("Iniciando com painel em branco.");
             }
 
-            const savedShift = localStorage.getItem('petribu_shift_type_v7');
+            const savedShift = localStorage.getItem('petribu_shift_type_v8');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
                 if(selector) {
@@ -720,7 +734,7 @@
                 if (shouldSave) {
                     clearTimeout(saveTimeout);
                     saveTimeout = setTimeout(() => {
-                        db.collection('estado_atual').doc('dashboard_temporario_v7').set({
+                        db.collection('estado_atual').doc('dashboard_temporario_v8').set({
                             html: mainContent.innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         }).catch(err => console.error("Erro no auto-save:", err));
@@ -739,7 +753,7 @@
                 const template = localStorage.getItem(STORAGE_KEY_TEMPLATE);
                 if (template) {
                     document.querySelector('.main-content').innerHTML = template;
-                    await db.collection('estado_atual').doc('dashboard_temporario_v7').set({
+                    await db.collection('estado_atual').doc('dashboard_temporario_v8').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
