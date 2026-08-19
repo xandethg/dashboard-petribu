@@ -163,20 +163,22 @@
     .history-item-date:hover { text-decoration: underline; }
 
     /* ========================================================================= */
-    /* QUADRO DE PESSOAL - Ajuste de Larguras e Layout Fixo                      */
+    /* QUADRO DE PESSOAL & DEVOLUÇÕES - Layout Fixo                              */
     /* ========================================================================= */
-    .tabela-pessoal { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; table-layout: fixed;}
-    .tabela-pessoal th { background: #f1f5f9; padding: 8px; border: 1px solid var(--border); text-align: left; color: var(--text-muted);}
-    .tabela-pessoal td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tabela-pessoal, .tabela-devolucao { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; table-layout: fixed;}
+    .tabela-pessoal th, .tabela-devolucao th { background: #f1f5f9; padding: 8px; border: 1px solid var(--border); text-align: left; color: var(--text-muted);}
+    .tabela-pessoal td, .tabela-devolucao td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     
-    /* Colunas fixadas para não esmagar o nome */
+    /* Pessoal */
     .col-mat { width: 15%; font-weight: bold; color: var(--primary-blue); }
     .col-nome { width: 45%; }
     .col-cargo { width: 35%; }
     .col-acao { width: 5%; text-align: center; }
-
     .select-cargo { width: 100%; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background-color: #ffffff; color: var(--text-dark); cursor: pointer; outline: none; }
     .select-cargo:focus { border-color: var(--primary-blue); }
+
+    /* Devoluções */
+    .tabela-devolucao th { color: var(--header-blue); }
     
     /* SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO */
     .col-ta, .col-tb, .col-tc { display: none; }
@@ -247,9 +249,9 @@
         /* Força o card da turma a usar a folha toda na largura */
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         
-        .tabela-pessoal { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+        .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
         /* Redistribui o espaço após esconder a coluna de ação */
-        .tabela-pessoal th, .tabela-pessoal td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; white-space: normal; overflow: visible; }
+        .tabela-pessoal th, .tabela-pessoal td, .tabela-devolucao th, .tabela-devolucao td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; white-space: normal; overflow: visible; }
         .col-mat { width: 15% !important; }
         .col-nome { width: 50% !important; }
         .col-cargo { width: 35% !important; }
@@ -299,6 +301,7 @@
             <ul class="menu">
                 <li class="active" onclick="switchTab('resumo', this)">🏠 Resumo Geral</li>
                 <li onclick="switchTab('pessoal', this)">👥 Quadro de Pessoal</li>
+                <li onclick="switchTab('devolucoes', this)">🔄 Devoluções</li>
                 <li onclick="openHistoryModal()">📄 Histórico da Safra</li>
             </ul>
 
@@ -555,6 +558,36 @@
                 </div>
             </div> <!-- FIM TAB PESSOAL -->
 
+            <!-- ================= ABA 3: DEVOLUÇÕES ================= -->
+            <div id="tab-devolucoes" style="display: none;">
+                <div class="card">
+                    <div class="card-header" style="background-color: #f59e0b;">
+                        <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">🔄 DEVOLUÇÕES (Agosto/26)</span>
+                        <div>
+                            <button class="btn-add" onclick="encerrarMes()" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">💾 Encerrar Mês</button>
+                            <button class="btn-add" onclick="addDevolucaoRow()" style="background:white; color:#f59e0b; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Devolução</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="tabela-devolucao">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%">Data</th>
+                                    <th style="width:20%">Cliente</th>
+                                    <th style="width:10%">NF</th>
+                                    <th style="width:15%">Produto</th>
+                                    <th style="width:15%">Tipo</th>
+                                    <th style="width:7%">Qtde</th>
+                                    <th style="width:20%">Motivo</th>
+                                    <th class="col-acao"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb-devolucao"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <!-- FIM TAB DEVOLUÇÕES -->
+
         </div>
     </div> <!-- FIM DO APP-CONTAINER -->
 
@@ -594,7 +627,7 @@
                 
                 // SÓ CARREGA OS DADOS DA NUVEM DEPOIS QUE SOUBER QUEM ESTÁ LOGADO
                 await carregarDadosDaNuvem();
-                iniciarSalvamentoAutomatico();
+                iniciarSalvamentoAutomaticoResumo();
                 
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -649,6 +682,7 @@
         function switchTab(tabId, menuElement) {
             document.getElementById('tab-resumo').style.display = 'none';
             document.getElementById('tab-pessoal').style.display = 'none';
+            document.getElementById('tab-devolucoes').style.display = 'none';
             document.getElementById('tab-' + tabId).style.display = 'block';
             let items = document.querySelectorAll('.menu li');
             items.forEach(item => item.classList.remove('active'));
@@ -659,10 +693,10 @@
             let tbody = document.getElementById(tableBodyId);
             let tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="col-mat"><div contenteditable="true" style="outline:none;">000000</div></td>
-                <td class="col-nome"><div contenteditable="true" style="outline:none;">NOME DO FUNCIONÁRIO</div></td>
+                <td class="col-mat"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">000000</div></td>
+                <td class="col-nome"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">NOME DO FUNCIONÁRIO</div></td>
                 <td class="col-cargo">
-                    <select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected');">
+                    <select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarPessoal();">
                         <option>Líder de armazenagem e logística</option>
                         <option>Conferente</option>
                         <option>Operador de empilhadeira</option>
@@ -670,9 +704,27 @@
                         <option>Operador de manipulador</option>
                     </select>
                 </td>
-                <td class="col-acao"><button class="btn-remove" onclick="this.closest('tr').remove()" style="margin:0;">✖</button></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarPessoal();" style="margin:0;">✖</button></td>
             `;
             tbody.appendChild(tr);
+            salvarPessoal();
+        }
+
+        function addDevolucaoRow() {
+            let tbody = document.getElementById('tb-devolucao');
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">---</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">---</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">---</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">---</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td>
+                <td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">---</div></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>
+            `;
+            tbody.appendChild(tr);
+            salvarDevolucoes();
         }
 
         let isHistoryMode = false;
@@ -707,46 +759,66 @@
                 shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; });
                 shift3.forEach(el => { el.style.display = 'none'; });
             }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v10', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v14', type); 
         }
 
         // =========================================================================================
-        // BANCO DE DADOS E SALVAMENTO (VERSÃO FINAL v10)
+        // BANCO DE DADOS E SALVAMENTO (VERSÃO FINAL v14)
         // =========================================================================================
         
         async function carregarDadosDaNuvem() {
             updateClock();
             
-            // Grava uma cópia original na memória do PC caso precise "Limpar" depois
-            if (!localStorage.getItem('template_resumo_v10')) {
-                localStorage.setItem('template_resumo_v10', document.getElementById('tab-resumo').innerHTML);
+            // Grava uma cópia original na memória do PC caso precise "Limpar" o resumo depois
+            if (!localStorage.getItem('template_resumo_v14')) {
+                localStorage.setItem('template_resumo_v14', document.getElementById('tab-resumo').innerHTML);
             }
 
             // Puxa o Resumo Diário
             try {
-                const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v10').get();
+                const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v14').get();
                 if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html;
             } catch(error) { console.log("Iniciando Resumo em branco."); }
 
             // Puxa o Quadro de Pessoal
             try {
-                const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v10').get();
+                const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v14').get();
                 if (docPessoal.exists) {
-                    // Substituímos apenas o interior do GRID para não quebrar a estrutura da aba
                     document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html;
                 }
             } catch(error) { console.log("Iniciando Pessoal em branco."); }
 
+            // Puxa as Devoluções
+            try {
+                const docDevolucao = await db.collection('estado_atual').doc('devolucoes_v14').get();
+                if (docDevolucao.exists) {
+                    document.getElementById('tab-devolucoes').innerHTML = docDevolucao.data().html;
+                }
+            } catch(error) { console.log("Iniciando Devoluções em branco."); }
+
             // Restaura o tipo de turno selecionado
-            const savedShift = localStorage.getItem('petribu_shift_type_v10');
+            const savedShift = localStorage.getItem('petribu_shift_type_v14');
             if (savedShift) {
                 const selector = document.getElementById('shift-selector');
                 if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); }
             }
         }
 
-        function iniciarSalvamentoAutomatico() {
-            // Observer do RESUMO
+        // FUNÇÕES DE SALVAMENTO DIRETO PARA PESSOAL E DEVOLUÇÕES (À prova de falhas)
+        function salvarPessoal() {
+            if(isHistoryMode) return;
+            const html = document.getElementById('grid-pessoal').innerHTML;
+            db.collection('estado_atual').doc('quadro_pessoal_v14').set({ html: html, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        }
+
+        function salvarDevolucoes() {
+            if(isHistoryMode) return;
+            const html = document.getElementById('tab-devolucoes').innerHTML;
+            db.collection('estado_atual').doc('devolucoes_v14').set({ html: html, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        }
+
+        function iniciarSalvamentoAutomaticoResumo() {
+            // Observer apenas para o RESUMO, já que Pessoal e Devolução salvam com onblur/onchange
             let saveTimeoutResumo;
             const observerResumo = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; 
@@ -755,7 +827,7 @@
                 if (shouldSave) {
                     clearTimeout(saveTimeoutResumo);
                     saveTimeoutResumo = setTimeout(() => {
-                        db.collection('estado_atual').doc('dashboard_temporario_v10').set({
+                        db.collection('estado_atual').doc('dashboard_temporario_v14').set({
                             html: document.getElementById('tab-resumo').innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -763,20 +835,34 @@
                 }
             });
             observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
+        }
 
-            // Observer do PESSOAL
-            let saveTimeoutPessoal;
-            const observerPessoal = new MutationObserver((mutations) => {
-                if(isHistoryMode) return; 
-                clearTimeout(saveTimeoutPessoal);
-                saveTimeoutPessoal = setTimeout(() => {
-                    db.collection('estado_atual').doc('quadro_pessoal_v10').set({
-                        html: document.getElementById('grid-pessoal').innerHTML,
+        // FUNÇÃO PARA ENCERRAR O MÊS DAS DEVOLUÇÕES E LIMPAR A TABELA
+        async function encerrarMes() {
+            let nomeMesEl = document.getElementById('nome-mes-devolucao');
+            let nomeMes = nomeMesEl.innerText.trim();
+            if(confirm("Deseja salvar a tabela de devoluções de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) {
+                let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML;
+                let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_");
+                
+                try {
+                    // 1. Salva no histórico mensal
+                    await db.collection('historico_mensal_devolucoes').doc(docId).set({
+                        html: htmlParaSalvar,
+                        mes: nomeMes,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                }, 1500); 
-            });
-            observerPessoal.observe(document.getElementById('grid-pessoal'), { attributes: true, childList: true, subtree: true, characterData: true });
+
+                    // 2. Limpa a tabela atual e altera o nome para um genérico
+                    document.getElementById('tb-devolucao').innerHTML = "";
+                    nomeMesEl.innerText = "🔄 DEVOLUÇÕES (Mês/Ano)";
+                    salvarDevolucoes(); // Salva a tabela limpa no estado atual
+
+                    alert("✅ Mês encerrado com sucesso! Histórico arquivado.");
+                } catch(error) {
+                    alert("Erro ao encerrar o mês. Tente novamente.");
+                }
+            }
         }
 
         async function clearDashboard() {
@@ -785,11 +871,11 @@
                 return;
             }
             // AVISA QUE VAI APAGAR SÓ O RESUMO
-            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Não se preocupe, o seu Quadro de Pessoal continuará intacto!)")) {
-                const template = localStorage.getItem('template_resumo_v10');
+            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Não se preocupe, Pessoal e Devoluções continuarão intactos!)")) {
+                const template = localStorage.getItem('template_resumo_v14');
                 if (template) {
                     document.getElementById('tab-resumo').innerHTML = template;
-                    await db.collection('estado_atual').doc('dashboard_temporario_v10').set({
+                    await db.collection('estado_atual').doc('dashboard_temporario_v14').set({
                         html: template,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
@@ -808,7 +894,7 @@
             let dateStr = document.getElementById('dash-date').innerText.trim();
             if(!dateStr || dateStr === '--/--/----') { alert("Erro: A data não está preenchida corretamente."); return; }
             
-            if(confirm(`Você quer salvar o relatório completo (incluindo a escala de pessoal de hoje) como registro do dia ${dateStr} na nuvem?`)) {
+            if(confirm(`Você quer salvar o relatório completo (Resumo + Pessoal + Devoluções de hoje) como registro do dia ${dateStr} na nuvem?`)) {
                 let currentHTML = document.querySelector('.main-content').innerHTML;
                 let docId = dateStr.replaceAll('/', '-'); 
                 try {
