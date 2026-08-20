@@ -156,9 +156,16 @@
     
     /* SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO */
     .col-ta, .col-tb, .col-tc { display: none; }
+    
+    /* TA */
     body[data-user="erivaldo"] .col-ta, body[data-user="silvio"] .col-ta { display: flex; }
+    /* TB */
     body[data-user="eduardo"] .col-tb, body[data-user="joaovictor"] .col-tb { display: flex; }
-    body[data-user="victor"] .col-tc, body[data-user="victorguilherme"] .col-tc, body[data-user="alexandre"] .col-tc { display: flex; }
+    
+    /* TC - CORRIGIDO: AGORA O VICTORG ESTÁ AQUI */
+    body[data-user="victor"] .col-tc, body[data-user="victorguilherme"] .col-tc, body[data-user="victorg"] .col-tc, body[data-user="alexandre"] .col-tc { display: flex; }
+    
+    /* SUPERVISORES */
     body[data-user="josemarcos"] .col-ta, body[data-user="josemarcos"] .col-tb, body[data-user="josemarcos"] .col-tc,
     body[data-user="everaldo"] .col-ta, body[data-user="everaldo"] .col-tb, body[data-user="everaldo"] .col-tc,
     body[data-user="everaldoarcanjo"] .col-ta, body[data-user="everaldoarcanjo"] .col-tb, body[data-user="everaldoarcanjo"] .col-tc { display: flex; }
