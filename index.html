@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Safra - Petribu</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚜</text></svg>">
-<!-- Biblioteca de Gráficos (Chart.js) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     :root {
@@ -21,11 +20,7 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
     /* --- TELA DE LOGIN --- */
-    #login-screen {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: var(--sidebar-bg); z-index: 99999;
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-    }
+    #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--sidebar-bg); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
     .login-box { background: white; padding: 40px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
     .login-box h2 { color: var(--header-blue); margin-top: 0; margin-bottom: 5px; font-weight: 900;}
     .login-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 25px;}
@@ -70,7 +65,7 @@
     [contenteditable="true"]:focus { background-color: #fff; box-shadow: 0 0 0 2px var(--primary-blue); cursor: text; }
     .widget-value { font-weight: bold; font-size: 14px; color: var(--text-dark); min-width: 80px; text-align: center; }
 
-    /* --- KPI CARDS --- */
+    /* --- KPI CARDS E GRID PRINCIPAL --- */
     .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 20px; }
     .kpi-card { background: var(--card-bg); border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px; border-top: 4px solid transparent; }
     .kpi-card:nth-child(1) { border-color: #3b82f6; }
@@ -84,7 +79,6 @@
     .kpi-info p { margin: 5px 0 0 0; font-size: 20px; font-weight: bold; display: inline-block;}
     .kpi-info span { font-size: 11px; font-weight: normal; color: var(--text-muted); }
 
-    /* --- MAIN GRID --- */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1.3fr 1.2fr; gap: 15px; margin-bottom: 20px; align-items: stretch; }
     .col { display: flex; flex-direction: column; gap: 15px; }
     .card { background: var(--card-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); display: flex; flex-direction: column; margin: 0; }
@@ -99,7 +93,6 @@
     ul.simple-list { padding-left: 15px; margin: 5px 0; }
     ul.simple-list li { margin-bottom: 3px; }
 
-    /* Tabelas Resumo */
     .table-title { font-size: 11px; font-weight: bold; color: var(--primary-blue); margin: 15px 0 5px 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
     .expedicao-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 10px; table-layout: fixed; }
     .expedicao-table th { background-color: #f8fafc; padding: 8px 4px; border: 1px solid var(--border); color: var(--text-muted); text-align: center; }
@@ -109,13 +102,11 @@
     .cell-left { text-align: left !important; padding: 8px 4px 8px 10px !important; vertical-align: top !important; }
     .total-cell { font-size: 16px; font-weight: bold; color: var(--primary-blue); vertical-align: middle; text-align: center !important;}
 
-    /* Checklists / Status */
     .check-item, .status-item { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding: 6px 0; border-bottom: 1px dashed var(--border); }
     .check-item:last-child, .status-item:last-child { border-bottom: none; }
     .status-name { flex: 1; outline: none; }
     .status-badge-container { display: flex; align-items: center; justify-content: center; min-width: 80px; }
     
-    /* BADGES */
     .badge { padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; user-select: none; border: 1px solid transparent; width: 100%; text-align: center; }
     .badge:hover { filter: brightness(0.9); border-color: rgba(0,0,0,0.2); }
     .badge-concluido { background: var(--success-light); color: var(--success); }
@@ -125,13 +116,11 @@
     .badge-inativo { background: transparent !important; color: var(--text-muted) !important; font-size: 14px !important; border: none !important;}
     .badge-inline { width: auto; display: inline-block; }
 
-    /* BOTÕES */
     .btn-add { background: #eff6ff; color: #2563eb; border: 1px dashed #2563eb; padding: 2px 6px; font-size: 10px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; margin-left: auto; transition: 0.2s;}
     .btn-add:hover { background: #2563eb; color: white; }
     .btn-remove { background: transparent; color: #ef4444; border: none; cursor: pointer; font-size: 12px; margin-left: 10px; opacity: 0.5;}
     .btn-remove:hover { opacity: 1; }
 
-    /* MODAIS */
     .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; }
     .modal-content { background:white; padding:20px 25px; border-radius:8px; width:400px; max-height:80vh; overflow-y:auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     .modal-content h3 { margin-top:0; color: var(--header-blue); border-bottom: 1px solid var(--border); padding-bottom: 10px;}
@@ -140,9 +129,7 @@
     .history-item-date { font-weight:bold; color:var(--primary-blue); cursor:pointer; flex: 1; display:flex; align-items:center; gap:8px;}
     .history-item-date:hover { text-decoration: underline; }
 
-    /* ========================================================================= */
-    /* QUADRO DE PESSOAL E DEVOLUÇÕES - LARGURAS FIXAS                           */
-    /* ========================================================================= */
+    /* --- QUADRO DE PESSOAL E DEVOLUÇÕES --- */
     .tabela-pessoal, .tabela-devolucao { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; table-layout: fixed;}
     .tabela-pessoal th, .tabela-devolucao th { background: #f1f5f9; padding: 8px; border: 1px solid var(--border); text-align: left; color: var(--text-muted);}
     .tabela-pessoal td, .tabela-devolucao td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -153,50 +140,40 @@
     .col-acao { width: 5%; text-align: center; }
     .select-cargo { width: 100%; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background-color: #ffffff; color: var(--text-dark); cursor: pointer; outline: none; }
     .select-cargo:focus { border-color: var(--primary-blue); }
-
     .tabela-devolucao th { color: var(--header-blue); }
     
-    /* SEGURANÇA VISUAL - SÓ MOSTRA A TURMA DO USUÁRIO LOGADO */
     .col-ta, .col-tb, .col-tc { display: none; }
     body[data-user="erivaldo"] .col-ta, body[data-user="silvio"] .col-ta { display: flex; }
     body[data-user="eduardo"] .col-tb, body[data-user="joaovictor"] .col-tb { display: flex; }
     body[data-user="victor"] .col-tc, body[data-user="victorguilherme"] .col-tc, body[data-user="victorg"] .col-tc, body[data-user="alexandre"] .col-tc { display: flex; }
-    body[data-user="josemarcos"] .col-ta, body[data-user="josemarcos"] .col-tb, body[data-user="josemarcos"] .col-tc,
-    body[data-user="everaldo"] .col-ta, body[data-user="everaldo"] .col-tb, body[data-user="everaldo"] .col-tc,
-    body[data-user="everaldoarcanjo"] .col-ta, body[data-user="everaldoarcanjo"] .col-tb, body[data-user="everaldoarcanjo"] .col-tc { display: flex; }
+    body[data-user="josemarcos"] .col-ta, body[data-user="josemarcos"] .col-tb, body[data-user="josemarcos"] .col-tc, body[data-user="everaldo"] .col-ta, body[data-user="everaldo"] .col-tb, body[data-user="everaldo"] .col-tc, body[data-user="everaldoarcanjo"] .col-ta, body[data-user="everaldoarcanjo"] .col-tb, body[data-user="everaldoarcanjo"] .col-tc { display: flex; }
 
     #grid-pessoal { display: flex; flex-wrap: wrap; gap: 15px; }
     #grid-pessoal .col { flex: 1; min-width: 320px; max-width: 450px; }
 
-    /* ========================================================================= */
-    /* NOVA ABA: DASHBOARD ANALÍTICO (ANALYTICS)                                 */
-    /* ========================================================================= */
+    /* --- DASHBOARD ANALÍTICO --- */
     .analytics-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-    .analytics-kpi-card { background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-top: 4px solid #3b82f6; text-align: center; }
-    .analytics-kpi-card h3 { margin: 0; font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
-    .analytics-value { font-size: 24px; font-weight: bold; color: var(--header-blue); margin: 10px 0; word-wrap: break-word; }
+    .analytics-kpi-card { background: white; padding: 15px 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-top: 4px solid #3b82f6; text-align: center; display: flex; flex-direction: column; justify-content: center;}
+    .analytics-kpi-card h3 { margin: 0 0 10px 0; font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+    
     .charts-container { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; }
     .chart-box { background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .chart-box h3 { margin-top: 0; font-size: 13px; color: var(--header-blue); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    
+    .breakdown-row { display: flex; justify-content: space-around; width: 100%; margin-bottom: 10px; }
+    .breakdown-item { display: flex; flex-direction: column; align-items: center; }
+    .breakdown-val { font-size: 22px; font-weight: 900; color: var(--primary-blue); }
+    .breakdown-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase;}
 
-    /* ========================================================================= */
-    /* IMPRESSÃO PERFEITA CORRIGIDA                                              */
-    /* ========================================================================= */
+    /* --- IMPRESSÃO --- */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
-        
         .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay, #login-screen { display: none !important; }
         .col-acao { display: none !important; }
-
         .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; }
-        
-        /* Resumo Geral */
         .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 12px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
-        .dashboard-grid > .col:nth-child(1) { width: 28% !important; }
-        .dashboard-grid > .col:nth-child(2) { width: 38% !important; }
-        .dashboard-grid > .col:nth-child(3) { width: 34% !important; }
-        
+        .dashboard-grid > .col:nth-child(1) { width: 28% !important; } .dashboard-grid > .col:nth-child(2) { width: 38% !important; } .dashboard-grid > .col:nth-child(3) { width: 34% !important; }
         .card { box-shadow: none !important; border: 0.5px solid #cbd5e1 !important; margin: 0 !important; display: flex !important; flex-direction: column !important; break-inside: avoid !important; page-break-inside: avoid !important; background-color: #ffffff !important;}
         .card-header { padding: 4px 8px !important; font-size: 10px !important; border-bottom: 0.5px solid #cbd5e1 !important; }
         .card-body { padding: 6px 8px !important; flex: 1 !important; display: flex !important; flex-direction: column !important;}
@@ -205,32 +182,25 @@
         .title-area h3 { font-size: 12px !important; margin: 0 !important; }
         .kpi-grid { display: flex !important; gap: 8px !important; margin-bottom: 15px !important;}
         .kpi-card { flex: 1 !important; padding: 8px 10px !important; gap: 8px !important; border: 0.5px solid #cbd5e1 !important; box-shadow: none !important; border-top: none !important;}
-        .kpi-icon { font-size: 18px !important; }
-        .kpi-info h4 { font-size: 9px !important;}
-        .kpi-info p { font-size: 16px !important; margin: 0 !important; }
-        .kpi-info span { font-size: 9px !important; }
-        .info-box { padding: 4px 6px !important; margin-bottom: 5px !important; font-size: 9px !important; border: 0.5px solid #e2e8f0 !important;}
-        .info-title { font-size: 9px !important; margin-bottom: 2px !important;}
+        .kpi-icon { font-size: 18px !important; } .kpi-info h4 { font-size: 9px !important;} .kpi-info p { font-size: 16px !important; margin: 0 !important; } .kpi-info span { font-size: 9px !important; }
+        .info-box { padding: 4px 6px !important; margin-bottom: 5px !important; font-size: 9px !important; border: 0.5px solid #e2e8f0 !important;} .info-title { font-size: 9px !important; margin-bottom: 2px !important;}
         ul.simple-list li { margin-bottom: 1px !important; font-size: 8.5px !important; }
         .table-title { margin: 6px 0 2px 0 !important; font-size: 9px !important; }
         .expedicao-table { margin-bottom: 4px !important; font-size: 8.5px !important; border-collapse: collapse !important; table-layout: fixed !important; width: 100% !important; }
-        .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; }
-        .total-cell { font-size: 11px !important; }
+        .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; } .total-cell { font-size: 11px !important; }
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
-        .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;}
-        .badge-inativo { border: none !important; } 
+        .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        /* Ajuste de Impressão: Tabelas Pessoal e Devolução */
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
-        
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
         .tabela-pessoal th, .tabela-pessoal td, .tabela-devolucao th, .tabela-devolucao td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 12px !important; white-space: normal; overflow: visible; }
         .col-mat { width: 15% !important; } .col-nome { width: 50% !important; } .col-cargo { width: 35% !important; }
         .select-cargo { border: none !important; -webkit-appearance: none; appearance: none; background: transparent !important; color: black !important; font-weight: bold; padding: 0 !important; font-size: 12px !important;}
-
-        /* Impressão Analytics */
+        
         .charts-container { display: flex !important; flex-direction: row !important; gap: 10px !important; }
         .charts-container > div { width: 50% !important; }
+        .analytics-kpi-grid { display: flex !important; gap: 10px !important;}
+        .analytics-kpi-card { flex: 1 !important; padding: 10px !important;}
     }
 </style>
 </head>
@@ -282,7 +252,6 @@
                 <li class="active" onclick="switchTab('resumo', this)">🏠 Resumo Geral</li>
                 <li onclick="switchTab('pessoal', this)">👥 Quadro de Pessoal</li>
                 <li onclick="switchTab('devolucoes', this)">🔄 Devoluções</li>
-                <!-- NOVA ABA ANALÍTICA -->
                 <li onclick="switchTab('analytics', this)" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">📈 Painel Analítico</li>
                 <li onclick="openHistoryModal()">📄 Histórico da Safra</li>
             </ul>
@@ -345,7 +314,6 @@
                 </div>
 
                 <div class="dashboard-grid">
-                    <!-- COLUNA 1 -->
                     <div class="col">
                         <div class="card">
                             <div class="card-header">ℹ️ INFORMATIVO DA SAFRA<button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento Externo</button></div>
@@ -377,7 +345,6 @@
                         </div>
                     </div>
 
-                    <!-- COLUNA 2 -->
                     <div class="col">
                         <div class="card flex-grow-1">
                             <div class="card-header">🚚 EXPEDIÇÃO DE AÇÚCAR</div>
@@ -385,87 +352,40 @@
                                 <div class="table-title">Carregamento de Fardo (Mercado Interno)</div>
                                 <table class="expedicao-table">
                                     <tr><th class="col-turno">TURNO</th><th class="shift-1">23h às 07h</th><th class="shift-2">07h às 15h</th><th class="shift-3">15h às 23h</th><th class="col-total">TOTAL</th></tr>
-                                    <tr class="data-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">FARDOS</td>
-                                        <td class="shift-1 cell-left"><div contenteditable="true">-</div></td>
-                                        <td class="shift-2 cell-left"><div contenteditable="true">• Cristal: 0<br>• Demerara: 0<br><strong style="color:var(--text-dark);">Total: 0</strong></div></td>
-                                        <td class="shift-3 cell-left"><div contenteditable="true">-</div></td>
-                                        <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                                    </tr>
-                                    <tr class="status-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                        <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                    </tr>
+                                    <tr class="data-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">FARDOS</td><td class="shift-1 cell-left"><div contenteditable="true">-</div></td><td class="shift-2 cell-left"><div contenteditable="true">• Cristal: 0<br>• Demerara: 0<br><strong style="color:var(--text-dark);">Total: 0</strong></div></td><td class="shift-3 cell-left"><div contenteditable="true">-</div></td><td class="total-cell cell-center"><div contenteditable="true">0</div></td></tr>
+                                    <tr class="status-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">STATUS</td><td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td></tr>
                                 </table>
                                 
                                 <div class="table-title" style="margin-top:20px;">Carregamento de Saco (Indústria)</div>
                                 <table class="expedicao-table">
                                     <tr><th class="col-turno">TURNO</th><th class="shift-1">23h às 07h</th><th class="shift-2">07h às 15h</th><th class="shift-3">15h às 23h</th><th class="col-total">TOTAL</th></tr>
-                                    <tr class="data-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">SACOS</td>
-                                        <td class="shift-1 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="shift-2 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="shift-3 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                                    </tr>
-                                    <tr class="status-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                        <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                    </tr>
+                                    <tr class="data-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">SACOS</td><td class="shift-1 cell-left"><div contenteditable="true">0</div></td><td class="shift-2 cell-left"><div contenteditable="true">0</div></td><td class="shift-3 cell-left"><div contenteditable="true">0</div></td><td class="total-cell cell-center"><div contenteditable="true">0</div></td></tr>
+                                    <tr class="status-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">STATUS</td><td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td></tr>
                                 </table>
                                 
                                 <div class="table-title" style="margin-top:20px;">Carregamento de Big Bag (Indústria)</div>
                                 <table class="expedicao-table">
                                     <tr><th class="col-turno">TURNO</th><th class="shift-1">23h às 07h</th><th class="shift-2">07h às 15h</th><th class="shift-3">15h às 23h</th><th class="col-total">TOTAL</th></tr>
-                                    <tr class="data-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">BIG BAGS</td>
-                                        <td class="shift-1 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="shift-2 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="shift-3 cell-left"><div contenteditable="true">0</div></td>
-                                        <td class="total-cell cell-center"><div contenteditable="true">0</div></td>
-                                    </tr>
-                                    <tr class="status-row">
-                                        <td class="cell-center" style="font-weight:bold; color:var(--text-muted); text-align:center;">STATUS</td>
-                                        <td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                        <td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td>
-                                    </tr>
+                                    <tr class="data-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">BIG BAGS</td><td class="shift-1 cell-left"><div contenteditable="true">0</div></td><td class="shift-2 cell-left"><div contenteditable="true">0</div></td><td class="shift-3 cell-left"><div contenteditable="true">0</div></td><td class="total-cell cell-center"><div contenteditable="true">0</div></td></tr>
+                                    <tr class="status-row"><td class="cell-center" style="font-weight:bold; color:var(--text-muted);">STATUS</td><td class="shift-1 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-2 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="shift-3 cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td><td class="cell-center"><span class="badge badge-inativo badge-inline" onclick="cycleStatus(this, 'expStatus')">-</span></td></tr>
                                 </table>
                                 
                                 <div class="info-box" style="margin-top:auto !important; display:flex; flex-direction:column; justify-content:center;">
-                                    <div class="info-title" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
-                                        <span>PÁTIO EXTERNO</span>
-                                        <button class="btn-add" onclick="addSimpleItem('lista-patio')">+ Item</button>
-                                    </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
-                                        <ul class="simple-list" id="lista-patio" style="padding-left:15px; margin:0; flex:1;">
-                                            <li><span contenteditable="true">Vazio.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>
-                                        </ul>
-                                        <div style="font-size:30px; line-height:1; padding-left:10px;">🚛</div>
-                                    </div>
+                                    <div class="info-title" style="width:100%; display:flex; justify-content:space-between; align-items:center;"><span>PÁTIO EXTERNO</span><button class="btn-add" onclick="addSimpleItem('lista-patio')">+ Item</button></div>
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;"><ul class="simple-list" id="lista-patio" style="padding-left:15px; margin:0; flex:1;"><li><span contenteditable="true">Vazio.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul><div style="font-size:30px; line-height:1; padding-left:10px;">🚛</div></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COLUNA 3 -->
                     <div class="col">
                         <div class="card" style="flex: 1;">
                             <div class="card-header">📋 OBSERVAÇÕES GERAIS</div>
                             <div class="card-body" style="padding: 10px 15px;">
                                 <div class="table-title" style="margin-top:0; display:flex; justify-content:space-between;">Limpeza e Organização <button class="btn-add" onclick="addCheckItem('list-limpeza')">+ Adicionar Tarefa</button></div>
                                 <div id="list-limpeza"><div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div></div>
-
                                 <div class="table-title" style="display:flex; justify-content:space-between;">Operação <button class="btn-add" onclick="addCheckItem('list-operacao')">+ Adicionar Tarefa</button></div>
                                 <div id="list-operacao"><div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div></div>
-
                                 <div class="table-title" style="display:flex; justify-content:space-between;">Manutenção <button class="btn-add" onclick="addCheckItem('list-manut')">+ Adicionar Tarefa</button></div>
                                 <div id="list-manut"><div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div></div>
                             </div>
@@ -477,11 +397,8 @@
             <!-- ================= ABA 2: QUADRO DE PESSOAL ================= -->
             <div id="tab-pessoal" style="display: none;">
                 <div id="grid-pessoal">
-                    <!-- TURMA A -->
                     <div class="col col-ta"><div class="card flex-grow-1"><div class="card-header" style="background-color: #3b82f6;">TURMA A (TA)<button class="btn-add" onclick="addEmployeeRow('tb-ta')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Funcionário</button></div><div class="card-body" style="padding: 10px;"><div class="info-box" style="margin-bottom: 5px;"><strong>👤 Líder:</strong> Erivaldo<br><strong>🛠️ Assistente:</strong> Silvio</div><table class="tabela-pessoal"><thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead><tbody id="tb-ta"></tbody></table></div></div></div>
-                    <!-- TURMA B -->
                     <div class="col col-tb"><div class="card flex-grow-1"><div class="card-header" style="background-color: #8b5cf6;">TURMA B (TB)<button class="btn-add" onclick="addEmployeeRow('tb-tb')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Funcionário</button></div><div class="card-body" style="padding: 10px;"><div class="info-box" style="margin-bottom: 5px;"><strong>👤 Líder:</strong> Eduardo<br><strong>🛠️ Assistente:</strong> João Victor</div><table class="tabela-pessoal"><thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead><tbody id="tb-tb"></tbody></table></div></div></div>
-                    <!-- TURMA C -->
                     <div class="col col-tc"><div class="card flex-grow-1"><div class="card-header" style="background-color: #f97316;">TURMA C (TC)<button class="btn-add" onclick="addEmployeeRow('tb-tc')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Funcionário</button></div><div class="card-body" style="padding: 10px;"><div class="info-box" style="margin-bottom: 5px;"><strong>👤 Líder:</strong> Victor<br><strong>🛠️ Assistente:</strong> Alexandre</div><table class="tabela-pessoal"><thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead><tbody id="tb-tc"></tbody></table></div></div></div>
                 </div>
             </div> <!-- FIM TAB PESSOAL -->
@@ -490,7 +407,7 @@
             <div id="tab-devolucoes" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #f59e0b;">
-                        <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/26</span>
+                        <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/2026</span>
                         <div>
                             <button class="btn-add" onclick="openDevolucoesHistory()" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
                             <button class="btn-add" onclick="encerrarMes()" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">💾 Encerrar Mês</button>
@@ -517,28 +434,44 @@
                 </div>
             </div> <!-- FIM TAB DEVOLUÇÕES -->
 
-            <!-- ================= ABA 4: DASHBOARD ANALÍTICO (NOVO) ================= -->
+            <!-- ================= ABA 4: DASHBOARD ANALÍTICO (ATUALIZADO) ================= -->
             <div id="tab-analytics" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #10b981;">
-                        📈 ANÁLISE DE DEVOLUÇÕES (Tempo Real)
-                        <button class="btn-add" onclick="window.print()" style="background:white; color:#10b981; border:none; padding:4px 8px; border-radius:4px;">🖨️ Imprimir Relatório</button>
+                        <span>📈 ANÁLISE DE DEVOLUÇÕES</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="analytics-filter" onchange="atualizarDashboardAnalytics()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer;">
+                                <option value="atual">Mês Atual (Tempo Real)</option>
+                                <option value="2026">Consolidado Ano 2026</option>
+                                <option value="2027">Consolidado Ano 2027</option>
+                            </select>
+                            <button class="btn-add" onclick="window.print()" style="background:white; color:#10b981; border:none; padding:4px 8px; border-radius:4px;">🖨️ Imprimir Relatório</button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="analytics-kpi-grid">
+                            <!-- KPI 1: TOTAL SEPARADO -->
                             <div class="analytics-kpi-card" style="border-top-color: #3b82f6;">
-                                <h3>📦 Total Devolvido (Nesta tabela)</h3>
-                                <div class="analytics-value" id="kpi-total">0</div>
-                                <span style="font-size: 11px; color: var(--text-muted);">Pacotes</span>
+                                <h3>📦 Produtos Devolvidos</h3>
+                                <div class="breakdown-row">
+                                    <div class="breakdown-item"><div class="breakdown-val" id="kpi-total-fardos">0</div><div class="breakdown-label">Fardos</div></div>
+                                    <div class="breakdown-item"><div class="breakdown-val" id="kpi-total-sacos">0</div><div class="breakdown-label">Sacos</div></div>
+                                    <div class="breakdown-item"><div class="breakdown-val" id="kpi-total-bags">0</div><div class="breakdown-label">Big Bags</div></div>
+                                </div>
+                                <span id="kpi-variacao" style="font-size: 11px; font-weight: bold; color: var(--text-muted);">Calculando...</span>
                             </div>
+                            
+                            <!-- KPI 2: MOTIVO FREQUENTE -->
                             <div class="analytics-kpi-card" style="border-top-color: #f59e0b;">
                                 <h3>⚠️ Motivo Mais Frequente</h3>
-                                <div class="analytics-value" id="kpi-motivo">---</div>
-                                <span style="font-size: 11px; color: var(--text-muted);">Causa raiz principal</span>
+                                <div class="analytics-value" id="kpi-motivo" style="color: #f59e0b;">---</div>
+                                <span id="kpi-motivo-sub" style="font-size: 11px; color: var(--text-muted);">Pela quantidade de ocorrências</span>
                             </div>
+                            
+                            <!-- KPI 3: PIOR CLIENTE -->
                             <div class="analytics-kpi-card" style="border-top-color: #ef4444;">
-                                <h3>🏢 Cliente com Maior Volume</h3>
-                                <div class="analytics-value" id="kpi-cliente">---</div>
+                                <h3>🏢 Maior Volume (Cliente)</h3>
+                                <div class="analytics-value" id="kpi-cliente" style="color: #ef4444;">---</div>
                                 <span style="font-size: 11px; color: var(--text-muted);">Atenção requerida</span>
                             </div>
                         </div>
@@ -549,7 +482,7 @@
                                 <canvas id="chartClientes" height="150"></canvas>
                             </div>
                             <div class="chart-box">
-                                <h3>🥧 Distribuição de Motivos</h3>
+                                <h3>🥧 Distribuição de Volume por Motivo</h3>
                                 <canvas id="chartMotivos" height="200"></canvas>
                             </div>
                         </div>
@@ -560,13 +493,33 @@
         </div>
     </div> <!-- FIM DO APP-CONTAINER -->
 
-    <!-- Importando o Firebase -->
+    <!-- Importando o Firebase e Chart.js -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
 
     <!-- SCRIPTS DE LÓGICA -->
     <script>
+        // --- PLUGIN DO GRÁFICO (PARA MOSTRAR NÚMEROS EM CIMA DAS BARRAS) ---
+        const datalabelsPlugin = {
+            id: 'datalabels',
+            afterDatasetsDraw(chart) {
+                const { ctx, data } = chart;
+                ctx.save();
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillStyle = '#1e293b';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                chart.getDatasetMeta(0).data.forEach((bar, index) => {
+                    const value = data.datasets[0].data[index];
+                    if(value > 0) ctx.fillText(value, bar.x, bar.y - 5);
+                });
+                ctx.restore();
+            }
+        };
+        Chart.register(datalabelsPlugin);
+
+        // --- CONFIGURAÇÃO FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyC15Iq2yXcWdiU9Bzaa5AxEAe2nzHsbLaM",
             authDomain: "safra-petribu-relatorio.firebaseapp.com",
@@ -576,15 +529,12 @@
             appId: "1:445931114229:web:45d369b80ce3099376ffbc",
             measurementId: "G-VJ0WLT8RDD"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // 1. OBRIGA A LOGAR TODA VEZ QUE ABRIR A ABA
         auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(console.error);
 
-        // 2. LÓGICA DE CARREGAMENTO SEGURO
         auth.onAuthStateChanged(async user => {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
@@ -592,7 +542,6 @@
                 let nomeFormatado = user.email.split('@')[0];
                 document.getElementById('display-username').innerText = nomeFormatado;
                 document.body.setAttribute('data-user', nomeFormatado);
-                
                 await carregarDadosDaNuvem();
                 iniciarSalvamentoAutomaticoResumo();
             } else {
@@ -609,8 +558,7 @@
             const passBox = document.getElementById('login-password').value;
             const errorMsg = document.getElementById('login-error');
             if(!userBox || !passBox) { errorMsg.innerText = "Preencha o usuário e a senha!"; errorMsg.style.display = "block"; return; }
-            const emailFake = userBox + "@petribu.local";
-            auth.signInWithEmailAndPassword(emailFake, passBox)
+            auth.signInWithEmailAndPassword(userBox + "@petribu.local", passBox)
                 .then(() => { errorMsg.style.display = "none"; document.getElementById('login-username').value = ""; document.getElementById('login-password').value = ""; })
                 .catch(() => { errorMsg.innerText = "Usuário ou senha incorretos!"; errorMsg.style.display = "block"; });
         }
@@ -636,10 +584,7 @@
             items.forEach(item => item.classList.remove('active'));
             menuElement.classList.add('active');
 
-            // Se for a aba de Analytics, recarrega os gráficos
-            if(tabId === 'analytics') {
-                atualizarDashboardAnalytics();
-            }
+            if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
         }
 
         function addEmployeeRow(tableBodyId) {
@@ -662,12 +607,9 @@
         function updateClock() {
             if(isHistoryMode) return; 
             const now = new Date();
-            const dateStr = now.toLocaleDateString('pt-BR');
-            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const dateEl = document.getElementById('dash-date');
-            const timeEl = document.getElementById('dash-time');
-            if(dateEl && dateEl.innerText !== dateStr) dateEl.innerText = dateStr;
-            if(timeEl && timeEl.innerText !== timeStr) timeEl.innerText = timeStr;
+            const dateEl = document.getElementById('dash-date'); const timeEl = document.getElementById('dash-time');
+            if(dateEl && dateEl.innerText !== now.toLocaleDateString('pt-BR')) dateEl.innerText = now.toLocaleDateString('pt-BR');
+            if(timeEl && timeEl.innerText !== now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })) timeEl.innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         }
         setInterval(updateClock, 1000);
 
@@ -676,193 +618,208 @@
             if (type === 'seg-qui') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '23h às 07h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '07h às 15h'; }); shift3.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '15h às 23h'; }); } 
             else if (type === 'sex') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '23h às 07h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '07h às 19h'; }); shift3.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '19h às 07h'; }); } 
             else if (type === 'sab-dom') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '07h às 19h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; }); shift3.forEach(el => { el.style.display = 'none'; }); }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v16', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v17', type); 
         }
 
-        // =========================================================================================
-        // BANCO DE DADOS E SALVAMENTO (v16)
-        // =========================================================================================
-        
         async function carregarDadosDaNuvem() {
             updateClock();
-            if (!localStorage.getItem('template_resumo_v16')) { localStorage.setItem('template_resumo_v16', document.getElementById('tab-resumo').innerHTML); }
-            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v16').get(); if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } catch(error) {}
-            try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v16').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(error) {}
-            try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_v16').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(error) {}
-            const savedShift = localStorage.getItem('petribu_shift_type_v16'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
+            if (!localStorage.getItem('template_resumo_v17')) { localStorage.setItem('template_resumo_v17', document.getElementById('tab-resumo').innerHTML); }
+            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v17').get(); if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } catch(e) {}
+            try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v17').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
+            try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_v17').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
+            const savedShift = localStorage.getItem('petribu_shift_type_v17'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
         }
 
-        function salvarPessoal() { if(isHistoryMode) return; const html = document.getElementById('grid-pessoal').innerHTML; db.collection('estado_atual').doc('quadro_pessoal_v16').set({ html: html, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
-        function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; const html = document.getElementById('tb-devolucao').innerHTML; const mesNome = document.getElementById('nome-mes-devolucao').innerText; db.collection('estado_atual').doc('devolucoes_v16').set({ html: html, mesNome: mesNome, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_v17').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_v17').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
 
         function iniciarSalvamentoAutomaticoResumo() {
             let saveTimeoutResumo;
             const observerResumo = new MutationObserver((mutations) => {
-                if(isHistoryMode) return; 
-                let shouldSave = false;
+                if(isHistoryMode) return; let shouldSave = false;
                 for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date') { shouldSave = true; break; } }
-                if (shouldSave) {
-                    clearTimeout(saveTimeoutResumo);
-                    saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_v16').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); 
-                }
+                if (shouldSave) { clearTimeout(saveTimeoutResumo); saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_v17').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); }
             });
             observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
         }
 
         // =========================================================================================
-        // DASHBOARD ANALÍTICO LÓGICA (NOVO)
+        // LÓGICA DO DASHBOARD ANALÍTICO
         // =========================================================================================
         let chartClientesInst = null;
         let chartMotivosInst = null;
 
-        function atualizarDashboardAnalytics() {
-            let trs = document.querySelectorAll('#tb-devolucao tr');
-            let total = 0; let motivos = {}; let clientes = {};
+        async function atualizarDashboardAnalytics() {
+            let filtro = document.getElementById('analytics-filter').value;
+            let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0;
+            let motivosFreq = {}; let motivosVol = {}; let clientesVol = {};
 
-            // Lendo a tabela de devoluções real
-            trs.forEach(tr => {
-                let divs = tr.querySelectorAll('div[contenteditable="true"]');
-                if(divs.length >= 7) {
-                    let cliente = divs[1].innerText.trim();
-                    let qtdeStr = divs[5].innerText.trim();
-                    let motivo = divs[6].innerText.trim();
-                    
-                    let qtde = parseInt(qtdeStr) || 0;
-                    total += qtde;
+            function processarLinhas(trs) {
+                trs.forEach(tr => {
+                    let divs = tr.querySelectorAll('div[contenteditable="true"]');
+                    if(divs.length >= 7) {
+                        let cliente = divs[1].innerText.trim();
+                        let tipo = divs[4].innerText.trim().toLowerCase();
+                        let qtde = parseInt(divs[5].innerText.trim()) || 0;
+                        let motivo = divs[6].innerText.trim();
+                        
+                        if(qtde > 0) {
+                            totalGeral += qtde;
+                            if(tipo.includes('saco')) totalSacos += qtde;
+                            else if(tipo.includes('bag')) totalBigBags += qtde;
+                            else totalFardos += qtde; // Fardo é o padrão
+                            
+                            if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; }
+                            if(motivo && motivo !== '---') { 
+                                motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; 
+                                motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; // +1 Frequência
+                            }
+                        }
+                    }
+                });
+            }
 
-                    if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientes[cliente] = (clientes[cliente] || 0) + qtde; }
-                    if(motivo && motivo !== '---') { motivos[motivo] = (motivos[motivo] || 0) + qtde; }
+            if (filtro === 'atual') {
+                processarLinhas(document.querySelectorAll('#tb-devolucao tr'));
+            } else {
+                // Modo Ano Consolidado (Verifica tabela atual + Histórico)
+                let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText;
+                if(nomeMesAtual.includes(filtro.substring(2))) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); }
+                
+                try {
+                    const snapAno = await db.collection('historico_mensal_devolucoes').get();
+                    snapAno.forEach(doc => {
+                        if(doc.data().mes && doc.data().mes.includes(filtro.substring(2))) {
+                            let tempDiv = document.createElement('div'); tempDiv.innerHTML = doc.data().html;
+                            processarLinhas(tempDiv.querySelectorAll('tr'));
+                        }
+                    });
+                } catch(e) { console.error(e); }
+            }
+
+            // Atualiza KPIs Total Separado
+            document.getElementById('kpi-total-fardos').innerText = totalFardos;
+            document.getElementById('kpi-total-sacos').innerText = totalSacos;
+            document.getElementById('kpi-total-bags').innerText = totalBigBags;
+
+            // Lógica de Comparação com o Mês Anterior (Apenas no filtro "Atual")
+            if (filtro === 'atual') {
+                let ultimoTotal = 0;
+                try {
+                    const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get();
+                    if(!snapAnt.empty) {
+                        let tempDiv = document.createElement('div'); tempDiv.innerHTML = snapAnt.docs[0].data().html;
+                        tempDiv.querySelectorAll('tr').forEach(tr => { let divs = tr.querySelectorAll('div'); if(divs.length >= 7) ultimoTotal += (parseInt(divs[5].innerText) || 0); });
+                    }
+                } catch(e) {}
+                
+                let elVar = document.getElementById('kpi-variacao');
+                if(ultimoTotal > 0) {
+                    let perc = ((totalGeral - ultimoTotal) / ultimoTotal) * 100;
+                    if(perc > 0) { elVar.innerText = `🔺 +${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--danger)"; }
+                    else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; }
+                    else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; }
+                } else if(ultimoTotal === 0 && totalGeral > 0) {
+                    elVar.innerText = "🔺 100% (Sem devoluções no mês anterior)"; elVar.style.color = "var(--danger)";
+                } else {
+                    elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)";
                 }
-            });
+            } else {
+                document.getElementById('kpi-variacao').innerText = `Consolidado ${filtro}`;
+                document.getElementById('kpi-variacao').style.color = "var(--text-muted)";
+            }
 
-            // Atualizando as caixinhas de resumo (KPIs)
-            document.getElementById('kpi-total').innerText = total;
-
-            let topMotivo = '---'; let maxMotivo = 0;
-            for(let m in motivos) { if(motivos[m] > maxMotivo) { maxMotivo = motivos[m]; topMotivo = m; } }
+            // Atualiza KPI Motivo Frequente (Baseado em OCORRÊNCIAS, não volume)
+            let topMotivo = '---'; let maxFreq = 0;
+            for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } }
             document.getElementById('kpi-motivo').innerText = topMotivo;
+            document.getElementById('kpi-motivo-sub').innerText = maxFreq > 0 ? `${maxFreq} ocorrências registradas` : 'Causa raiz principal';
 
-            let topCliente = '---'; let maxCliente = 0;
-            for(let c in clientes) { if(clientes[c] > maxCliente) { maxCliente = clientes[c]; topCliente = c; } }
+            // Atualiza KPI Cliente
+            let topCliente = '---'; let maxVol = 0;
+            for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } }
             document.getElementById('kpi-cliente').innerText = topCliente;
 
-            // Desenhando os Gráficos reais
+            // Desenha Gráfico Clientes
             if(chartClientesInst) chartClientesInst.destroy();
             let ctxC = document.getElementById('chartClientes').getContext('2d');
             chartClientesInst = new Chart(ctxC, {
                 type: 'bar',
-                data: {
-                    labels: Object.keys(clientes).length > 0 ? Object.keys(clientes) : ['Nenhum dado'],
-                    datasets: [{ label: 'Pacotes Devolvidos', data: Object.values(clientes).length > 0 ? Object.values(clientes) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }]
-                },
+                data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes Devolvidos', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
                 options: { responsive: true, plugins: { legend: { display: false } } }
             });
 
+            // Desenha Gráfico Motivos (Pizza baseada no Volume)
             if(chartMotivosInst) chartMotivosInst.destroy();
             let ctxM = document.getElementById('chartMotivos').getContext('2d');
             chartMotivosInst = new Chart(ctxM, {
                 type: 'pie',
-                data: {
-                    labels: Object.keys(motivos).length > 0 ? Object.keys(motivos) : ['Nenhum dado'],
-                    datasets: [{ data: Object.values(motivos).length > 0 ? Object.values(motivos) : [1], backgroundColor: ['#f59e0b', '#ef4444', '#10b981', '#8b5cf6', '#64748b'] }]
-                },
+                data: { labels: Object.keys(motivosVol).length > 0 ? Object.keys(motivosVol) : ['Nenhum dado'], datasets: [{ data: Object.values(motivosVol).length > 0 ? Object.values(motivosVol) : [1], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#64748b'] }] },
                 options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
             });
         }
 
         // =========================================================================================
-        // HISTÓRICO DE DEVOLUÇÕES E LIMPEZA
+        // HISTÓRICO DE DEVOLUÇÕES MENSAIS E GERAL
         // =========================================================================================
+
         async function encerrarMes() {
-            let nomeMesEl = document.getElementById('nome-mes-devolucao');
-            let nomeMes = nomeMesEl.innerText.trim();
+            let nomeMesEl = document.getElementById('nome-mes-devolucao'); let nomeMes = nomeMesEl.innerText.trim();
             if(confirm("Deseja salvar a tabela de devoluções de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) {
-                let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML;
-                let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_");
+                let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML; let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_");
                 try {
                     await db.collection('historico_mensal_devolucoes').doc(docId).set({ html: htmlParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                    document.getElementById('tb-devolucao').innerHTML = "";
-                    nomeMesEl.innerText = "Mês/Ano";
-                    salvarDevolucoes(); 
-                    alert("✅ Mês encerrado com sucesso! Histórico arquivado.");
+                    document.getElementById('tb-devolucao').innerHTML = ""; nomeMesEl.innerText = "Mês/Ano"; salvarDevolucoes(); alert("✅ Mês encerrado com sucesso! Histórico arquivado.");
                 } catch(error) { alert("Erro ao encerrar o mês."); }
             }
         }
 
         async function openDevolucoesHistory() {
-            let listEl = document.getElementById('lista-historico-devolucoes');
-            listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados na nuvem... ⏳</li>';
-            document.getElementById('modal-historico-devolucoes').style.display = 'flex';
+            let listEl = document.getElementById('lista-historico-devolucoes'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-devolucoes').style.display = 'flex';
             try {
-                const snapshot = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').get();
-                listEl.innerHTML = '';
-                if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo ainda.</li>'; return; }
-                snapshot.forEach(doc => {
-                    let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item';
-                    li.innerHTML = `<span class="history-item-date" onclick="loadDevolucaoHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteDevolucaoHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`;
-                    listEl.appendChild(li);
-                });
+                const snapshot = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').get(); listEl.innerHTML = '';
+                if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; }
+                snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadDevolucaoHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteDevolucaoHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); });
             } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; }
         }
 
         function closeDevolucoesHistory() { document.getElementById('modal-historico-devolucoes').style.display = 'none'; }
-        async function deleteDevolucaoHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar DEFINITIVAMENTE o histórico do mês de ${mesStr}?`)) { try { await db.collection('historico_mensal_devolucoes').doc(docId).delete(); openDevolucoesHistory(); } catch (error) { alert("Erro ao excluir."); } } }
+        async function deleteDevolucaoHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de ${mesStr}?`)) { try { await db.collection('historico_mensal_devolucoes').doc(docId).delete(); openDevolucoesHistory(); } catch (error) { alert("Erro."); } } }
 
         async function loadDevolucaoHistory(docId, mesStr) {
-            if(!confirm(`Carregar o histórico de devoluções de ${mesStr}? O salvamento atual será pausado.`)) return;
+            if(!confirm(`Carregar o histórico de ${mesStr}? O salvamento atual será pausado.`)) return;
             try {
                 const docSnap = await db.collection('historico_mensal_devolucoes').doc(docId).get();
                 if (docSnap.exists) {
-                    document.getElementById('tb-devolucao').innerHTML = docSnap.data().html;
-                    document.getElementById('nome-mes-devolucao').innerText = docSnap.data().mes + " (MODO LEITURA)";
+                    document.getElementById('tb-devolucao').innerHTML = docSnap.data().html; document.getElementById('nome-mes-devolucao').innerText = docSnap.data().mes + " (LEITURA)";
                     isDevolucaoHistoryMode = true; closeDevolucoesHistory();
-                    let banner = document.createElement('div'); banner.id = 'banner-dev-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;';
-                    banner.innerHTML = `<span>⚠️ Visualizando arquivo do mês de ${mesStr}</span> <button onclick="exitDevolucaoHistoryMode()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`;
-                    document.getElementById('tab-devolucoes').prepend(banner);
+                    let banner = document.createElement('div'); banner.id = 'banner-dev-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de ${mesStr}</span> <button onclick="exitDevolucaoHistoryMode()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-devolucoes').prepend(banner);
                 }
             } catch(error) { alert("Erro ao carregar o relatório."); }
         }
 
         function exitDevolucaoHistoryMode() { isDevolucaoHistoryMode = false; let banner = document.getElementById('banner-dev-history'); if(banner) banner.remove(); carregarDadosDaNuvem(); }
 
-        // OUTRAS FUNÇÕES DO SISTEMA (Resumo, limpeza, etc)
         async function clearDashboard() {
-            if(isHistoryMode) { alert("Você está visualizando o histórico. Volte para o dia atual para limpar o painel."); return; }
-            if (confirm("Tem certeza que deseja APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?\n\n(Pessoal e Devoluções continuarão intactos!)")) {
-                const template = localStorage.getItem('template_resumo_v16');
-                if (template) { document.getElementById('tab-resumo').innerHTML = template; await db.collection('estado_atual').doc('dashboard_temporario_v16').set({ html: template, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); const selector = document.getElementById('shift-selector'); if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } updateClock(); alert("✅ O Resumo da Safra foi zerado com sucesso!"); } else { location.reload(); }
+            if(isHistoryMode) return;
+            if (confirm("APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?")) {
+                const template = localStorage.getItem('template_resumo_v17');
+                if (template) { document.getElementById('tab-resumo').innerHTML = template; await db.collection('estado_atual').doc('dashboard_temporario_v17').set({ html: template, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); const selector = document.getElementById('shift-selector'); if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } updateClock(); alert("✅ Resumo zerado!"); } else { location.reload(); }
             }
         }
 
         async function saveDay() {
-            if(isHistoryMode) { alert("Atenção: Você já está visualizando um histórico!"); return; }
-            let dateStr = document.getElementById('dash-date').innerText.trim();
-            if(!dateStr || dateStr === '--/--/----') { alert("Erro: A data não está preenchida corretamente."); return; }
-            if(confirm(`Você quer salvar o Resumo de Safra como registro do dia ${dateStr} na nuvem?`)) {
-                let currentHTML = document.querySelector('.main-content').innerHTML; let docId = dateStr.replaceAll('/', '-'); 
-                try { await db.collection('historico_safra').doc(docId).set({ html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ O relatório do dia ${dateStr} foi salvo com sucesso!`); } catch(error) { alert("Erro ao salvar o histórico."); }
-            }
+            if(isHistoryMode) return; let dateStr = document.getElementById('dash-date').innerText.trim(); if(!dateStr || dateStr === '--/--/----') return;
+            if(confirm(`Salvar Resumo de Safra do dia ${dateStr}?`)) { let currentHTML = document.querySelector('.main-content').innerHTML; let docId = dateStr.replaceAll('/', '-'); try { await db.collection('historico_safra').doc(docId).set({ html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ Salvo!`); } catch(error) { alert("Erro."); } }
         }
 
         async function openHistoryModal() {
-            let listEl = document.getElementById('history-list'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados na nuvem... ⏳</li>'; document.getElementById('history-modal').style.display = 'flex';
-            try {
-                const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = '';
-                if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum relatório salvo.</li>'; return; }
-                snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); });
-            } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; }
+            let listEl = document.getElementById('history-list'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando... ⏳</li>'; document.getElementById('history-modal').style.display = 'flex';
+            try { const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center;">Nenhum salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { }
         }
-
         function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
-        async function deleteHistory(docId, dateStr) { if(confirm(`Tem certeza que quer apagar DEFINITIVAMENTE o histórico do dia ${dateStr}?`)) { try { await db.collection('historico_safra').doc(docId).delete(); openHistoryModal(); } catch (error) { alert("Erro ao excluir."); } } }
-
-        async function loadHistory(docId, dateStr) {
-            if(!confirm(`Carregar o histórico do dia ${dateStr}? Isso vai pausar a sua tela atual.`)) return;
-            try {
-                const docSnap = await db.collection('historico_safra').doc(docId).get();
-                if (docSnap.exists) { document.querySelector('.main-content').innerHTML = docSnap.data().html; isHistoryMode = true; closeHistoryModal(); let shiftSelector = document.getElementById('shift-selector'); if(shiftSelector) shiftSelector.disabled = true; let banner = document.createElement('div'); banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo do dia ${dateStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para Hoje</button>`; document.querySelector('.main-content').prepend(banner); }
-            } catch(error) { alert("Erro ao carregar o relatório."); }
-        }
+        async function deleteHistory(docId, dateStr) { if(confirm(`Apagar ${dateStr}?`)) { try { await db.collection('historico_safra').doc(docId).delete(); openHistoryModal(); } catch (error) {} } }
+        async function loadHistory(docId, dateStr) { if(!confirm(`Carregar ${dateStr}?`)) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { document.querySelector('.main-content').innerHTML = docSnap.data().html; isHistoryMode = true; closeHistoryModal(); let banner = document.createElement('div'); banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Arquivo de ${dateStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar</button>`; document.querySelector('.main-content').prepend(banner); } } catch(error) {} }
 
         const stateConfig = { 'tarefa': [{ text: 'Concluído', class: 'badge-concluido' }, { text: 'Em andamento', class: 'badge-andamento' }, { text: 'Pendente', class: 'badge-parada' }], 'operacao': [{ text: 'Normal', class: 'badge-normal' }, { text: 'Operando', class: 'badge-normal' }, { text: 'Vazio', class: 'badge-andamento' }, { text: 'Parada', class: 'badge-parada' }, { text: 'Disponível', class: 'badge-normal' }], 'operacaoGlobal': [{ text: 'OPERAÇÃO NORMAL', class: 'badge-normal' }, { text: 'OPERAÇÃO PARCIAL', class: 'badge-andamento' }, { text: 'SAFRA PARADA', class: 'badge-parada' }], 'expStatus': [{ text: '-', class: 'badge-inativo' }, { text: 'Ativo', class: 'badge-concluido' }] };
         function cycleStatus(element, type) { let states = stateConfig[type]; let currentText = element.innerText.trim(); let currentIndex = states.findIndex(s => s.text === currentText); if (currentIndex === -1) currentIndex = 0; let nextIndex = (currentIndex + 1) % states.length; let nextState = states[nextIndex]; let extraClass = element.classList.contains('badge-inline') ? ' badge-inline' : ''; element.className = 'badge ' + nextState.class + extraClass; element.innerText = nextState.text; if (type === 'operacaoGlobal') { let emojiEl = document.querySelector('.status-emoji'); if (nextState.class === 'badge-normal') emojiEl.innerText = '🟢'; else if (nextState.class === 'badge-andamento') emojiEl.innerText = '🟡'; else emojiEl.innerText = '🔴'; } }
