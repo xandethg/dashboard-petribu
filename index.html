@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Safra - Petribu</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚜</text></svg>">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     :root {
@@ -407,7 +407,7 @@
             <div id="tab-devolucoes" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #f59e0b;">
-                        <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/2026</span>
+                        <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/26</span>
                         <div>
                             <button class="btn-add" onclick="openDevolucoesHistory()" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
                             <button class="btn-add" onclick="encerrarMes()" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">💾 Encerrar Mês</button>
@@ -434,7 +434,7 @@
                 </div>
             </div> <!-- FIM TAB DEVOLUÇÕES -->
 
-            <!-- ================= ABA 4: DASHBOARD ANALÍTICO (ATUALIZADO) ================= -->
+            <!-- ================= ABA 4: DASHBOARD ANALÍTICO (ATUALIZADO SAFRA) ================= -->
             <div id="tab-analytics" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #10b981;">
@@ -442,8 +442,8 @@
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <select id="analytics-filter" onchange="atualizarDashboardAnalytics()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer;">
                                 <option value="atual">Mês Atual (Tempo Real)</option>
-                                <option value="2026">Consolidado Ano 2026</option>
-                                <option value="2027">Consolidado Ano 2027</option>
+                                <option value="safra2526">Consolidado: Safra 25/26</option>
+                                <option value="safra2627">Consolidado: Safra 26/27</option>
                             </select>
                             <button class="btn-add" onclick="window.print()" style="background:white; color:#10b981; border:none; padding:4px 8px; border-radius:4px;">🖨️ Imprimir Relatório</button>
                         </div>
@@ -618,33 +618,58 @@
             if (type === 'seg-qui') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '23h às 07h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '07h às 15h'; }); shift3.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '15h às 23h'; }); } 
             else if (type === 'sex') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '23h às 07h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '07h às 19h'; }); shift3.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '19h às 07h'; }); } 
             else if (type === 'sab-dom') { shift1.forEach(el => { el.style.display = ''; if(el.tagName === 'TH') el.innerText = '07h às 19h'; }); shift2.forEach(el => { if(el.tagName === 'TH') el.innerText = '19h às 07h'; }); shift3.forEach(el => { el.style.display = 'none'; }); }
-            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v17', type); 
+            if(!isHistoryMode) localStorage.setItem('petribu_shift_type_v18', type); 
         }
 
         async function carregarDadosDaNuvem() {
             updateClock();
-            if (!localStorage.getItem('template_resumo_v17')) { localStorage.setItem('template_resumo_v17', document.getElementById('tab-resumo').innerHTML); }
-            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v17').get(); if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } catch(e) {}
-            try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v17').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
-            try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_v17').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
-            const savedShift = localStorage.getItem('petribu_shift_type_v17'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
+            if (!localStorage.getItem('template_resumo_v18')) { localStorage.setItem('template_resumo_v18', document.getElementById('tab-resumo').innerHTML); }
+            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_v18').get(); if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } catch(e) {}
+            try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_v18').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
+            try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_v18').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
+            const savedShift = localStorage.getItem('petribu_shift_type_v18'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
         }
 
-        function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_v17').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
-        function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_v17').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_v18').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_v18').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
 
         function iniciarSalvamentoAutomaticoResumo() {
             let saveTimeoutResumo;
             const observerResumo = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; let shouldSave = false;
                 for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date') { shouldSave = true; break; } }
-                if (shouldSave) { clearTimeout(saveTimeoutResumo); saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_v17').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); }
+                if (shouldSave) { clearTimeout(saveTimeoutResumo); saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_v18').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); }
             });
             observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
         }
 
         // =========================================================================================
-        // LÓGICA DO DASHBOARD ANALÍTICO
+        // FUNÇÃO INTELIGENTE DE RECONHECIMENTO DE SAFRA (NOVO!)
+        // =========================================================================================
+        function descobreSafra(textoMes) {
+            let str = textoMes.toLowerCase();
+            let yearMatch = str.match(/\d{2,4}/);
+            if(!yearMatch) return "desconhecida";
+            
+            let ano = parseInt(yearMatch[0]);
+            if(ano < 100) ano += 2000; // transforma 26 em 2026
+            
+            let meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+            let indexMes = meses.findIndex(m => str.includes(m));
+            if(indexMes === -1) return "desconhecida";
+            
+            // Regra da Safra (Ago a Jul/Ago):
+            // Se for de Ago(7) a Dez(11), é o ano de INÍCIO da Safra.
+            // Se for de Jan(0) a Jul(6), é o ano FINAL da Safra.
+            let anoInicioSafra = (indexMes >= 7) ? ano : ano - 1;
+            
+            let final1 = anoInicioSafra.toString().slice(-2);
+            let final2 = (anoInicioSafra + 1).toString().slice(-2);
+            return `safra${final1}${final2}`; // ex: safra2526
+        }
+
+        // =========================================================================================
+        // LÓGICA DO DASHBOARD ANALÍTICO (CORRIGIDO)
         // =========================================================================================
         let chartClientesInst = null;
         let chartMotivosInst = null;
@@ -665,14 +690,14 @@
                         
                         if(qtde > 0) {
                             totalGeral += qtde;
-                            if(tipo.includes('saco')) totalSacos += qtde;
-                            else if(tipo.includes('bag')) totalBigBags += qtde;
-                            else totalFardos += qtde; // Fardo é o padrão
+                            if(tipo.includes('saco') || tipo === 'sc') totalSacos += qtde;
+                            else if(tipo.includes('bag') || tipo === 'bb') totalBigBags += qtde;
+                            else totalFardos += qtde; 
                             
                             if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; }
                             if(motivo && motivo !== '---') { 
                                 motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; 
-                                motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; // +1 Frequência
+                                motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; // Soma +1 Ocorrência, não a quantidade
                             }
                         }
                     }
@@ -682,14 +707,17 @@
             if (filtro === 'atual') {
                 processarLinhas(document.querySelectorAll('#tb-devolucao tr'));
             } else {
-                // Modo Ano Consolidado (Verifica tabela atual + Histórico)
+                // MODO SAFRA CONSOLIDADA:
                 let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText;
-                if(nomeMesAtual.includes(filtro.substring(2))) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); }
+                if(descobreSafra(nomeMesAtual) === filtro) { 
+                    processarLinhas(document.querySelectorAll('#tb-devolucao tr')); 
+                }
                 
                 try {
                     const snapAno = await db.collection('historico_mensal_devolucoes').get();
                     snapAno.forEach(doc => {
-                        if(doc.data().mes && doc.data().mes.includes(filtro.substring(2))) {
+                        let safraDoHistorico = descobreSafra(doc.data().mes);
+                        if(safraDoHistorico === filtro) {
                             let tempDiv = document.createElement('div'); tempDiv.innerHTML = doc.data().html;
                             processarLinhas(tempDiv.querySelectorAll('tr'));
                         }
@@ -698,9 +726,9 @@
             }
 
             // Atualiza KPIs Total Separado
-            document.getElementById('kpi-total-fardos').innerText = totalFardos;
-            document.getElementById('kpi-total-sacos').innerText = totalSacos;
-            document.getElementById('kpi-total-bags').innerText = totalBigBags;
+            document.getElementById('kpi-total-fardos').innerText = totalFardos.toLocaleString('pt-BR');
+            document.getElementById('kpi-total-sacos').innerText = totalSacos.toLocaleString('pt-BR');
+            document.getElementById('kpi-total-bags').innerText = totalBigBags.toLocaleString('pt-BR');
 
             // Lógica de Comparação com o Mês Anterior (Apenas no filtro "Atual")
             if (filtro === 'atual') {
@@ -720,16 +748,17 @@
                     else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; }
                     else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; }
                 } else if(ultimoTotal === 0 && totalGeral > 0) {
-                    elVar.innerText = "🔺 100% (Sem devoluções no mês anterior)"; elVar.style.color = "var(--danger)";
+                    elVar.innerText = "🔺 100% (Sem devoluções no mês passado)"; elVar.style.color = "var(--danger)";
                 } else {
                     elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)";
                 }
             } else {
-                document.getElementById('kpi-variacao').innerText = `Consolidado ${filtro}`;
+                let txtSafra = document.getElementById('analytics-filter').options[document.getElementById('analytics-filter').selectedIndex].text;
+                document.getElementById('kpi-variacao').innerText = txtSafra;
                 document.getElementById('kpi-variacao').style.color = "var(--text-muted)";
             }
 
-            // Atualiza KPI Motivo Frequente (Baseado em OCORRÊNCIAS, não volume)
+            // Atualiza KPI Motivo Frequente (Baseado em OCORRÊNCIAS)
             let topMotivo = '---'; let maxFreq = 0;
             for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } }
             document.getElementById('kpi-motivo').innerText = topMotivo;
@@ -745,7 +774,7 @@
             let ctxC = document.getElementById('chartClientes').getContext('2d');
             chartClientesInst = new Chart(ctxC, {
                 type: 'bar',
-                data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes Devolvidos', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
+                data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
                 options: { responsive: true, plugins: { legend: { display: false } } }
             });
 
@@ -803,8 +832,8 @@
         async function clearDashboard() {
             if(isHistoryMode) return;
             if (confirm("APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?")) {
-                const template = localStorage.getItem('template_resumo_v17');
-                if (template) { document.getElementById('tab-resumo').innerHTML = template; await db.collection('estado_atual').doc('dashboard_temporario_v17').set({ html: template, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); const selector = document.getElementById('shift-selector'); if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } updateClock(); alert("✅ Resumo zerado!"); } else { location.reload(); }
+                const template = localStorage.getItem('template_resumo_v18');
+                if (template) { document.getElementById('tab-resumo').innerHTML = template; await db.collection('estado_atual').doc('dashboard_temporario_v18').set({ html: template, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); const selector = document.getElementById('shift-selector'); if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } updateClock(); alert("✅ Resumo zerado!"); } else { location.reload(); }
             }
         }
 
