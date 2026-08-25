@@ -265,6 +265,11 @@
                     <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
                     <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
                 </div>
+                
+                <!-- VERSÃO E DESENVOLVEDOR -->
+                <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    Versão 1.0.21<br>Dev: Alexandre Henrique
+                </div>
             </div>
         </div>
 
@@ -319,15 +324,29 @@
                             <div class="card-header">ℹ️ INFORMATIVO DA SAFRA<button class="btn-add" onclick="addRecebimentoTerceiros()" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Recebimento Externo</button></div>
                             <div class="card-body" id="informativo-container" style="padding: 15px;">
                                 <div class="info-box"><div class="info-title"><span>🟢 MOAGEM</span><button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button></div><ul class="simple-list" id="lista-moagem"><li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
+                                
+                                <!-- BLOCO DO SILO ATUALIZADO E INTELIGENTE -->
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
-                                    <div style="display: flex; justify-content: space-between; gap: 5px;">
-                                        <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                        <div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                        <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                        <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                    <div style="display: flex; gap: 10px;">
+                                        <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
+                                            <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                            <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1; padding-left: 5px;">
+                                            <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                            <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                <div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- FIM DO BLOCO DO SILO -->
+
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
                                     <div class="info-box flex-col"><div class="info-title">🔧 PARADAS <button class="btn-add" onclick="addSimpleItem('lista-paradas')">+ Item</button></div><ul class="simple-list" id="lista-paradas"><li><span contenteditable="true">Nenhuma parada.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -602,12 +621,29 @@
         let isHistoryMode = false;
         let isDevolucaoHistoryMode = false;
 
+        // --- AUTOMAÇÃO DE DATAS (HOJE, ONTEM E SILO) ---
         function updateClock() {
             if(isHistoryMode) return; 
             const now = new Date();
-            const dateEl = document.getElementById('dash-date'); const timeEl = document.getElementById('dash-time');
-            if(dateEl && dateEl.innerText !== now.toLocaleDateString('pt-BR')) dateEl.innerText = now.toLocaleDateString('pt-BR');
-            if(timeEl && timeEl.innerText !== now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })) timeEl.innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('pt-BR');
+            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            const dateEl = document.getElementById('dash-date'); 
+            const timeEl = document.getElementById('dash-time');
+            
+            if(dateEl && dateEl.innerText !== dateStr) {
+                dateEl.innerText = dateStr;
+                
+                // Atualiza as datas do bloco de Medição do Silo
+                const siloHoje = document.getElementById('silo-data-hoje');
+                const siloOntem = document.getElementById('silo-data-ontem');
+                if(siloHoje) siloHoje.innerText = dateStr;
+                
+                let ontem = new Date(now);
+                ontem.setDate(ontem.getDate() - 1);
+                if(siloOntem) siloOntem.innerText = ontem.toLocaleDateString('pt-BR');
+            }
+            if(timeEl && timeEl.innerText !== timeStr) timeEl.innerText = timeStr;
         }
         setInterval(updateClock, 1000);
 
@@ -622,7 +658,30 @@
         async function carregarDadosDaNuvem() {
             updateClock();
             if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); }
-            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); if (docResumo.exists) document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } catch(e) {}
+            
+            try { 
+                const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
+                if (docResumo.exists) {
+                    let htmlNuvem = docResumo.data().html;
+                    document.getElementById('tab-resumo').innerHTML = htmlNuvem;
+                    
+                    // SCRIPT INVISÍVEL DE MIGRAÇÃO: Troca o bloco antigo do Silo pelo novo modelo dividido em datas, sem apagar o texto digitado em outras áreas
+                    if (!document.getElementById('silo-data-hoje')) {
+                        let titles = document.querySelectorAll('.info-title');
+                        titles.forEach(t => {
+                            if (t.innerText.includes('MEDIÇÃO DO SILO')) {
+                                t.parentElement.innerHTML = `<div class="info-title">🏢 MEDIÇÃO DO SILO</div><div style="display: flex; gap: 10px;"><div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;"><div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div><div style="flex: 1; padding-left: 5px;"><div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div></div>`;
+                            }
+                        });
+                        // Força a data a entrar imediatamente
+                        let now = new Date();
+                        document.getElementById('silo-data-hoje').innerText = now.toLocaleDateString('pt-BR');
+                        let ontem = new Date(now); ontem.setDate(ontem.getDate() - 1);
+                        document.getElementById('silo-data-ontem').innerText = ontem.toLocaleDateString('pt-BR');
+                    }
+                } 
+            } catch(e) {}
+            
             try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_oficial').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
             try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_oficial').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
             const savedShift = localStorage.getItem('petribu_shift_type_oficial'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
@@ -635,15 +694,12 @@
             let saveTimeoutResumo;
             const observerResumo = new MutationObserver((mutations) => {
                 if(isHistoryMode) return; let shouldSave = false;
-                for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date') { shouldSave = true; break; } }
+                for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && m.target.id !== 'silo-data-hoje' && m.target.id !== 'silo-data-ontem') { shouldSave = true; break; } }
                 if (shouldSave) { clearTimeout(saveTimeoutResumo); saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); }
             });
             observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true });
         }
 
-        // =========================================================================================
-        // FUNÇÃO INTELIGENTE DE RECONHECIMENTO DE SAFRA
-        // =========================================================================================
         function descobreSafra(textoMes) {
             let str = textoMes.toLowerCase();
             let yearMatch = str.match(/\d{2,4}/);
@@ -662,9 +718,6 @@
             return `safra${final1}${final2}`;
         }
 
-        // =========================================================================================
-        // LÓGICA DO DASHBOARD ANALÍTICO (CORRIGIDO: TBODY EM VEZ DE DIV)
-        // =========================================================================================
         let chartClientesInst = null;
         let chartMotivosInst = null;
 
@@ -711,7 +764,6 @@
                     snapAno.forEach(doc => {
                         let safraDoHistorico = descobreSafra(doc.data().mes);
                         if(safraDoHistorico === filtro) {
-                            // CORREÇÃO: CRIA TBODY PARA O NAVEGADOR NÃO APAGAR AS TRs!
                             let tempTbody = document.createElement('tbody'); 
                             tempTbody.innerHTML = doc.data().html;
                             processarLinhas(tempTbody.querySelectorAll('tr'));
@@ -729,7 +781,6 @@
                 try {
                     const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get();
                     if(!snapAnt.empty) {
-                        // CORREÇÃO AQUI TAMBÉM:
                         let tempTbody = document.createElement('tbody'); 
                         tempTbody.innerHTML = snapAnt.docs[0].data().html;
                         tempTbody.querySelectorAll('tr').forEach(tr => { 
@@ -781,10 +832,6 @@
                 options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
             });
         }
-
-        // =========================================================================================
-        // HISTÓRICO DE DEVOLUÇÕES MENSAIS E GERAL
-        // =========================================================================================
 
         async function encerrarMes() {
             let nomeMesEl = document.getElementById('nome-mes-devolucao'); let nomeMes = nomeMesEl.innerText.trim();
