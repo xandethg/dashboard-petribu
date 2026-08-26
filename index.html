@@ -268,7 +268,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.21<br>Dev: Alexandre Henrique
+                    Versão 1.0.22<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -325,7 +325,7 @@
                             <div class="card-body" id="informativo-container" style="padding: 15px;">
                                 <div class="info-box"><div class="info-title"><span>🟢 MOAGEM</span><button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button></div><ul class="simple-list" id="lista-moagem"><li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
                                 
-                                <!-- BLOCO DO SILO ATUALIZADO E INTELIGENTE -->
+                                <!-- BLOCO DO SILO -->
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
                                     <div style="display: flex; gap: 10px;">
@@ -631,19 +631,24 @@
             const dateEl = document.getElementById('dash-date'); 
             const timeEl = document.getElementById('dash-time');
             
-            if(dateEl && dateEl.innerText !== dateStr) {
-                dateEl.innerText = dateStr;
-                
-                // Atualiza as datas do bloco de Medição do Silo
-                const siloHoje = document.getElementById('silo-data-hoje');
-                const siloOntem = document.getElementById('silo-data-ontem');
-                if(siloHoje) siloHoje.innerText = dateStr;
-                
-                let ontem = new Date(now);
-                ontem.setDate(ontem.getDate() - 1);
-                if(siloOntem) siloOntem.innerText = ontem.toLocaleDateString('pt-BR');
-            }
+            if(dateEl && dateEl.innerText !== dateStr) dateEl.innerText = dateStr;
             if(timeEl && timeEl.innerText !== timeStr) timeEl.innerText = timeStr;
+
+            // FORÇA A ATUALIZAÇÃO DO SILO INDEPENDENTE DA DATA PRINCIPAL
+            const siloHoje = document.getElementById('silo-data-hoje');
+            const siloOntem = document.getElementById('silo-data-ontem');
+            
+            if(siloHoje && siloHoje.innerText !== dateStr) {
+                siloHoje.innerText = dateStr;
+            }
+            
+            let ontem = new Date(now);
+            ontem.setDate(ontem.getDate() - 1);
+            let ontemStr = ontem.toLocaleDateString('pt-BR');
+            
+            if(siloOntem && siloOntem.innerText !== ontemStr) {
+                siloOntem.innerText = ontemStr;
+            }
         }
         setInterval(updateClock, 1000);
 
@@ -665,7 +670,6 @@
                     let htmlNuvem = docResumo.data().html;
                     document.getElementById('tab-resumo').innerHTML = htmlNuvem;
                     
-                    // SCRIPT INVISÍVEL DE MIGRAÇÃO: Troca o bloco antigo do Silo pelo novo modelo dividido em datas, sem apagar o texto digitado em outras áreas
                     if (!document.getElementById('silo-data-hoje')) {
                         let titles = document.querySelectorAll('.info-title');
                         titles.forEach(t => {
@@ -673,11 +677,6 @@
                                 t.parentElement.innerHTML = `<div class="info-title">🏢 MEDIÇÃO DO SILO</div><div style="display: flex; gap: 10px;"><div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;"><div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div><div style="flex: 1; padding-left: 5px;"><div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div></div>`;
                             }
                         });
-                        // Força a data a entrar imediatamente
-                        let now = new Date();
-                        document.getElementById('silo-data-hoje').innerText = now.toLocaleDateString('pt-BR');
-                        let ontem = new Date(now); ontem.setDate(ontem.getDate() - 1);
-                        document.getElementById('silo-data-ontem').innerText = ontem.toLocaleDateString('pt-BR');
                     }
                 } 
             } catch(e) {}
