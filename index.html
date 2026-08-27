@@ -478,6 +478,9 @@
                                     <div class="breakdown-item"><div class="breakdown-val" id="kpi-total-bags">0</div><div class="breakdown-label">Big Bags</div></div>
                                 </div>
                                 <span id="kpi-variacao" style="font-size: 11px; font-weight: bold; color: var(--text-muted);">Calculando...</span>
+                                
+                                <!-- NOVA ÁREA PARA DETALHAR OS PRODUTOS -->
+                                <div id="kpi-detalhe-produtos" style="margin-top: 10px; font-size: 10px; color: var(--text-dark); text-align: left; max-height: 80px; overflow-y: auto; border-top: 1px dashed var(--border); padding-top: 5px;"></div>
                             </div>
                             
                             <!-- KPI 2: MOTIVO FREQUENTE -->
@@ -522,6 +525,8 @@
         const datalabelsPlugin = {
             id: 'datalabels',
             afterDatasetsDraw(chart) {
+                if (chart.config.type !== 'bar') return; // A REGRA QUE IMPEDE O PLUGIN DE QUEBRAR O GRÁFICO DE PIZZA
+                
                 const { ctx, data } = chart;
                 ctx.save();
                 ctx.font = 'bold 11px sans-serif';
@@ -614,7 +619,59 @@
         function addDevolucaoRow() {
             let tbody = document.getElementById('tb-devolucao');
             let tr = document.createElement('tr');
-            tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Produto X</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`;
+            
+            const listaProdutos = `<select class="select-cargo" onchange="salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:bold; outline:none; font-family:inherit; font-size:11px;">
+                <option value="" disabled selected>Selecione...</option>
+                <option value="CRISTAL PETRIBU">CRISTAL PETRIBU</option>
+                <option value="DEMERARA PETRIBU">DEMERARA PETRIBU</option>
+                <option value="AÇÚCAR GLACÊ">AÇÚCAR GLACÊ</option>
+                <option value="REFINADO ESPECIALE">REFINADO ESPECIALE</option>
+                <option value="MASCAVO PETRIBU 1Kg">MASCAVO PETRIBU 1Kg</option>
+                <option value="MASCAVO PETRIBU 500g">MASCAVO PETRIBU 500g</option>
+                <option value="DEMERARA SALUTE">DEMERARA SALUTE</option>
+                <option value="AÇÚCAR TRITURADO">AÇÚCAR TRITURADO</option>
+                <option value="DEMERARA Q. ALMOFADA">DEMERARA Q. ALMOFADA</option>
+                <option value="DEMERARA Q. FUNDO CHATO">DEMERARA Q. FUNDO CHATO</option>
+                <option value="REFINADO QUALITA">REFINADO QUALITA</option>
+                <option value="CRISTAL QUALITA">CRISTAL QUALITA</option>
+                <option value="DEMERARA VIDA">DEMERARA VIDA</option>
+                <option value="DEMERARA NORDESTÃO">DEMERARA NORDESTÃO</option>
+                <option value="DEMERARA G. BARBOSA">DEMERARA G. BARBOSA</option>
+                <option value="MASCAVO G. B. 8X1">MASCAVO G. B. 8X1</option>
+                <option value="CRISTAL CONFIARE">CRISTAL CONFIARE</option>
+                <option value="DEMERARA CONFIARE">DEMERARA CONFIARE</option>
+                <option value="REFINADO CONFIARE">REFINADO CONFIARE</option>
+                <option value="CRISTAL CARREFOUR">CRISTAL CARREFOUR</option>
+                <option value="DEMERARA CARREFOUR">DEMERARA CARREFOUR</option>
+                <option value="REFINADO CARREFOUR">REFINADO CARREFOUR</option>
+                <option value="MASCAVO CARR. 1Kg">MASCAVO CARR. 1Kg</option>
+                <option value="MASCAVO CARR. 500g">MASCAVO CARR. 500g</option>
+                <option value="DEMERARA ESCOGIDO">DEMERARA ESCOGIDO</option>
+                <option value="REFINADO ESCOGIDO">REFINADO ESCOGIDO</option>
+                <option value="MASCAVO ESCOGIDO">MASCAVO ESCOGIDO</option>
+                <option value="SACHÊ CRISTAL">SACHÊ CRISTAL</option>
+                <option value="SACHÊ DEMERARA">SACHÊ DEMERARA</option>
+                <option value="SACHÊ CRISTAL FD 10X400g">SACHÊ CRISTAL FD 10X400g</option>
+                <option value="CRISTAL P. BIG BAG">CRISTAL P. BIG BAG</option>
+                <option value="DEMERARA P. BIG BAG">DEMERARA P. BIG BAG</option>
+                <option value="REFINADO BIG BAG">REFINADO BIG BAG</option>
+                <option value="MALHA 20/45">MALHA 20/45</option>
+                <option value="MALHA 30/60">MALHA 30/60</option>
+                <option value="ESPECIAL BIG BAG">ESPECIAL BIG BAG</option>
+                <option value="MASCAVO BIG BAG">MASCAVO BIG BAG</option>
+                <option value="CRISTAL P. SC 50Kg">CRISTAL P. SC 50Kg</option>
+                <option value="CRISTAL P. SC 25Kg">CRISTAL P. SC 25Kg</option>
+                <option value="DEMERARA P. SC 50Kg">DEMERARA P. SC 50Kg</option>
+                <option value="DEMERARA P. SC 25Kg">DEMERARA P. SC 25Kg</option>
+                <option value="TRITURADO SC 50Kg">TRITURADO SC 50Kg</option>
+                <option value="REFINADO P. SC 50Kg">REFINADO P. SC 50Kg</option>
+                <option value="REFINADO P. SC 25Kg">REFINADO P. SC 25Kg</option>
+                <option value="AÇÚCAR GLACÊ SC 25Kg">AÇÚCAR GLACÊ SC 25Kg</option>
+                <option value="AMORFO 25Kg">AMORFO 25Kg</option>
+                <option value="MALHA 20/45 25KG">MALHA 20/45 25KG</option>
+            </select>`;
+
+            tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`;
             tbody.appendChild(tr); salvarDevolucoes();
         }
 
@@ -723,16 +780,20 @@
         async function atualizarDashboardAnalytics() {
             let filtro = document.getElementById('analytics-filter').value;
             let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0;
-            let motivosFreq = {}; let motivosVol = {}; let clientesVol = {};
+            let motivosFreq = {}; let motivosVol = {}; let clientesVol = {}; let produtosVol = {};
 
             function processarLinhas(trs) {
                 trs.forEach(tr => {
-                    let divs = tr.querySelectorAll('div[contenteditable="true"]');
-                    if(divs.length >= 7) {
-                        let cliente = divs[1].innerText.trim();
-                        let tipo = divs[4].innerText.trim().toLowerCase();
-                        let qtde = parseInt(divs[5].innerText.trim()) || 0;
-                        let motivo = divs[6].innerText.trim();
+                    let tds = tr.querySelectorAll('td'); // Busca a tabela inteira (td) em vez de divs
+                    if(tds.length >= 7) {
+                        let cliente = tds[1].innerText.trim();
+                        let tipo = tds[4].innerText.trim().toLowerCase();
+                        let qtde = parseInt(tds[5].innerText.trim()) || 0;
+                        let motivo = tds[6].innerText.trim();
+                        
+                        // Captura do produto (funciona tanto para selects novos quanto histórico antigo)
+                        let selectProd = tds[3].querySelector('select');
+                        let produto = selectProd ? selectProd.value : tds[3].innerText.trim();
                         
                         if(qtde > 0) {
                             totalGeral += qtde;
@@ -744,6 +805,9 @@
                             if(motivo && motivo !== '---') { 
                                 motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; 
                                 motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1;
+                            }
+                            if(produto && produto !== 'Produto X' && produto !== 'Selecione...') {
+                                produtosVol[produto] = (produtosVol[produto] || 0) + qtde;
                             }
                         }
                     }
@@ -815,14 +879,31 @@
             for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } }
             document.getElementById('kpi-cliente').innerText = topCliente;
 
+            // Injeção do detalhamento de produtos no KPI Card
+            let detalhesHtml = "";
+            for(let p in produtosVol) {
+                detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`;
+            }
+            let detalheEl = document.getElementById('kpi-detalhe-produtos');
+            if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.';
+
+            // Gráfico de Barras - Clientes (Corrigido visual e labels)
             if(chartClientesInst) chartClientesInst.destroy();
             let ctxC = document.getElementById('chartClientes').getContext('2d');
             chartClientesInst = new Chart(ctxC, {
                 type: 'bar',
                 data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
-                options: { responsive: true, plugins: { legend: { display: false } } }
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } }, // Remove grade vertical
+                        y: { display: false, grid: { display: false } } // Remove eixo Y e grade horizontal
+                    }
+                }
             });
 
+            // Gráfico de Pizza - Motivos
             if(chartMotivosInst) chartMotivosInst.destroy();
             let ctxM = document.getElementById('chartMotivos').getContext('2d');
             chartMotivosInst = new Chart(ctxM, {
