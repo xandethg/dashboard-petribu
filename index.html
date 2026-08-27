@@ -22,7 +22,6 @@
     /* --- TELA DE LOGIN --- */
     #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--sidebar-bg); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
     .login-box { background: white; padding: 40px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
-    .login-box h2 { color: var(--header-blue); margin-top: 0; margin-bottom: 5px; font-weight: 900;}
     .login-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 25px;}
     .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none;}
     .login-box input:focus { border-color: var(--primary-blue); }
@@ -33,9 +32,7 @@
     /* --- SIDEBAR --- */
     #app-container { display: none; width: 100%; }
     .sidebar { width: 240px; background-color: var(--sidebar-bg); color: white; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
-    .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
-    .logo-area h2 { margin: 0; color: #fff; font-weight: 800; font-size: 24px; letter-spacing: 1px;}
-    .logo-area span { font-size: 11px; color: #94a3b8; }
+    .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; display: flex; justify-content: center; align-items: center;}
     
     .user-profile { text-align: center; padding: 0 20px 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;}
     .user-profile span { display: block; color: #cbd5e1; font-size: 12px;}
@@ -209,8 +206,10 @@
     <!-- TELA DE LOGIN -->
     <div id="login-screen">
         <div class="login-box">
-            <h2>PETRIBU</h2>
-            <p>Acesso Restrito - Relatório de Safra</p>
+            <!-- AQUI ENTROU A LOGO DA PETRIBU NA TELA DE LOGIN -->
+            <img src="logo-petribu.png" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
+            
+            <p style="margin-top: 15px;">Acesso Restrito - Relatório de Safra</p>
             <div id="login-error" class="login-error">Usuário ou senha incorretos!</div>
             <input type="text" id="login-username" placeholder="Seu Nome (ex: alexandre)" onkeypress="handleLoginEnter(event)">
             <input type="password" id="login-password" placeholder="Sua Senha" onkeypress="handleLoginEnter(event)">
@@ -240,7 +239,8 @@
 
         <div class="sidebar no-print">
             <div class="logo-area">
-                <h2>PETRIBU</h2><span>Desde 1729</span>
+                <!-- AQUI ENTROU A LOGO DA PETRIBU NO MENU LATERAL -->
+                <img src="logo-petribu.png" alt="Petribu" style="max-width: 170px; height: auto;">
             </div>
             
             <div class="user-profile">
@@ -620,55 +620,55 @@
             let tbody = document.getElementById('tb-devolucao');
             let tr = document.createElement('tr');
             
-            const listaProdutos = `<select class="select-cargo" onchange="salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:bold; outline:none; font-family:inherit; font-size:11px;">
+            const listaProdutos = `<select class="select-cargo" onchange="salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:normal; outline:none; font-family:inherit; font-size:11px; color:inherit; padding:0; cursor:pointer;">
                 <option value="" disabled selected>Selecione...</option>
-                <option value="CRISTAL PETRIBU">CRISTAL PETRIBU</option>
-                <option value="DEMERARA PETRIBU">DEMERARA PETRIBU</option>
-                <option value="AÇÚCAR GLACÊ">AÇÚCAR GLACÊ</option>
-                <option value="REFINADO ESPECIALE">REFINADO ESPECIALE</option>
-                <option value="MASCAVO PETRIBU 1Kg">MASCAVO PETRIBU 1Kg</option>
-                <option value="MASCAVO PETRIBU 500g">MASCAVO PETRIBU 500g</option>
-                <option value="DEMERARA SALUTE">DEMERARA SALUTE</option>
-                <option value="AÇÚCAR TRITURADO">AÇÚCAR TRITURADO</option>
-                <option value="DEMERARA Q. ALMOFADA">DEMERARA Q. ALMOFADA</option>
-                <option value="DEMERARA Q. FUNDO CHATO">DEMERARA Q. FUNDO CHATO</option>
-                <option value="REFINADO QUALITA">REFINADO QUALITA</option>
-                <option value="CRISTAL QUALITA">CRISTAL QUALITA</option>
-                <option value="DEMERARA VIDA">DEMERARA VIDA</option>
-                <option value="DEMERARA NORDESTÃO">DEMERARA NORDESTÃO</option>
-                <option value="DEMERARA G. BARBOSA">DEMERARA G. BARBOSA</option>
-                <option value="MASCAVO G. B. 8X1">MASCAVO G. B. 8X1</option>
-                <option value="CRISTAL CONFIARE">CRISTAL CONFIARE</option>
-                <option value="DEMERARA CONFIARE">DEMERARA CONFIARE</option>
-                <option value="REFINADO CONFIARE">REFINADO CONFIARE</option>
-                <option value="CRISTAL CARREFOUR">CRISTAL CARREFOUR</option>
-                <option value="DEMERARA CARREFOUR">DEMERARA CARREFOUR</option>
-                <option value="REFINADO CARREFOUR">REFINADO CARREFOUR</option>
-                <option value="MASCAVO CARR. 1Kg">MASCAVO CARR. 1Kg</option>
-                <option value="MASCAVO CARR. 500g">MASCAVO CARR. 500g</option>
-                <option value="DEMERARA ESCOGIDO">DEMERARA ESCOGIDO</option>
-                <option value="REFINADO ESCOGIDO">REFINADO ESCOGIDO</option>
-                <option value="MASCAVO ESCOGIDO">MASCAVO ESCOGIDO</option>
-                <option value="SACHÊ CRISTAL">SACHÊ CRISTAL</option>
-                <option value="SACHÊ DEMERARA">SACHÊ DEMERARA</option>
-                <option value="SACHÊ CRISTAL FD 10X400g">SACHÊ CRISTAL FD 10X400g</option>
-                <option value="CRISTAL P. BIG BAG">CRISTAL P. BIG BAG</option>
-                <option value="DEMERARA P. BIG BAG">DEMERARA P. BIG BAG</option>
-                <option value="REFINADO BIG BAG">REFINADO BIG BAG</option>
-                <option value="MALHA 20/45">MALHA 20/45</option>
-                <option value="MALHA 30/60">MALHA 30/60</option>
-                <option value="ESPECIAL BIG BAG">ESPECIAL BIG BAG</option>
-                <option value="MASCAVO BIG BAG">MASCAVO BIG BAG</option>
-                <option value="CRISTAL P. SC 50Kg">CRISTAL P. SC 50Kg</option>
-                <option value="CRISTAL P. SC 25Kg">CRISTAL P. SC 25Kg</option>
-                <option value="DEMERARA P. SC 50Kg">DEMERARA P. SC 50Kg</option>
-                <option value="DEMERARA P. SC 25Kg">DEMERARA P. SC 25Kg</option>
-                <option value="TRITURADO SC 50Kg">TRITURADO SC 50Kg</option>
-                <option value="REFINADO P. SC 50Kg">REFINADO P. SC 50Kg</option>
-                <option value="REFINADO P. SC 25Kg">REFINADO P. SC 25Kg</option>
-                <option value="AÇÚCAR GLACÊ SC 25Kg">AÇÚCAR GLACÊ SC 25Kg</option>
-                <option value="AMORFO 25Kg">AMORFO 25Kg</option>
-                <option value="MALHA 20/45 25KG">MALHA 20/45 25KG</option>
+                <option value="Cristal Petribu">Cristal Petribu</option>
+                <option value="Demerara Petribu">Demerara Petribu</option>
+                <option value="Açúcar Glacê">Açúcar Glacê</option>
+                <option value="Refinado Especiale">Refinado Especiale</option>
+                <option value="Mascavo Petribu 1Kg">Mascavo Petribu 1Kg</option>
+                <option value="Mascavo Petribu 500g">Mascavo Petribu 500g</option>
+                <option value="Demerara Salute">Demerara Salute</option>
+                <option value="Açúcar Triturado">Açúcar Triturado</option>
+                <option value="Demerara Q. Almofada">Demerara Q. Almofada</option>
+                <option value="Demerara Q. Fundo Chato">Demerara Q. Fundo Chato</option>
+                <option value="Refinado Qualita">Refinado Qualita</option>
+                <option value="Cristal Qualita">Cristal Qualita</option>
+                <option value="Demerara Vida">Demerara Vida</option>
+                <option value="Demerara Nordestão">Demerara Nordestão</option>
+                <option value="Demerara G. Barbosa">Demerara G. Barbosa</option>
+                <option value="Mascavo G. B. 8x1">Mascavo G. B. 8x1</option>
+                <option value="Cristal Confiare">Cristal Confiare</option>
+                <option value="Demerara Confiare">Demerara Confiare</option>
+                <option value="Refinado Confiare">Refinado Confiare</option>
+                <option value="Cristal Carrefour">Cristal Carrefour</option>
+                <option value="Demerara Carrefour">Demerara Carrefour</option>
+                <option value="Refinado Carrefour">Refinado Carrefour</option>
+                <option value="Mascavo Carr. 1Kg">Mascavo Carr. 1Kg</option>
+                <option value="Mascavo Carr. 500g">Mascavo Carr. 500g</option>
+                <option value="Demerara Escogido">Demerara Escogido</option>
+                <option value="Refinado Escogido">Refinado Escogido</option>
+                <option value="Mascavo Escogido">Mascavo Escogido</option>
+                <option value="Sachê Cristal">Sachê Cristal</option>
+                <option value="Sachê Demerara">Sachê Demerara</option>
+                <option value="Sachê Cristal FD 10x400g">Sachê Cristal FD 10x400g</option>
+                <option value="Cristal P. Big Bag">Cristal P. Big Bag</option>
+                <option value="Demerara P. Big Bag">Demerara P. Big Bag</option>
+                <option value="Refinado Big Bag">Refinado Big Bag</option>
+                <option value="Malha 20/45">Malha 20/45</option>
+                <option value="Malha 30/60">Malha 30/60</option>
+                <option value="Especial Big Bag">Especial Big Bag</option>
+                <option value="Mascavo Big Bag">Mascavo Big Bag</option>
+                <option value="Cristal P. SC 50Kg">Cristal P. SC 50Kg</option>
+                <option value="Cristal P. SC 25Kg">Cristal P. SC 25Kg</option>
+                <option value="Demerara P. SC 50Kg">Demerara P. SC 50Kg</option>
+                <option value="Demerara P. SC 25Kg">Demerara P. SC 25Kg</option>
+                <option value="Triturado SC 50Kg">Triturado SC 50Kg</option>
+                <option value="Refinado P. SC 50Kg">Refinado P. SC 50Kg</option>
+                <option value="Refinado P. SC 25Kg">Refinado P. SC 25Kg</option>
+                <option value="Açúcar Glacê SC 25Kg">Açúcar Glacê SC 25Kg</option>
+                <option value="Amorfo 25Kg">Amorfo 25Kg</option>
+                <option value="Malha 20/45 25Kg">Malha 20/45 25Kg</option>
             </select>`;
 
             tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`;
