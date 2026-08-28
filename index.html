@@ -187,7 +187,7 @@
         cursor: pointer; 
         transition: 0.2s; 
         white-space: nowrap; 
-        flex-shrink: 0; /* Impede que o botão encolha e quebre */
+        flex-shrink: 0; 
         width: auto !important;
         display: inline-block;
     }
@@ -350,7 +350,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.28<br>Dev: Alexandre Henrique
+                    Versão 1.0.29<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -529,10 +529,10 @@
                             <div id="driver-default" class="driver-pane active">
                                 <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                                     <div>
-                                        <strong style="color:var(--text-muted);">Transportador:</strong> <span style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header">Clovis Inácio Soares Filho</span><br>
-                                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod" style="outline:none;">007440</span><br>
-                                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf" style="outline:none;">818.727.634-72</span><br>
-                                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa" style="outline:none;">KLM-9A84</span>
+                                        <strong style="color:var(--text-muted);">Transportador:</strong> <span class="driver-name-header" style="font-weight:bold; font-size:14px;">Clovis Inácio Soares Filho</span><br>
+                                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod">007440</span><br>
+                                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf">818.727.634-72</span><br>
+                                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa">KLM-9A84</span>
                                     </div>
                                     <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
                                         <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('driver-default')">647,50</span><br>
@@ -541,6 +541,7 @@
                                 </div>
 
                                 <div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;">
+                                    <button class="btn-remove" onclick="removeDriver('driver-default')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button>
                                     <button class="btn-add" onclick="addTransportRow('driver-default')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button>
                                 </div>
 
@@ -770,6 +771,7 @@
             items.forEach(item => item.classList.remove('active'));
             menuElement.classList.add('active');
 
+            // Oculta os painéis extras ao entrar nas abas focadas
             if(tabId === 'devolucoes' || tabId === 'transporte') {
                 document.getElementById('widget-escala').style.display = 'none';
                 document.getElementById('widget-status').style.display = 'none';
@@ -823,10 +825,10 @@
             pane.innerHTML = `
                 <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        <strong style="color:var(--text-muted);">Transportador:</strong> <span style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header">${nome}</span><br>
-                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod" style="outline:none;">${codigo}</span><br>
-                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf" style="outline:none;">${cpf}</span><br>
-                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa" style="outline:none;">${placa}</span>
+                        <strong style="color:var(--text-muted);">Transportador:</strong> <span class="driver-name-header" style="font-weight:bold; font-size:14px;">${nome}</span><br>
+                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod">${codigo}</span><br>
+                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf">${cpf}</span><br>
+                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa">${placa}</span>
                     </div>
                     <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
                         <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('${id}')">${diaria}</span><br>
@@ -1056,6 +1058,8 @@
             } catch(error) { alert("Erro ao carregar o relatório."); }
         }
 
+        // --- FIM LÓGICA DE TRANSPORTE ---
+
         function addEmployeeRow(tableBodyId) {
             let tbody = document.getElementById(tableBodyId);
             let tr = document.createElement('tr');
@@ -1179,6 +1183,7 @@
                     if(docTrans.data().tabs) document.getElementById('driver-tabs-container').innerHTML = docTrans.data().tabs;
                     if(docTrans.data().mesNome) document.getElementById('nome-mes-transporte').innerText = docTrans.data().mesNome;
                     
+                    // Auto-Cura 1: Recria os cliques nas abas de cima
                     let tabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn');
                     let panes = document.querySelectorAll('#drivers-content .driver-pane');
                     tabs.forEach((tab, index) => {
@@ -1190,7 +1195,26 @@
                         }
                     });
 
-                    // Auto-Cura 3: Bloquear a edição dos dados base e forçar botão de remover nas abas quebradas
+                    // Auto-Cura Fantasma (Limpeza de abas em branco)
+                    let ghostTabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn');
+                    ghostTabs.forEach(aba => {
+                        let scriptClique = aba.getAttribute('onclick') || '';
+                        let idMatch = scriptClique.match(/'([^']+)'/);
+                        if (idMatch) {
+                            let painel = document.getElementById(idMatch[1]);
+                            if (!painel || painel.innerHTML.trim().length < 100) {
+                                aba.remove();
+                                if (painel) painel.remove();
+                            }
+                        }
+                    });
+                    
+                    // Seleciona a primeira aba restante
+                    let primeiraAba = document.querySelector('#driver-tabs-container .driver-tab-btn');
+                    if(primeiraAba) primeiraAba.click();
+
+                    // Auto-Cura 2: Garante botão remover e trava a edição
+                    panes = document.querySelectorAll('#drivers-content .driver-pane'); 
                     panes.forEach(pane => {
                         let nameEl = pane.querySelector('.driver-name-header');
                         if (nameEl) { nameEl.removeAttribute('contenteditable'); nameEl.removeAttribute('onblur'); }
@@ -1204,16 +1228,26 @@
                         let placaEl = pane.querySelector('.driver-placa');
                         if (placaEl) { placaEl.removeAttribute('contenteditable'); placaEl.removeAttribute('onblur'); }
 
-                        let removeBtn = pane.querySelector('button[onclick^="removeDriver"]');
-                        if (!removeBtn && pane.id !== 'driver-default') {
-                            let forceRemoveBtn = document.createElement('button');
-                            forceRemoveBtn.className = 'btn-remove no-print';
-                            forceRemoveBtn.setAttribute('onclick', `removeDriver('${pane.id}')`);
-                            forceRemoveBtn.style = 'background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:4px; margin-bottom: 15px; cursor: pointer; font-weight: bold; width: 100%; display:block;';
-                            forceRemoveBtn.innerText = '🗑️ CLIQUE AQUI PARA APAGAR ESTA ABA QUEBRADA';
-                            pane.prepend(forceRemoveBtn);
+                        let addDayBtn = pane.querySelector('button[onclick^="addTransportRow"]');
+                        if (addDayBtn) {
+                            let btnContainer = addDayBtn.parentElement;
+                            btnContainer.style.display = 'flex';
+                            btnContainer.style.justifyContent = 'flex-end';
+                            btnContainer.style.gap = '10px';
+                            btnContainer.classList.add('no-print');
+                            
+                            if (!pane.querySelector('button[onclick^="removeDriver"]') && pane.id !== 'driver-default') {
+                                let removeBtn = document.createElement('button');
+                                removeBtn.className = 'btn-remove';
+                                removeBtn.setAttribute('onclick', `removeDriver('${pane.id}')`);
+                                removeBtn.style = 'background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;';
+                                removeBtn.innerText = '🗑️ Remover Motorista';
+                                btnContainer.insertBefore(removeBtn, addDayBtn);
+                            }
                         }
                     });
+                    
+                    salvarTransporte(); 
                 }
             } catch(e) {}
 
