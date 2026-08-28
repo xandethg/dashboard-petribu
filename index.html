@@ -166,6 +166,16 @@
     .driver-pane { display: none; }
     .driver-pane.active { display: block; }
     
+    #driver-tabs-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 10px;
+        overflow-x: auto;
+        white-space: nowrap; /* Impede empilhamento */
+    }
+
     .driver-tab-btn { 
         background: var(--bg-main); 
         color: var(--text-muted); 
@@ -177,6 +187,7 @@
         cursor: pointer; 
         transition: 0.2s; 
         white-space: nowrap; 
+        flex-shrink: 0; /* Impede que o botão encolha e quebre */
         width: auto !important;
         display: inline-block;
     }
@@ -339,7 +350,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.25<br>Dev: Alexandre Henrique
+                    Versão 1.0.26<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -352,7 +363,7 @@
                     <h3>Armazenagem e Logística</h3>
                 </div>
                 <div class="header-widgets">
-                    <!-- IDs adicionados aos widgets para poder escondê-los via JS -->
+                    <!-- IDs adicionados aos widgets para poder escondê-los via JS nas abas corretas -->
                     <div class="widget no-print" id="widget-escala" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
                         <span>⏱️ Escala de Turnos:</span>
                         <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
@@ -760,7 +771,7 @@
             items.forEach(item => item.classList.remove('active'));
             menuElement.classList.add('active');
 
-            // Lógica para ocultar Escala de Turno e Status nas abas Devoluções e Transporte
+            // Oculta os painéis extras ao entrar nas abas focadas
             if(tabId === 'devolucoes' || tabId === 'transporte') {
                 document.getElementById('widget-escala').style.display = 'none';
                 document.getElementById('widget-status').style.display = 'none';
@@ -800,12 +811,19 @@
             let btn = document.createElement('button');
             btn.className = 'driver-tab-btn active';
             btn.innerText = primeironome;
-            btn.onclick = function() { switchDriver(this, id); };
+            btn.setAttribute('onclick', `switchDriver(this, '${id}')`);
             
             document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('driver-tabs-container').appendChild(btn);
 
-            let pane = document.getElementById('driver-default').cloneNode(true);
+            // Garante que pega um template válido
+            let referencePane = document.querySelector('.driver-pane');
+            if(!referencePane) {
+                alert("Erro interno: Tente recarregar a página.");
+                return;
+            }
+            
+            let pane = referencePane.cloneNode(true);
             pane.id = id;
             document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
             pane.classList.add('active');
@@ -847,8 +865,9 @@
         }
 
         function removeDriver(driverId) {
-            if(driverId === 'driver-default') {
-                alert("O motorista principal da planilha não pode ser apagado, mas você pode editar os dados dele.");
+            let allPanes = document.querySelectorAll('.driver-pane');
+            if(allPanes.length <= 1) {
+                alert("Para manter o sistema funcionando, você deve ter pelo menos 1 motorista. Adicione um novo antes de apagar este.");
                 return;
             }
             if(confirm("Tem certeza que deseja remover este motorista e todo o seu histórico atual?")) {
@@ -858,8 +877,10 @@
                 let pane = document.getElementById(driverId);
                 if(pane) pane.remove();
                 
-                let defaultBtn = document.querySelector(`button[onclick*="switchDriver(this, 'driver-default')"]`);
-                if(defaultBtn) switchDriver(defaultBtn, 'driver-default');
+                let firstBtn = document.querySelector('#driver-tabs-container .driver-tab-btn');
+                if(firstBtn) {
+                    firstBtn.click();
+                }
                 
                 salvarTransporte();
             }
@@ -1150,6 +1171,18 @@
                     document.getElementById('drivers-content').innerHTML = docTrans.data().html;
                     if(docTrans.data().tabs) document.getElementById('driver-tabs-container').innerHTML = docTrans.data().tabs;
                     if(docTrans.data().mesNome) document.getElementById('nome-mes-transporte').innerText = docTrans.data().mesNome;
+                    
+                    // Auto-Cura: Recria os cliques dos botões que foram perdidos no Firebase
+                    let tabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn');
+                    let panes = document.querySelectorAll('#drivers-content .driver-pane');
+                    tabs.forEach((tab, index) => {
+                        if(!tab.hasAttribute('onclick')) {
+                            if(panes[index]) {
+                                let paneId = panes[index].id;
+                                tab.setAttribute('onclick', `switchDriver(this, '${paneId}')`);
+                            }
+                        }
+                    });
                 }
             } catch(e) {}
 
