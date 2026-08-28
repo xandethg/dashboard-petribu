@@ -166,7 +166,6 @@
     .driver-pane { display: none; }
     .driver-pane.active { display: block; }
     
-    /* Correção do Botão das Abas de Motorista */
     .driver-tab-btn { 
         background: var(--bg-main); 
         color: var(--text-muted); 
@@ -178,7 +177,7 @@
         cursor: pointer; 
         transition: 0.2s; 
         white-space: nowrap; 
-        width: auto !important; /* Força a não ocupar a tela toda */
+        width: auto !important;
         display: inline-block;
     }
     .driver-tab-btn:hover { border-color: var(--primary-blue); }
@@ -222,7 +221,8 @@
         .analytics-kpi-card { flex: 1 !important; padding: 10px !important;}
 
         #driver-tabs-container { display: none !important; }
-        .driver-pane { display: block !important; margin-bottom: 20px; page-break-inside: avoid; }
+        .driver-pane { display: none !important; } /* Oculta todos os motoristas na impressão */
+        .driver-pane.active { display: block !important; margin-bottom: 20px; page-break-inside: avoid; } /* Mostra apenas o ativo na impressão */
     }
 </style>
 </head>
@@ -231,7 +231,7 @@
     <!-- TELA DE LOGIN -->
     <div id="login-screen">
         <div class="login-box">
-            <img src="Logo.PNG" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
+            <img src="logo-petribu.png" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
             <p style="margin-top: 15px;">Acesso Restrito - Relatório de Safra</p>
             <div id="login-error" class="login-error">Usuário ou senha incorretos!</div>
             <input type="text" id="login-username" placeholder="Seu Nome (ex: alexandre)" onkeypress="handleLoginEnter(event)">
@@ -310,7 +310,7 @@
 
         <div class="sidebar no-print">
             <div class="logo-area">
-                <img src="Logo.PNG" alt="Petribu" style="max-width: 170px; height: auto;">
+                <img src="logo-petribu.png" alt="Petribu" style="max-width: 170px; height: auto;">
             </div>
             
             <div class="user-profile">
@@ -339,7 +339,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.24<br>Dev: Alexandre Henrique
+                    Versão 1.0.25<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -352,7 +352,8 @@
                     <h3>Armazenagem e Logística</h3>
                 </div>
                 <div class="header-widgets">
-                    <div class="widget no-print" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
+                    <!-- IDs adicionados aos widgets para poder escondê-los via JS -->
+                    <div class="widget no-print" id="widget-escala" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
                         <span>⏱️ Escala de Turnos:</span>
                         <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
                             <option value="seg-qui" style="color: black;">Seg-Qui (3 Turnos)</option>
@@ -360,15 +361,15 @@
                             <option value="sab-dom" style="color: black;">Sáb-Dom (2 Turnos)</option>
                         </select>
                     </div>
-                    <div class="widget">
+                    <div class="widget" id="widget-data">
                         <span style="font-size:16px;">📅</span>
                         <div><div style="color:var(--text-muted); font-size:10px;">DATA</div><div class="widget-value" id="dash-date">--/--/----</div></div>
                     </div>
-                    <div class="widget">
+                    <div class="widget" id="widget-hora">
                         <span style="font-size:16px;">⏱️</span>
                         <div><div style="color:var(--text-muted); font-size:10px;">ÚLTIMA ATUALIZAÇÃO</div><div class="widget-value" id="dash-time">--:--</div></div>
                     </div>
-                    <div class="widget">
+                    <div class="widget" id="widget-status">
                         <span style="font-size:16px;" class="status-emoji">🟢</span>
                         <div>
                             <div style="color:var(--text-muted); font-size:10px; font-weight:bold;">STATUS DA OPERAÇÃO</div>
@@ -496,7 +497,7 @@
             <!-- ================= ABA 3: TRANSPORTE DE AÇÚCAR ================= -->
             <div id="tab-transporte" style="display: none;">
                 <div class="card">
-                    <div class="card-header" style="background-color: #2563eb;">
+                    <div class="card-header no-print" style="background-color: #2563eb;">
                         <span contenteditable="true" id="nome-mes-transporte" onblur="salvarTransporte()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block; background:rgba(255,255,255,0.1);">Março/26</span>
                         <div>
                             <button class="btn-add" onclick="openTransporteHistory()" style="background:#1e40af; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
@@ -528,7 +529,8 @@
                                     </div>
                                 </div>
 
-                                <div style="margin-bottom: 10px; text-align:right;">
+                                <div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;">
+                                    <button class="btn-remove" onclick="removeDriver('driver-default')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button>
                                     <button class="btn-add" onclick="addTransportRow('driver-default')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button>
                                 </div>
 
@@ -543,7 +545,7 @@
                                             <th style="width:12%; text-align:center; color:var(--primary-blue);">Quant. Horas</th>
                                             <th style="width:10%; text-align:center;">Data Final</th>
                                             <th style="width:23%; text-align:left;">Observação</th>
-                                            <th class="col-acao"></th>
+                                            <th class="col-acao no-print"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tb-driver-default">
@@ -556,7 +558,7 @@
                                             <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
                                             <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">01/03/26</div></td>
                                             <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
-                                            <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('driver-default');" style="margin:0;">✖</button></td>
+                                            <td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('driver-default');" style="margin:0;">✖</button></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -576,7 +578,7 @@
             <!-- ================= ABA 4: DEVOLUÇÕES ================= -->
             <div id="tab-devolucoes" style="display: none;">
                 <div class="card">
-                    <div class="card-header" style="background-color: #f59e0b;">
+                    <div class="card-header no-print" style="background-color: #f59e0b;">
                         <span contenteditable="true" id="nome-mes-devolucao" onblur="salvarDevolucoes()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/26</span>
                         <div>
                             <button class="btn-add" onclick="openDevolucoesHistory()" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
@@ -595,7 +597,7 @@
                                     <th style="width:15%">Tipo</th>
                                     <th style="width:7%">Qtde</th>
                                     <th style="width:20%">Motivo</th>
-                                    <th class="col-acao"></th>
+                                    <th class="col-acao no-print"></th>
                                 </tr>
                             </thead>
                             <tbody id="tb-devolucao"></tbody>
@@ -607,7 +609,7 @@
             <!-- ================= ABA 5: DASHBOARD ANALÍTICO ================= -->
             <div id="tab-analytics" style="display: none;">
                 <div class="card">
-                    <div class="card-header" style="background-color: #10b981;">
+                    <div class="card-header no-print" style="background-color: #10b981;">
                         <span>📈 ANÁLISE DE DEVOLUÇÕES</span>
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <select id="analytics-filter" onchange="atualizarDashboardAnalytics()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer;">
@@ -758,6 +760,15 @@
             items.forEach(item => item.classList.remove('active'));
             menuElement.classList.add('active');
 
+            // Lógica para ocultar Escala de Turno e Status nas abas Devoluções e Transporte
+            if(tabId === 'devolucoes' || tabId === 'transporte') {
+                document.getElementById('widget-escala').style.display = 'none';
+                document.getElementById('widget-status').style.display = 'none';
+            } else {
+                document.getElementById('widget-escala').style.display = 'flex';
+                document.getElementById('widget-status').style.display = 'flex';
+            }
+
             if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
         }
 
@@ -786,7 +797,6 @@
             let primeironome = nome.split(' ')[0];
             let id = 'driver-' + Date.now();
             
-            // Cria aba corretamente estilizada
             let btn = document.createElement('button');
             btn.className = 'driver-tab-btn active';
             btn.innerText = primeironome;
@@ -795,13 +805,11 @@
             document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('driver-tabs-container').appendChild(btn);
 
-            // Cria painel copiando o padrao, mas limpando dados
             let pane = document.getElementById('driver-default').cloneNode(true);
             pane.id = id;
             document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
             pane.classList.add('active');
             
-            // Injeta os dados do formulário nas classes mapeadas
             pane.querySelector('.driver-name-header').innerText = nome;
             pane.querySelector('.driver-name-header').setAttribute('onblur', `updateDriverName(this, '${id}')`);
             
@@ -810,7 +818,6 @@
             pane.querySelector('.driver-placa').innerText = placa;
             pane.querySelector('.valor-diaria').innerText = diaria;
             
-            // Inicia com tabela vazia
             let tbody = pane.querySelector('tbody');
             tbody.id = 'tb-' + id;
             tbody.innerHTML = `<tr>
@@ -822,10 +829,14 @@
                 <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
                 <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
                 <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
-                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
+                <td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
             </tr>`;
 
             pane.querySelector('button[onclick^="addTransportRow"]').setAttribute('onclick', `addTransportRow('${id}')`);
+            
+            let removeBtn = pane.querySelector('button[onclick^="removeDriver"]');
+            if(removeBtn) removeBtn.setAttribute('onclick', `removeDriver('${id}')`);
+            
             pane.querySelector('.valor-diaria').setAttribute('onblur', `calcularTransporte('${id}')`);
 
             document.getElementById('drivers-content').appendChild(pane);
@@ -833,6 +844,25 @@
             calcularTransporte(id);
             closeCadastroMotorista();
             salvarTransporte();
+        }
+
+        function removeDriver(driverId) {
+            if(driverId === 'driver-default') {
+                alert("O motorista principal da planilha não pode ser apagado, mas você pode editar os dados dele.");
+                return;
+            }
+            if(confirm("Tem certeza que deseja remover este motorista e todo o seu histórico atual?")) {
+                let tabBtn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`);
+                if(tabBtn) tabBtn.remove();
+                
+                let pane = document.getElementById(driverId);
+                if(pane) pane.remove();
+                
+                let defaultBtn = document.querySelector(`button[onclick*="switchDriver(this, 'driver-default')"]`);
+                if(defaultBtn) switchDriver(defaultBtn, 'driver-default');
+                
+                salvarTransporte();
+            }
         }
 
         function timeStrToDec(str) {
@@ -932,7 +962,7 @@
                 <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
                 <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
                 <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
-                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${driverId}');" style="margin:0;">✖</button></td>
+                <td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${driverId}');" style="margin:0;">✖</button></td>
             `;
             tbody.appendChild(tr);
             calcularTransporte(driverId);
@@ -1060,7 +1090,7 @@
                 <option value="Malha 20/45 25Kg">Malha 20/45 25Kg</option>
             </select>`;
 
-            tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`;
+            tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`;
             tbody.appendChild(tr); salvarDevolucoes();
         }
 
