@@ -350,7 +350,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.27<br>Dev: Alexandre Henrique
+                    Versão 1.0.28<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -363,6 +363,7 @@
                     <h3>Armazenagem e Logística</h3>
                 </div>
                 <div class="header-widgets">
+                    <!-- IDs adicionados aos widgets para poder escondê-los via JS nas abas corretas -->
                     <div class="widget no-print" id="widget-escala" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
                         <span>⏱️ Escala de Turnos:</span>
                         <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
@@ -528,10 +529,10 @@
                             <div id="driver-default" class="driver-pane active">
                                 <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                                     <div>
-                                        <strong style="color:var(--text-muted);">Transportador:</strong> <span contenteditable="true" style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header" onblur="updateDriverName(this, 'driver-default')">Clovis Inácio Soares Filho</span><br>
-                                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" class="driver-cod" style="outline:none;" onblur="salvarTransporte()">007440</span><br>
-                                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" class="driver-cpf" style="outline:none;" onblur="salvarTransporte()">818.727.634-72</span><br>
-                                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" class="driver-placa" style="outline:none;" onblur="salvarTransporte()">KLM-9A84</span>
+                                        <strong style="color:var(--text-muted);">Transportador:</strong> <span style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header">Clovis Inácio Soares Filho</span><br>
+                                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod" style="outline:none;">007440</span><br>
+                                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf" style="outline:none;">818.727.634-72</span><br>
+                                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa" style="outline:none;">KLM-9A84</span>
                                     </div>
                                     <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
                                         <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('driver-default')">647,50</span><br>
@@ -540,7 +541,6 @@
                                 </div>
 
                                 <div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;">
-                                    <button class="btn-remove" onclick="removeDriver('driver-default')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button>
                                     <button class="btn-add" onclick="addTransportRow('driver-default')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button>
                                 </div>
 
@@ -781,8 +781,6 @@
             if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
         }
 
-        // --- LÓGICA DE TRANSPORTE E MODAL DE CADASTRO ---
-
         function openCadastroMotorista() {
             document.getElementById('cad-nome').value = '';
             document.getElementById('cad-codigo').value = '';
@@ -803,7 +801,6 @@
             let placa = document.getElementById('cad-placa').value.trim() || '-';
             let diaria = document.getElementById('cad-diaria').value.trim() || '647,50';
 
-            // Puxa o 1º e 2º nome para a aba
             let parts = nome.split(' ').filter(p => p.length > 0);
             let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo');
             
@@ -819,7 +816,6 @@
 
             document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
 
-            // Construção Segura do HTML para evitar que puxar tela em branco bugada do Firebase
             let pane = document.createElement('div');
             pane.id = id;
             pane.className = 'driver-pane active';
@@ -827,10 +823,10 @@
             pane.innerHTML = `
                 <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        <strong style="color:var(--text-muted);">Transportador:</strong> <span contenteditable="true" style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header" onblur="updateDriverName(this, '${id}')">${nome}</span><br>
-                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" class="driver-cod" style="outline:none;" onblur="salvarTransporte()">${codigo}</span><br>
-                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" class="driver-cpf" style="outline:none;" onblur="salvarTransporte()">${cpf}</span><br>
-                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" class="driver-placa" style="outline:none;" onblur="salvarTransporte()">${placa}</span>
+                        <strong style="color:var(--text-muted);">Transportador:</strong> <span style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header">${nome}</span><br>
+                        <strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod" style="outline:none;">${codigo}</span><br>
+                        <strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf" style="outline:none;">${cpf}</span><br>
+                        <strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa" style="outline:none;">${placa}</span>
                     </div>
                     <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
                         <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('${id}')">${diaria}</span><br>
@@ -984,17 +980,6 @@
             document.getElementById(driverId).classList.add('active');
         }
 
-        function updateDriverName(el, driverId) {
-            let name = el.innerText.trim() || 'Sem Nome';
-            let btn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`);
-            if(btn) {
-                let parts = name.split(' ').filter(p => p.length > 0);
-                let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo');
-                btn.innerText = tabName;
-            }
-            salvarTransporte();
-        }
-
         function addTransportRow(driverId) {
             let tbody = document.getElementById('tb-' + driverId) || document.querySelector(`#${driverId} tbody`);
             let tr = document.createElement('tr');
@@ -1070,8 +1055,6 @@
                 }
             } catch(error) { alert("Erro ao carregar o relatório."); }
         }
-
-        // --- FIM LÓGICA DE TRANSPORTE ---
 
         function addEmployeeRow(tableBodyId) {
             let tbody = document.getElementById(tableBodyId);
@@ -1196,7 +1179,6 @@
                     if(docTrans.data().tabs) document.getElementById('driver-tabs-container').innerHTML = docTrans.data().tabs;
                     if(docTrans.data().mesNome) document.getElementById('nome-mes-transporte').innerText = docTrans.data().mesNome;
                     
-                    // Auto-Cura 1: Recria os cliques nas abas de cima
                     let tabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn');
                     let panes = document.querySelectorAll('#drivers-content .driver-pane');
                     tabs.forEach((tab, index) => {
@@ -1208,24 +1190,28 @@
                         }
                     });
 
-                    // Auto-Cura 2: Garante que todos os motoristas tenham o botão de remover
+                    // Auto-Cura 3: Bloquear a edição dos dados base e forçar botão de remover nas abas quebradas
                     panes.forEach(pane => {
-                        let addDayBtn = pane.querySelector('button[onclick^="addTransportRow"]');
-                        if (addDayBtn) {
-                            let btnContainer = addDayBtn.parentElement;
-                            btnContainer.style.display = 'flex';
-                            btnContainer.style.justifyContent = 'flex-end';
-                            btnContainer.style.gap = '10px';
-                            btnContainer.classList.add('no-print');
-                            
-                            if (!pane.querySelector('button[onclick^="removeDriver"]')) {
-                                let removeBtn = document.createElement('button');
-                                removeBtn.className = 'btn-remove';
-                                removeBtn.setAttribute('onclick', `removeDriver('${pane.id}')`);
-                                removeBtn.style = 'background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;';
-                                removeBtn.innerText = '🗑️ Remover Motorista';
-                                btnContainer.insertBefore(removeBtn, addDayBtn);
-                            }
+                        let nameEl = pane.querySelector('.driver-name-header');
+                        if (nameEl) { nameEl.removeAttribute('contenteditable'); nameEl.removeAttribute('onblur'); }
+                        
+                        let codEl = pane.querySelector('.driver-cod');
+                        if (codEl) { codEl.removeAttribute('contenteditable'); codEl.removeAttribute('onblur'); }
+                        
+                        let cpfEl = pane.querySelector('.driver-cpf');
+                        if (cpfEl) { cpfEl.removeAttribute('contenteditable'); cpfEl.removeAttribute('onblur'); }
+                        
+                        let placaEl = pane.querySelector('.driver-placa');
+                        if (placaEl) { placaEl.removeAttribute('contenteditable'); placaEl.removeAttribute('onblur'); }
+
+                        let removeBtn = pane.querySelector('button[onclick^="removeDriver"]');
+                        if (!removeBtn && pane.id !== 'driver-default') {
+                            let forceRemoveBtn = document.createElement('button');
+                            forceRemoveBtn.className = 'btn-remove no-print';
+                            forceRemoveBtn.setAttribute('onclick', `removeDriver('${pane.id}')`);
+                            forceRemoveBtn.style = 'background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:4px; margin-bottom: 15px; cursor: pointer; font-weight: bold; width: 100%; display:block;';
+                            forceRemoveBtn.innerText = '🗑️ CLIQUE AQUI PARA APAGAR ESTA ABA QUEBRADA';
+                            pane.prepend(forceRemoveBtn);
                         }
                     });
                 }
