@@ -50,7 +50,7 @@
     .btn-logout:hover { background-color: rgba(255,255,255,0.1); }
     
     /* --- MAIN CONTENT --- */
-    .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+    .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; overflow-x: hidden; }
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
     .title-area h1 { margin: 0; font-size: 24px; color: var(--header-blue); font-weight: 900; }
     .title-area h3 { margin: 0; font-size: 14px; color: var(--text-muted); font-weight: normal; text-transform: uppercase;}
@@ -162,6 +162,12 @@
     .breakdown-val { font-size: 22px; font-weight: 900; color: var(--primary-blue); }
     .breakdown-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase;}
 
+    /* --- TRANSPORTE --- */
+    .driver-pane { display: none; }
+    .driver-pane.active { display: block; }
+    .driver-tab-btn { background: var(--bg-main); color: var(--text-muted); border: 1px solid var(--border); }
+    .driver-tab-btn.active { background: var(--primary-blue) !important; color: white !important; border-color: var(--primary-blue) !important; }
+
     /* --- IMPRESSÃO --- */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
@@ -198,6 +204,9 @@
         .charts-container > div { width: 50% !important; }
         .analytics-kpi-grid { display: flex !important; gap: 10px !important;}
         .analytics-kpi-card { flex: 1 !important; padding: 10px !important;}
+
+        #driver-tabs-container { display: none !important; }
+        .driver-pane { display: block !important; margin-bottom: 20px; page-break-inside: avoid; }
     }
 </style>
 </head>
@@ -237,6 +246,15 @@
             </div>
         </div>
 
+        <!-- MODAL HISTÓRICO DE TRANSPORTE -->
+        <div id="modal-historico-transporte" class="modal-overlay no-print">
+            <div class="modal-content">
+                <h3>📂 Histórico de Transporte</h3>
+                <ul id="lista-historico-transporte" style="list-style:none; padding:0; margin-bottom: 20px;"></ul>
+                <button onclick="closeTransporteHistory()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button>
+            </div>
+        </div>
+
         <div class="sidebar no-print">
             <div class="logo-area">
                 <!-- AQUI ENTROU A LOGO DA PETRIBU NO MENU LATERAL -->
@@ -251,6 +269,7 @@
             <ul class="menu">
                 <li class="active" onclick="switchTab('resumo', this)">🏠 Resumo Geral</li>
                 <li onclick="switchTab('pessoal', this)">👥 Quadro de Pessoal</li>
+                <li onclick="switchTab('transporte', this)">🚚 Transporte (Diárias)</li>
                 <li onclick="switchTab('devolucoes', this)">🔄 Devoluções</li>
                 <li onclick="switchTab('analytics', this)" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">📈 Painel Analítico</li>
                 <li onclick="openHistoryModal()">📄 Histórico da Safra</li>
@@ -268,7 +287,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.22<br>Dev: Alexandre Henrique
+                    Versão 1.0.23<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -422,7 +441,88 @@
                 </div>
             </div> <!-- FIM TAB PESSOAL -->
 
-            <!-- ================= ABA 3: DEVOLUÇÕES ================= -->
+            <!-- ================= ABA 3: TRANSPORTE DE AÇÚCAR (NOVO) ================= -->
+            <div id="tab-transporte" style="display: none;">
+                <div class="card">
+                    <div class="card-header" style="background-color: #2563eb;">
+                        <span contenteditable="true" id="nome-mes-transporte" onblur="salvarTransporte()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block; background:rgba(255,255,255,0.1);">Março/26</span>
+                        <div>
+                            <button class="btn-add" onclick="openTransporteHistory()" style="background:#1e40af; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
+                            <button class="btn-add" onclick="encerrarMesTransporte()" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">💾 Encerrar Mês</button>
+                            <button class="btn-add" onclick="addDriver()" style="background:white; color:#2563eb; border:none; padding:4px 8px; border-radius:4px;">+ Novo Motorista</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Abas dos Motoristas -->
+                        <div id="driver-tabs-container" style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; overflow-x: auto;">
+                            <button class="badge badge-normal driver-tab-btn active" style="font-size:12px; padding:6px 12px;" onclick="switchDriver(this, 'driver-default')">Clovis Inácio</button>
+                        </div>
+
+                        <!-- Conteúdo dos Motoristas -->
+                        <div id="drivers-content">
+                            <!-- Motorista 1 (Padrão) -->
+                            <div id="driver-default" class="driver-pane active">
+                                <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <strong style="color:var(--text-muted);">Transportador:</strong> <span contenteditable="true" style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header" onblur="updateDriverName(this, 'driver-default')">Clovis Inácio Soares Filho</span><br>
+                                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">007440</span><br>
+                                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">818.727.634-72</span><br>
+                                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">KLM-9A84</span>
+                                    </div>
+                                    <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
+                                        <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('driver-default')">647,50</span><br>
+                                        <span style="font-size: 11px; color: var(--text-muted);">Valor por Hora: R$ <span class="valor-hora" style="font-weight:bold;">26,97</span></span>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 10px; text-align:right;">
+                                    <button class="btn-add" onclick="addTransportRow('driver-default')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button>
+                                </div>
+
+                                <table class="tabela-devolucao transport-table" style="text-align:center;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%; text-align:center;">Data Início</th>
+                                            <th style="width:10%; text-align:center;">Hora Início</th>
+                                            <th style="width:10%; text-align:center;">Parada</th>
+                                            <th style="width:10%; text-align:center;">Entrada</th>
+                                            <th style="width:10%; text-align:center;">Hora Final</th>
+                                            <th style="width:12%; text-align:center; color:var(--primary-blue);">Quant. Horas</th>
+                                            <th style="width:10%; text-align:center;">Data Final</th>
+                                            <th style="width:23%; text-align:left;">Observação</th>
+                                            <th class="col-acao"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-driver-default">
+                                        <!-- Exemplo da primeira linha baseada no excel -->
+                                        <tr>
+                                            <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">01/03/26</div></td>
+                                            <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('driver-default')" style="outline:none;">0:00</div></td>
+                                            <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('driver-default')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
+                                            <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('driver-default')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
+                                            <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('driver-default')" style="outline:none;">24:00</div></td>
+                                            <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
+                                            <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">01/03/26</div></td>
+                                            <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
+                                            <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('driver-default');" style="margin:0;">✖</button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="background-color: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
+                                            <td colspan="5" style="text-align: right; color: var(--text-muted); padding:10px;">TOTAL MENSAL:</td>
+                                            <td class="total-horas-mensal" style="color: var(--primary-blue); font-size:14px; padding:10px;">24:00</td>
+                                            <td colspan="3" class="total-valor-mensal" style="color: var(--success); font-size:15px; text-align:right; padding-right:15px;">R$ 647,50</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div> <!-- Fim Conteúdo Motoristas -->
+                    </div>
+                </div>
+            </div> <!-- FIM TAB TRANSPORTE -->
+
+            <!-- ================= ABA 4: DEVOLUÇÕES ================= -->
             <div id="tab-devolucoes" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #f59e0b;">
@@ -453,7 +553,7 @@
                 </div>
             </div> <!-- FIM TAB DEVOLUÇÕES -->
 
-            <!-- ================= ABA 4: DASHBOARD ANALÍTICO ================= -->
+            <!-- ================= ABA 5: DASHBOARD ANALÍTICO ================= -->
             <div id="tab-analytics" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #10b981;">
@@ -525,7 +625,7 @@
         const datalabelsPlugin = {
             id: 'datalabels',
             afterDatasetsDraw(chart) {
-                if (chart.config.type !== 'bar') return; // A REGRA QUE IMPEDE O PLUGIN DE QUEBRAR O GRÁFICO DE PIZZA
+                if (chart.config.type !== 'bar') return;
                 
                 const { ctx, data } = chart;
                 ctx.save();
@@ -598,6 +698,7 @@
             document.getElementById('tab-resumo').style.display = 'none';
             document.getElementById('tab-pessoal').style.display = 'none';
             document.getElementById('tab-devolucoes').style.display = 'none';
+            document.getElementById('tab-transporte').style.display = 'none';
             document.getElementById('tab-analytics').style.display = 'none';
             
             document.getElementById('tab-' + tabId).style.display = 'block';
@@ -608,6 +709,219 @@
 
             if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
         }
+
+        // --- LÓGICA DE TRANSPORTE (NOVA) ---
+
+        function timeStrToDec(str) {
+            if(!str || str.trim() === '' || str.trim() === '-') return 0;
+            str = str.replace(/[^\d:]/g, '');
+            let p = str.split(':');
+            let h = parseInt(p[0]) || 0;
+            let m = parseInt(p[1]) || 0;
+            return h + (m/60);
+        }
+
+        function decToTimeStr(dec) {
+            let h = Math.floor(dec);
+            let m = Math.round((dec - h) * 60);
+            if(m === 60) { h++; m = 0; }
+            return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+        }
+
+        function calcularTransporte(driverId) {
+            let pane = document.getElementById(driverId);
+            if(!pane) return;
+
+            let diariaStr = pane.querySelector('.valor-diaria').innerText.replace(/\./g, '').replace(',', '.');
+            let diaria = parseFloat(diariaStr) || 0;
+            let vHora = Math.floor((diaria / 24) * 100) / 100; // Cálculo exato da planilha: R$ 26,97
+            pane.querySelector('.valor-hora').innerText = vHora.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            let totalWorkedDec = 0;
+            let rows = pane.querySelectorAll('tbody tr');
+            rows.forEach(tr => {
+                let tStartEl = tr.querySelector('.t-start');
+                let tPauseEl = tr.querySelector('.t-pause');
+                let tResumeEl = tr.querySelector('.t-resume');
+                let tEndEl = tr.querySelector('.t-end');
+                let tTotalEl = tr.querySelector('.t-total');
+                
+                if(!tStartEl) return;
+
+                let start = timeStrToDec(tStartEl.innerText);
+                let pStart = timeStrToDec(tPauseEl.innerText);
+                let pEnd = timeStrToDec(tResumeEl.innerText);
+                let end = timeStrToDec(tEndEl.innerText);
+
+                if (tStartEl.innerText.trim() === '' || tStartEl.innerText.trim() === '-') {
+                    tTotalEl.innerText = '-';
+                    return; 
+                }
+
+                let worked = 0;
+                if(end < start) end += 24;
+                worked = end - start;
+
+                if(pStart > 0 || pEnd > 0) {
+                    if(pEnd < pStart) pEnd += 24;
+                    worked -= (pEnd - pStart);
+                }
+                
+                if(worked < 0) worked = 0;
+                
+                tTotalEl.innerText = decToTimeStr(worked);
+                totalWorkedDec += worked;
+            });
+
+            pane.querySelector('.total-horas-mensal').innerText = decToTimeStr(totalWorkedDec);
+            let totalVal = totalWorkedDec * vHora;
+            pane.querySelector('.total-valor-mensal').innerText = totalVal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+            
+            salvarTransporte();
+        }
+
+        function switchDriver(btn, driverId) {
+            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active', 'badge-primary'));
+            btn.classList.add('active');
+            document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
+            document.getElementById(driverId).classList.add('active');
+        }
+
+        function addDriver() {
+            let id = 'driver-' + Date.now();
+            
+            // Cria aba
+            let btn = document.createElement('button');
+            btn.className = 'badge badge-normal driver-tab-btn active';
+            btn.style = 'font-size:12px; padding:6px 12px;';
+            btn.innerText = 'Novo Motorista';
+            btn.onclick = function() { switchDriver(this, id); };
+            
+            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('driver-tabs-container').appendChild(btn);
+
+            // Cria painel copiando o padrao, mas limpando dados
+            let pane = document.getElementById('driver-default').cloneNode(true);
+            pane.id = id;
+            document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
+            pane.classList.add('active');
+            
+            // Limpa dados do painel novo
+            pane.querySelector('.driver-name-header').innerText = 'Novo Motorista';
+            pane.querySelector('.driver-name-header').setAttribute('onblur', `updateDriverName(this, '${id}')`);
+            
+            let tbody = pane.querySelector('tbody');
+            tbody.id = 'tb-' + id;
+            tbody.innerHTML = `<tr>
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td>
+                <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td>
+                <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
+            </tr>`;
+
+            // Atualiza botões
+            pane.querySelector('button[onclick^="addTransportRow"]').setAttribute('onclick', `addTransportRow('${id}')`);
+            pane.querySelector('.valor-diaria').setAttribute('onblur', `calcularTransporte('${id}')`);
+
+            document.getElementById('drivers-content').appendChild(pane);
+            calcularTransporte(id);
+        }
+
+        function updateDriverName(el, driverId) {
+            let name = el.innerText.trim() || 'Sem Nome';
+            // Atualiza a aba correspondente
+            let btn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`);
+            if(btn) {
+                // Pega só o primeiro nome para a aba não ficar enorme
+                let primeironome = name.split(' ')[0];
+                btn.innerText = primeironome;
+            }
+            salvarTransporte();
+        }
+
+        function addTransportRow(driverId) {
+            let tbody = document.getElementById('tb-' + driverId) || document.querySelector(`#${driverId} tbody`);
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${driverId}')" style="outline:none;">0:00</div></td>
+                <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${driverId}')" style="outline:none;">24:00</div></td>
+                <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${driverId}');" style="margin:0;">✖</button></td>
+            `;
+            tbody.appendChild(tr);
+            calcularTransporte(driverId);
+        }
+
+        function salvarTransporte() { 
+            if(isHistoryMode) return; 
+            db.collection('estado_atual').doc('transporte_oficial').set({ 
+                html: document.getElementById('drivers-content').innerHTML, 
+                tabs: document.getElementById('driver-tabs-container').innerHTML,
+                mesNome: document.getElementById('nome-mes-transporte').innerText, 
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+            }); 
+        }
+
+        async function encerrarMesTransporte() {
+            let nomeMesEl = document.getElementById('nome-mes-transporte'); let nomeMes = nomeMesEl.innerText.trim();
+            if(confirm("Deseja salvar a tabela de TRANSPORTE de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) {
+                let htmlParaSalvar = document.getElementById('drivers-content').innerHTML; 
+                let tabsParaSalvar = document.getElementById('driver-tabs-container').innerHTML;
+                let docId = "transporte_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_");
+                try {
+                    await db.collection('historico_mensal_transporte').doc(docId).set({ html: htmlParaSalvar, tabs: tabsParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    
+                    // Zera mantendo as abas dos motoristas, mas limpando as linhas das tabelas
+                    document.querySelectorAll('.driver-pane tbody').forEach(tb => tb.innerHTML = '');
+                    document.querySelectorAll('.total-horas-mensal').forEach(t => t.innerText = '00:00');
+                    document.querySelectorAll('.total-valor-mensal').forEach(t => t.innerText = 'R$ 0,00');
+                    
+                    nomeMesEl.innerText = "Mês/Ano"; 
+                    salvarTransporte(); 
+                    alert("✅ Mês do Controle de Transporte encerrado com sucesso! Histórico arquivado.");
+                } catch(error) { alert("Erro ao encerrar o mês de transporte."); }
+            }
+        }
+
+        async function openTransporteHistory() {
+            let listEl = document.getElementById('lista-historico-transporte'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-transporte').style.display = 'flex';
+            try {
+                const snapshot = await db.collection('historico_mensal_transporte').orderBy('timestamp', 'desc').get();
+                listEl.innerHTML = '';
+                if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; }
+                snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadTransporteHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteTransporteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); });
+            } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; }
+        }
+
+        function closeTransporteHistory() { document.getElementById('modal-historico-transporte').style.display = 'none'; }
+        
+        async function deleteTransporteHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de transporte de ${mesStr}?`)) { try { await db.collection('historico_mensal_transporte').doc(docId).delete(); openTransporteHistory(); } catch (error) { alert("Erro."); } } }
+
+        async function loadTransporteHistory(docId, mesStr) {
+            if(!confirm(`Carregar o histórico de transporte de ${mesStr}? O salvamento atual será pausado.`)) return;
+            try {
+                const docSnap = await db.collection('historico_mensal_transporte').doc(docId).get();
+                if (docSnap.exists) {
+                    document.getElementById('drivers-content').innerHTML = docSnap.data().html; 
+                    document.getElementById('driver-tabs-container').innerHTML = docSnap.data().tabs; 
+                    document.getElementById('nome-mes-transporte').innerText = docSnap.data().mes + " (LEITURA)";
+                    isHistoryMode = true; closeTransporteHistory();
+                    let banner = document.createElement('div'); banner.id = 'banner-transporte-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de Transporte de ${mesStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-transporte').prepend(banner);
+                }
+            } catch(error) { alert("Erro ao carregar o relatório."); }
+        }
+
+        // --- FIM LÓGICA DE TRANSPORTE ---
 
         function addEmployeeRow(tableBodyId) {
             let tbody = document.getElementById(tableBodyId);
@@ -678,7 +992,6 @@
         let isHistoryMode = false;
         let isDevolucaoHistoryMode = false;
 
-        // --- AUTOMAÇÃO DE DATAS (HOJE, ONTEM E SILO) ---
         function updateClock() {
             if(isHistoryMode) return; 
             const now = new Date();
@@ -691,21 +1004,15 @@
             if(dateEl && dateEl.innerText !== dateStr) dateEl.innerText = dateStr;
             if(timeEl && timeEl.innerText !== timeStr) timeEl.innerText = timeStr;
 
-            // FORÇA A ATUALIZAÇÃO DO SILO INDEPENDENTE DA DATA PRINCIPAL
             const siloHoje = document.getElementById('silo-data-hoje');
             const siloOntem = document.getElementById('silo-data-ontem');
             
-            if(siloHoje && siloHoje.innerText !== dateStr) {
-                siloHoje.innerText = dateStr;
-            }
+            if(siloHoje && siloHoje.innerText !== dateStr) siloHoje.innerText = dateStr;
             
             let ontem = new Date(now);
             ontem.setDate(ontem.getDate() - 1);
             let ontemStr = ontem.toLocaleDateString('pt-BR');
-            
-            if(siloOntem && siloOntem.innerText !== ontemStr) {
-                siloOntem.innerText = ontemStr;
-            }
+            if(siloOntem && siloOntem.innerText !== ontemStr) siloOntem.innerText = ontemStr;
         }
         setInterval(updateClock, 1000);
 
@@ -721,25 +1028,30 @@
             updateClock();
             if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); }
             
+            // Carrega Aba Resumo
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) {
-                    let htmlNuvem = docResumo.data().html;
-                    document.getElementById('tab-resumo').innerHTML = htmlNuvem;
-                    
-                    if (!document.getElementById('silo-data-hoje')) {
-                        let titles = document.querySelectorAll('.info-title');
-                        titles.forEach(t => {
-                            if (t.innerText.includes('MEDIÇÃO DO SILO')) {
-                                t.parentElement.innerHTML = `<div class="info-title">🏢 MEDIÇÃO DO SILO</div><div style="display: flex; gap: 10px;"><div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;"><div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div><div style="flex: 1; padding-left: 5px;"><div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div><div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div></div></div>`;
-                            }
-                        });
-                    }
+                    document.getElementById('tab-resumo').innerHTML = docResumo.data().html;
                 } 
             } catch(e) {}
             
+            // Carrega Aba Pessoal
             try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_oficial').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
+            
+            // Carrega Aba Devoluções
             try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_oficial').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
+            
+            // Carrega Aba Transporte (NOVO)
+            try {
+                const docTrans = await db.collection('estado_atual').doc('transporte_oficial').get();
+                if (docTrans.exists && docTrans.data().html) {
+                    document.getElementById('drivers-content').innerHTML = docTrans.data().html;
+                    if(docTrans.data().tabs) document.getElementById('driver-tabs-container').innerHTML = docTrans.data().tabs;
+                    if(docTrans.data().mesNome) document.getElementById('nome-mes-transporte').innerText = docTrans.data().mesNome;
+                }
+            } catch(e) {}
+
             const savedShift = localStorage.getItem('petribu_shift_type_oficial'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } }
         }
 
@@ -760,14 +1072,11 @@
             let str = textoMes.toLowerCase();
             let yearMatch = str.match(/\d{2,4}/);
             if(!yearMatch) return "desconhecida";
-            
             let ano = parseInt(yearMatch[0]);
             if(ano < 100) ano += 2000;
-            
             let meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
             let indexMes = meses.findIndex(m => str.includes(m));
             if(indexMes === -1) return "desconhecida";
-            
             let anoInicioSafra = (indexMes >= 7) ? ano : ano - 1;
             let final1 = anoInicioSafra.toString().slice(-2);
             let final2 = (anoInicioSafra + 1).toString().slice(-2);
@@ -784,14 +1093,13 @@
 
             function processarLinhas(trs) {
                 trs.forEach(tr => {
-                    let tds = tr.querySelectorAll('td'); // Busca a tabela inteira (td) em vez de divs
+                    let tds = tr.querySelectorAll('td'); 
                     if(tds.length >= 7) {
                         let cliente = tds[1].innerText.trim();
                         let tipo = tds[4].innerText.trim().toLowerCase();
                         let qtde = parseInt(tds[5].innerText.trim()) || 0;
                         let motivo = tds[6].innerText.trim();
                         
-                        // Captura do produto (funciona tanto para selects novos quanto histórico antigo)
                         let selectProd = tds[3].querySelector('select');
                         let produto = selectProd ? selectProd.value : tds[3].innerText.trim();
                         
@@ -821,7 +1129,6 @@
                 if(descobreSafra(nomeMesAtual) === filtro) { 
                     processarLinhas(document.querySelectorAll('#tb-devolucao tr')); 
                 }
-                
                 try {
                     const snapAno = await db.collection('historico_mensal_devolucoes').get();
                     snapAno.forEach(doc => {
@@ -879,7 +1186,6 @@
             for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } }
             document.getElementById('kpi-cliente').innerText = topCliente;
 
-            // Injeção do detalhamento de produtos no KPI Card
             let detalhesHtml = "";
             for(let p in produtosVol) {
                 detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`;
@@ -887,7 +1193,6 @@
             let detalheEl = document.getElementById('kpi-detalhe-produtos');
             if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.';
 
-            // Gráfico de Barras - Clientes (Corrigido visual e labels)
             if(chartClientesInst) chartClientesInst.destroy();
             let ctxC = document.getElementById('chartClientes').getContext('2d');
             chartClientesInst = new Chart(ctxC, {
@@ -897,13 +1202,12 @@
                     responsive: true, 
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { display: false } }, // Remove grade vertical
-                        y: { display: false, grid: { display: false } } // Remove eixo Y e grade horizontal
+                        x: { grid: { display: false } }, 
+                        y: { display: false, grid: { display: false } } 
                     }
                 }
             });
 
-            // Gráfico de Pizza - Motivos
             if(chartMotivosInst) chartMotivosInst.destroy();
             let ctxM = document.getElementById('chartMotivos').getContext('2d');
             chartMotivosInst = new Chart(ctxM, {
