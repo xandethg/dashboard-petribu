@@ -165,7 +165,23 @@
     /* --- TRANSPORTE --- */
     .driver-pane { display: none; }
     .driver-pane.active { display: block; }
-    .driver-tab-btn { background: var(--bg-main); color: var(--text-muted); border: 1px solid var(--border); }
+    
+    /* Correção do Botão das Abas de Motorista */
+    .driver-tab-btn { 
+        background: var(--bg-main); 
+        color: var(--text-muted); 
+        border: 1px solid var(--border); 
+        padding: 6px 15px; 
+        border-radius: 20px; 
+        font-size: 12px; 
+        font-weight: bold; 
+        cursor: pointer; 
+        transition: 0.2s; 
+        white-space: nowrap; 
+        width: auto !important; /* Força a não ocupar a tela toda */
+        display: inline-block;
+    }
+    .driver-tab-btn:hover { border-color: var(--primary-blue); }
     .driver-tab-btn.active { background: var(--primary-blue) !important; color: white !important; border-color: var(--primary-blue) !important; }
 
     /* --- IMPRESSÃO --- */
@@ -215,9 +231,7 @@
     <!-- TELA DE LOGIN -->
     <div id="login-screen">
         <div class="login-box">
-            <!-- AQUI ENTROU A LOGO DA PETRIBU NA TELA DE LOGIN -->
-            <img src="logo-petribu.png" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
-            
+            <img src="Logo.PNG" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
             <p style="margin-top: 15px;">Acesso Restrito - Relatório de Safra</p>
             <div id="login-error" class="login-error">Usuário ou senha incorretos!</div>
             <input type="text" id="login-username" placeholder="Seu Nome (ex: alexandre)" onkeypress="handleLoginEnter(event)">
@@ -255,10 +269,48 @@
             </div>
         </div>
 
+        <!-- MODAL NOVO MOTORISTA (CADASTRO) -->
+        <div id="modal-cadastro-motorista" class="modal-overlay no-print">
+            <div class="modal-content">
+                <h3>🚚 Cadastrar Novo Motorista</h3>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size:12px; color:var(--text-muted); font-weight:bold;">Nome Completo:</label>
+                    <input type="text" id="cad-nome" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; margin-top:5px; outline:none;" placeholder="Ex: João da Silva">
+                </div>
+                
+                <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                    <div style="flex:1;">
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:bold;">Código:</label>
+                        <input type="text" id="cad-codigo" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; margin-top:5px; outline:none;" placeholder="Ex: 001234">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:bold;">CPF:</label>
+                        <input type="text" id="cad-cpf" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; margin-top:5px; outline:none;" placeholder="000.000.000-00">
+                    </div>
+                </div>
+                
+                <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                    <div style="flex:1;">
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:bold;">Placa do Veículo:</label>
+                        <input type="text" id="cad-placa" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; margin-top:5px; outline:none;" placeholder="ABC-1234">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:bold;">Diária (R$):</label>
+                        <input type="text" id="cad-diaria" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; margin-top:5px; outline:none;" value="647,50">
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button onclick="closeCadastroMotorista()" style="padding:10px 15px; cursor:pointer; flex:1; background:#94a3b8; color:white; border:none; border-radius:4px; font-weight:bold;">Cancelar</button>
+                    <button onclick="confirmarCadastroMotorista()" style="padding:10px 15px; cursor:pointer; flex:1; background:var(--primary-blue); color:white; border:none; border-radius:4px; font-weight:bold;">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+
         <div class="sidebar no-print">
             <div class="logo-area">
-                <!-- AQUI ENTROU A LOGO DA PETRIBU NO MENU LATERAL -->
-                <img src="logo-petribu.png" alt="Petribu" style="max-width: 170px; height: auto;">
+                <img src="Logo.PNG" alt="Petribu" style="max-width: 170px; height: auto;">
             </div>
             
             <div class="user-profile">
@@ -287,7 +339,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.23<br>Dev: Alexandre Henrique
+                    Versão 1.0.24<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -441,7 +493,7 @@
                 </div>
             </div> <!-- FIM TAB PESSOAL -->
 
-            <!-- ================= ABA 3: TRANSPORTE DE AÇÚCAR (NOVO) ================= -->
+            <!-- ================= ABA 3: TRANSPORTE DE AÇÚCAR ================= -->
             <div id="tab-transporte" style="display: none;">
                 <div class="card">
                     <div class="card-header" style="background-color: #2563eb;">
@@ -449,14 +501,14 @@
                         <div>
                             <button class="btn-add" onclick="openTransporteHistory()" style="background:#1e40af; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">📂 Ver Histórico</button>
                             <button class="btn-add" onclick="encerrarMesTransporte()" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:4px; margin-right:10px;">💾 Encerrar Mês</button>
-                            <button class="btn-add" onclick="addDriver()" style="background:white; color:#2563eb; border:none; padding:4px 8px; border-radius:4px;">+ Novo Motorista</button>
+                            <button class="btn-add" onclick="openCadastroMotorista()" style="background:white; color:#2563eb; border:none; padding:4px 8px; border-radius:4px;">+ Novo Motorista</button>
                         </div>
                     </div>
                     <div class="card-body">
                         
-                        <!-- Abas dos Motoristas -->
+                        <!-- Abas dos Motoristas Organizadas -->
                         <div id="driver-tabs-container" style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; overflow-x: auto;">
-                            <button class="badge badge-normal driver-tab-btn active" style="font-size:12px; padding:6px 12px;" onclick="switchDriver(this, 'driver-default')">Clovis Inácio</button>
+                            <button class="driver-tab-btn active" onclick="switchDriver(this, 'driver-default')">Clovis Inácio</button>
                         </div>
 
                         <!-- Conteúdo dos Motoristas -->
@@ -466,9 +518,9 @@
                                 <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                                     <div>
                                         <strong style="color:var(--text-muted);">Transportador:</strong> <span contenteditable="true" style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header" onblur="updateDriverName(this, 'driver-default')">Clovis Inácio Soares Filho</span><br>
-                                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">007440</span><br>
-                                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">818.727.634-72</span><br>
-                                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" style="outline:none;" onblur="salvarTransporte()">KLM-9A84</span>
+                                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" class="driver-cod" style="outline:none;" onblur="salvarTransporte()">007440</span><br>
+                                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" class="driver-cpf" style="outline:none;" onblur="salvarTransporte()">818.727.634-72</span><br>
+                                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" class="driver-placa" style="outline:none;" onblur="salvarTransporte()">KLM-9A84</span>
                                     </div>
                                     <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
                                         <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('driver-default')">647,50</span><br>
@@ -495,7 +547,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tb-driver-default">
-                                        <!-- Exemplo da primeira linha baseada no excel -->
                                         <tr>
                                             <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">01/03/26</div></td>
                                             <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('driver-default')" style="outline:none;">0:00</div></td>
@@ -710,7 +761,79 @@
             if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
         }
 
-        // --- LÓGICA DE TRANSPORTE (NOVA) ---
+        // --- LÓGICA DE TRANSPORTE E MODAL DE CADASTRO ---
+
+        function openCadastroMotorista() {
+            document.getElementById('cad-nome').value = '';
+            document.getElementById('cad-codigo').value = '';
+            document.getElementById('cad-cpf').value = '';
+            document.getElementById('cad-placa').value = '';
+            document.getElementById('cad-diaria').value = '647,50';
+            document.getElementById('modal-cadastro-motorista').style.display = 'flex';
+        }
+
+        function closeCadastroMotorista() {
+            document.getElementById('modal-cadastro-motorista').style.display = 'none';
+        }
+
+        function confirmarCadastroMotorista() {
+            let nome = document.getElementById('cad-nome').value.trim() || 'Sem Nome';
+            let codigo = document.getElementById('cad-codigo').value.trim() || '-';
+            let cpf = document.getElementById('cad-cpf').value.trim() || '-';
+            let placa = document.getElementById('cad-placa').value.trim() || '-';
+            let diaria = document.getElementById('cad-diaria').value.trim() || '647,50';
+
+            let primeironome = nome.split(' ')[0];
+            let id = 'driver-' + Date.now();
+            
+            // Cria aba corretamente estilizada
+            let btn = document.createElement('button');
+            btn.className = 'driver-tab-btn active';
+            btn.innerText = primeironome;
+            btn.onclick = function() { switchDriver(this, id); };
+            
+            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('driver-tabs-container').appendChild(btn);
+
+            // Cria painel copiando o padrao, mas limpando dados
+            let pane = document.getElementById('driver-default').cloneNode(true);
+            pane.id = id;
+            document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
+            pane.classList.add('active');
+            
+            // Injeta os dados do formulário nas classes mapeadas
+            pane.querySelector('.driver-name-header').innerText = nome;
+            pane.querySelector('.driver-name-header').setAttribute('onblur', `updateDriverName(this, '${id}')`);
+            
+            pane.querySelector('.driver-cod').innerText = codigo;
+            pane.querySelector('.driver-cpf').innerText = cpf;
+            pane.querySelector('.driver-placa').innerText = placa;
+            pane.querySelector('.valor-diaria').innerText = diaria;
+            
+            // Inicia com tabela vazia
+            let tbody = pane.querySelector('tbody');
+            tbody.id = 'tb-' + id;
+            tbody.innerHTML = `<tr>
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td>
+                <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
+                <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td>
+                <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
+                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
+                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
+            </tr>`;
+
+            pane.querySelector('button[onclick^="addTransportRow"]').setAttribute('onclick', `addTransportRow('${id}')`);
+            pane.querySelector('.valor-diaria').setAttribute('onblur', `calcularTransporte('${id}')`);
+
+            document.getElementById('drivers-content').appendChild(pane);
+            
+            calcularTransporte(id);
+            closeCadastroMotorista();
+            salvarTransporte();
+        }
 
         function timeStrToDec(str) {
             if(!str || str.trim() === '' || str.trim() === '-') return 0;
@@ -734,7 +857,7 @@
 
             let diariaStr = pane.querySelector('.valor-diaria').innerText.replace(/\./g, '').replace(',', '.');
             let diaria = parseFloat(diariaStr) || 0;
-            let vHora = Math.floor((diaria / 24) * 100) / 100; // Cálculo exato da planilha: R$ 26,97
+            let vHora = Math.floor((diaria / 24) * 100) / 100;
             pane.querySelector('.valor-hora').innerText = vHora.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             let totalWorkedDec = 0;
@@ -781,63 +904,16 @@
         }
 
         function switchDriver(btn, driverId) {
-            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active', 'badge-primary'));
+            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
             document.getElementById(driverId).classList.add('active');
         }
 
-        function addDriver() {
-            let id = 'driver-' + Date.now();
-            
-            // Cria aba
-            let btn = document.createElement('button');
-            btn.className = 'badge badge-normal driver-tab-btn active';
-            btn.style = 'font-size:12px; padding:6px 12px;';
-            btn.innerText = 'Novo Motorista';
-            btn.onclick = function() { switchDriver(this, id); };
-            
-            document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('driver-tabs-container').appendChild(btn);
-
-            // Cria painel copiando o padrao, mas limpando dados
-            let pane = document.getElementById('driver-default').cloneNode(true);
-            pane.id = id;
-            document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
-            pane.classList.add('active');
-            
-            // Limpa dados do painel novo
-            pane.querySelector('.driver-name-header').innerText = 'Novo Motorista';
-            pane.querySelector('.driver-name-header').setAttribute('onblur', `updateDriverName(this, '${id}')`);
-            
-            let tbody = pane.querySelector('tbody');
-            tbody.id = 'tb-' + id;
-            tbody.innerHTML = `<tr>
-                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
-                <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td>
-                <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
-                <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
-                <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td>
-                <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
-                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
-                <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
-                <td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
-            </tr>`;
-
-            // Atualiza botões
-            pane.querySelector('button[onclick^="addTransportRow"]').setAttribute('onclick', `addTransportRow('${id}')`);
-            pane.querySelector('.valor-diaria').setAttribute('onblur', `calcularTransporte('${id}')`);
-
-            document.getElementById('drivers-content').appendChild(pane);
-            calcularTransporte(id);
-        }
-
         function updateDriverName(el, driverId) {
             let name = el.innerText.trim() || 'Sem Nome';
-            // Atualiza a aba correspondente
             let btn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`);
             if(btn) {
-                // Pega só o primeiro nome para a aba não ficar enorme
                 let primeironome = name.split(' ')[0];
                 btn.innerText = primeironome;
             }
@@ -881,7 +957,6 @@
                 try {
                     await db.collection('historico_mensal_transporte').doc(docId).set({ html: htmlParaSalvar, tabs: tabsParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                     
-                    // Zera mantendo as abas dos motoristas, mas limpando as linhas das tabelas
                     document.querySelectorAll('.driver-pane tbody').forEach(tb => tb.innerHTML = '');
                     document.querySelectorAll('.total-horas-mensal').forEach(t => t.innerText = '00:00');
                     document.querySelectorAll('.total-valor-mensal').forEach(t => t.innerText = 'R$ 0,00');
@@ -1028,7 +1103,6 @@
             updateClock();
             if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); }
             
-            // Carrega Aba Resumo
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) {
@@ -1036,13 +1110,10 @@
                 } 
             } catch(e) {}
             
-            // Carrega Aba Pessoal
             try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_oficial').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {}
             
-            // Carrega Aba Devoluções
             try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_oficial').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {}
             
-            // Carrega Aba Transporte (NOVO)
             try {
                 const docTrans = await db.collection('estado_atual').doc('transporte_oficial').get();
                 if (docTrans.exists && docTrans.data().html) {
