@@ -350,7 +350,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.26<br>Dev: Alexandre Henrique
+                    Versão 1.0.27<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -363,7 +363,6 @@
                     <h3>Armazenagem e Logística</h3>
                 </div>
                 <div class="header-widgets">
-                    <!-- IDs adicionados aos widgets para poder escondê-los via JS nas abas corretas -->
                     <div class="widget no-print" id="widget-escala" style="background: var(--header-blue); color: white; border-color: var(--header-blue);">
                         <span>⏱️ Escala de Turnos:</span>
                         <select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;">
@@ -519,7 +518,7 @@
                     <div class="card-body">
                         
                         <!-- Abas dos Motoristas Organizadas -->
-                        <div id="driver-tabs-container" style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; overflow-x: auto;">
+                        <div id="driver-tabs-container">
                             <button class="driver-tab-btn active" onclick="switchDriver(this, 'driver-default')">Clovis Inácio</button>
                         </div>
 
@@ -771,7 +770,6 @@
             items.forEach(item => item.classList.remove('active'));
             menuElement.classList.add('active');
 
-            // Oculta os painéis extras ao entrar nas abas focadas
             if(tabId === 'devolucoes' || tabId === 'transporte') {
                 document.getElementById('widget-escala').style.display = 'none';
                 document.getElementById('widget-status').style.display = 'none';
@@ -805,56 +803,82 @@
             let placa = document.getElementById('cad-placa').value.trim() || '-';
             let diaria = document.getElementById('cad-diaria').value.trim() || '647,50';
 
-            let primeironome = nome.split(' ')[0];
+            // Puxa o 1º e 2º nome para a aba
+            let parts = nome.split(' ').filter(p => p.length > 0);
+            let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo');
+            
             let id = 'driver-' + Date.now();
             
             let btn = document.createElement('button');
             btn.className = 'driver-tab-btn active';
-            btn.innerText = primeironome;
+            btn.innerText = tabName;
             btn.setAttribute('onclick', `switchDriver(this, '${id}')`);
             
             document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('driver-tabs-container').appendChild(btn);
 
-            let referencePane = document.querySelector('.driver-pane');
-            if(!referencePane) {
-                alert("Erro interno: Tente recarregar a página.");
-                return;
-            }
-            
-            let pane = referencePane.cloneNode(true);
-            pane.id = id;
             document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active'));
-            pane.classList.add('active');
-            
-            pane.querySelector('.driver-name-header').innerText = nome;
-            pane.querySelector('.driver-name-header').setAttribute('onblur', `updateDriverName(this, '${id}')`);
-            
-            pane.querySelector('.driver-cod').innerText = codigo;
-            pane.querySelector('.driver-cpf').innerText = cpf;
-            pane.querySelector('.driver-placa').innerText = placa;
-            pane.querySelector('.valor-diaria').innerText = diaria;
-            
-            let tbody = pane.querySelector('tbody');
-            tbody.id = 'tb-' + id;
-            tbody.innerHTML = `<tr>
-                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
-                <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td>
-                <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
-                <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
-                <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td>
-                <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
-                <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
-                <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
-                <td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
-            </tr>`;
 
-            pane.querySelector('button[onclick^="addTransportRow"]').setAttribute('onclick', `addTransportRow('${id}')`);
+            // Construção Segura do HTML para evitar que puxar tela em branco bugada do Firebase
+            let pane = document.createElement('div');
+            pane.id = id;
+            pane.className = 'driver-pane active';
             
-            let removeBtn = pane.querySelector('button[onclick^="removeDriver"]');
-            if(removeBtn) removeBtn.setAttribute('onclick', `removeDriver('${id}')`);
-            
-            pane.querySelector('.valor-diaria').setAttribute('onblur', `calcularTransporte('${id}')`);
+            pane.innerHTML = `
+                <div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <strong style="color:var(--text-muted);">Transportador:</strong> <span contenteditable="true" style="font-weight:bold; font-size:14px; outline:none;" class="driver-name-header" onblur="updateDriverName(this, '${id}')">${nome}</span><br>
+                        <strong style="color:var(--text-muted);">Código:</strong> <span contenteditable="true" class="driver-cod" style="outline:none;" onblur="salvarTransporte()">${codigo}</span><br>
+                        <strong style="color:var(--text-muted);">CPF:</strong> <span contenteditable="true" class="driver-cpf" style="outline:none;" onblur="salvarTransporte()">${cpf}</span><br>
+                        <strong style="color:var(--text-muted);">Placa:</strong> <span contenteditable="true" class="driver-placa" style="outline:none;" onblur="salvarTransporte()">${placa}</span>
+                    </div>
+                    <div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;">
+                        <strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('${id}')">${diaria}</span><br>
+                        <span style="font-size: 11px; color: var(--text-muted);">Valor por Hora: R$ <span class="valor-hora" style="font-weight:bold;">0,00</span></span>
+                    </div>
+                </div>
+
+                <div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;">
+                    <button class="btn-remove" onclick="removeDriver('${id}')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button>
+                    <button class="btn-add" onclick="addTransportRow('${id}')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button>
+                </div>
+
+                <table class="tabela-devolucao transport-table" style="text-align:center;">
+                    <thead>
+                        <tr>
+                            <th style="width:10%; text-align:center;">Data Início</th>
+                            <th style="width:10%; text-align:center;">Hora Início</th>
+                            <th style="width:10%; text-align:center;">Parada</th>
+                            <th style="width:10%; text-align:center;">Entrada</th>
+                            <th style="width:10%; text-align:center;">Hora Final</th>
+                            <th style="width:12%; text-align:center; color:var(--primary-blue);">Quant. Horas</th>
+                            <th style="width:10%; text-align:center;">Data Final</th>
+                            <th style="width:23%; text-align:left;">Observação</th>
+                            <th class="col-acao no-print"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-${id}">
+                        <tr>
+                            <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                            <td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td>
+                            <td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td>
+                            <td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td>
+                            <td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td>
+                            <td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td>
+                            <td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td>
+                            <td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td>
+                            <td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
+                            <td colspan="5" style="text-align: right; color: var(--text-muted); padding:10px;">TOTAL MENSAL:</td>
+                            <td class="total-horas-mensal" style="color: var(--primary-blue); font-size:14px; padding:10px;">24:00</td>
+                            <td colspan="3" class="total-valor-mensal" style="color: var(--success); font-size:15px; text-align:right; padding-right:15px;">R$ 0,00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            `;
 
             document.getElementById('drivers-content').appendChild(pane);
             
@@ -964,8 +988,9 @@
             let name = el.innerText.trim() || 'Sem Nome';
             let btn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`);
             if(btn) {
-                let primeironome = name.split(' ')[0];
-                btn.innerText = primeironome;
+                let parts = name.split(' ').filter(p => p.length > 0);
+                let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo');
+                btn.innerText = tabName;
             }
             salvarTransporte();
         }
