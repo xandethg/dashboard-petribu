@@ -240,19 +240,19 @@
     /* --- ADAPTAÇÃO PARA MOBILE (Não afeta PC nem Impressão) -- */
     /* ========================================================= */
     @media screen and (max-width: 768px) {
-        body { flex-direction: column; }
+        /* AQUI ESTÁ A CORREÇÃO: Força o container principal a virar coluna */
+        body, #app-container { flex-direction: column !important; }
         
         /* 1. Sidebar vira um cabeçalho no celular */
         .sidebar { width: 100%; height: auto; position: static; padding: 15px 10px; border-bottom: 2px solid var(--border); display: block; z-index: 10; }
         .logo-area { margin-bottom: 10px; padding: 0; border-bottom: none; }
         .logo-area img { max-width: 140px !important; }
-        .user-profile { display: none; } /* Oculta para economizar espaço no topo */
+        .user-profile { display: none; } 
         
-        /* 2. Menu vira botões roláveis horizontalmente (estilo app) */
-        .menu { display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; scroll-behavior: smooth;}
-        .menu::-webkit-scrollbar { height: 4px; }
-        .menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
-        .menu li { font-size: 13px; padding: 8px 15px; border-radius: 8px; margin-right: 5px; justify-content: center;}
+        /* 2. Menu vira botões roláveis horizontalmente */
+        .menu { display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; -webkit-overflow-scrolling: touch;}
+        .menu::-webkit-scrollbar { height: 4px; display: none; } /* Esconde a barra para ficar mais clean no touch */
+        .menu li { font-size: 13px; padding: 8px 15px; border-radius: 8px; margin-right: 5px; justify-content: center; border: 1px solid rgba(255,255,255,0.2);}
         .menu li.active { border-radius: 8px; margin-right: 5px; }
         
         /* 3. Botões do rodapé lado a lado */
@@ -260,7 +260,7 @@
         .sidebar-footer > button { display: inline-block; width: calc(50% - 4px); margin-bottom: 5px; font-size: 11px; padding: 10px 5px;}
         .sidebar-footer > div { display: flex; flex-wrap: wrap; gap: 8px; border-top: none !important; margin-top: 5px !important; padding-top: 0 !important; }
         .sidebar-footer > div > button { flex: 1; min-width: 45%; margin: 0; font-size: 11px; padding: 10px 5px;}
-        .sidebar-footer > div:last-child { display: none; } /* Oculta o texto de versão */
+        .sidebar-footer > div:last-child { display: none; }
 
         /* 4. Ajustes do Conteúdo Principal */
         .main-content { padding: 10px; width: 100%; overflow-x: hidden; }
@@ -281,12 +281,12 @@
         .charts-container { display: flex; flex-direction: column; }
         .info-box .flex-row { flex-direction: column; gap: 10px; }
         
-        /* 6. Scroll horizontal nas Tabelas para não amassar os dados */
-        .card-body { overflow-x: auto; padding: 10px; }
+        /* 6. Scroll horizontal nas Tabelas (Arrastar para o lado) */
+        .card-body { overflow-x: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
         .expedicao-table, .tabela-pessoal { min-width: 500px; }
         .tabela-devolucao { min-width: 700px; }
         .transport-table { min-width: 800px; }
-        #driver-tabs-container { padding-bottom: 5px; overflow-x: auto; }
+        #driver-tabs-container { padding-bottom: 5px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
         
         /* 7. Telas de Login e Modais */
         .login-box { width: 90%; padding: 30px 20px; }
