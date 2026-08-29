@@ -240,7 +240,6 @@
     /* --- ADAPTAÇÃO PARA MOBILE (Não afeta PC nem Impressão) -- */
     /* ========================================================= */
     @media screen and (max-width: 768px) {
-        /* AQUI ESTÁ A CORREÇÃO: Força o container principal a virar coluna */
         body, #app-container { flex-direction: column !important; }
         
         /* 1. Sidebar vira um cabeçalho no celular */
@@ -251,7 +250,7 @@
         
         /* 2. Menu vira botões roláveis horizontalmente */
         .menu { display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; -webkit-overflow-scrolling: touch;}
-        .menu::-webkit-scrollbar { height: 4px; display: none; } /* Esconde a barra para ficar mais clean no touch */
+        .menu::-webkit-scrollbar { height: 4px; display: none; }
         .menu li { font-size: 13px; padding: 8px 15px; border-radius: 8px; margin-right: 5px; justify-content: center; border: 1px solid rgba(255,255,255,0.2);}
         .menu li.active { border-radius: 8px; margin-right: 5px; }
         
@@ -407,7 +406,7 @@
                 
                 <!-- VERSÃO E DESENVOLVEDOR -->
                 <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    Versão 1.0.29<br>Dev: Alexandre Henrique
+                    Versão 1.0.30<br>Dev: Alexandre Henrique
                 </div>
             </div>
         </div>
@@ -1529,8 +1528,68 @@
             try { const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center;">Nenhum salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { }
         }
         function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
+        
         async function deleteHistory(docId, dateStr) { if(confirm(`Apagar ${dateStr}?`)) { try { await db.collection('historico_safra').doc(docId).delete(); openHistoryModal(); } catch (error) {} } }
-        async function loadHistory(docId, dateStr) { if(!confirm(`Carregar ${dateStr}?`)) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { document.querySelector('.main-content').innerHTML = docSnap.data().html; isHistoryMode = true; closeHistoryModal(); let banner = document.createElement('div'); banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Arquivo de ${dateStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar</button>`; document.querySelector('.main-content').prepend(banner); } } catch(error) {} }
+        
+        // NOVA FUNÇÃO QUE CARREGA O HISTÓRICO BLOQUEADO
+        async function loadHistory(docId, dateStr) { 
+            if(!confirm(`Carregar o histórico do dia ${dateStr}?`)) return; 
+            try { 
+                const docSnap = await db.collection('historico_safra').doc(docId).get(); 
+                if (docSnap.exists) { 
+                    document.querySelector('.main-content').innerHTML = docSnap.data().html; 
+                    isHistoryMode = true; 
+                    closeHistoryModal(); 
+
+                    let mainContent = document.querySelector('.main-content');
+                    mainContent.querySelectorAll('[contenteditable="true"]').forEach(el => el.setAttribute('contenteditable', 'false'));
+                    mainContent.querySelectorAll('.btn-add, .btn-remove').forEach(btn => btn.style.display = 'none');
+                    mainContent.querySelectorAll('.badge').forEach(badge => badge.style.pointerEvents = 'none');
+                    mainContent.querySelectorAll('select').forEach(sel => sel.disabled = true);
+
+                    let banner = document.createElement('div'); 
+                    banner.className = 'no-print'; 
+                    banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px; flex-wrap: wrap; gap: 10px;'; 
+                    banner.innerHTML = `
+                        <span>⚠️ Arquivo de ${dateStr} (SOMENTE LEITURA)</span> 
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="restoreHistory('${docId}')" style="background:#10b981; color:white; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">♻️ Trazer este dia de volta (Restaurar)</button>
+                            <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Sair do Histórico</button>
+                        </div>
+                    `; 
+                    document.querySelector('.main-content').prepend(banner); 
+                } 
+            } catch(error) {
+                alert("Erro ao carregar o histórico.");
+            } 
+        }
+
+        // NOVA FUNÇÃO QUE RESTAURA O HISTÓRICO E O TORNA OFICIAL
+        async function restoreHistory(docId) {
+            if(!confirm("⚠️ ATENÇÃO: Isso vai substituir os dados do Resumo Atual pelos dados deste histórico.\n\nDeseja continuar e trazer este dia à vida?")) return;
+            
+            try {
+                const docSnap = await db.collection('historico_safra').doc(docId).get();
+                if (docSnap.exists) {
+                    let tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = docSnap.data().html;
+                    let tabResumoOriginal = tempDiv.querySelector('#tab-resumo');
+                    
+                    if (tabResumoOriginal) {
+                        await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ 
+                            html: tabResumoOriginal.innerHTML, 
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                        });
+                        alert("✅ Dia restaurado com sucesso! A página será atualizada para você continuar a edição.");
+                        location.reload(); 
+                    } else {
+                        alert("Erro: Estrutura inválida.");
+                    }
+                }
+            } catch(e) {
+                alert("Erro ao tentar restaurar o histórico.");
+            }
+        }
 
         const stateConfig = { 'tarefa': [{ text: 'Concluído', class: 'badge-concluido' }, { text: 'Em andamento', class: 'badge-andamento' }, { text: 'Pendente', class: 'badge-parada' }], 'operacao': [{ text: 'Normal', class: 'badge-normal' }, { text: 'Operando', class: 'badge-normal' }, { text: 'Vazio', class: 'badge-andamento' }, { text: 'Parada', class: 'badge-parada' }, { text: 'Disponível', class: 'badge-normal' }], 'operacaoGlobal': [{ text: 'OPERAÇÃO NORMAL', class: 'badge-normal' }, { text: 'OPERAÇÃO PARCIAL', class: 'badge-andamento' }, { text: 'SAFRA PARADA', class: 'badge-parada' }], 'expStatus': [{ text: '-', class: 'badge-inativo' }, { text: 'Ativo', class: 'badge-concluido' }] };
         function cycleStatus(element, type) { let states = stateConfig[type]; let currentText = element.innerText.trim(); let currentIndex = states.findIndex(s => s.text === currentText); if (currentIndex === -1) currentIndex = 0; let nextIndex = (currentIndex + 1) % states.length; let nextState = states[nextIndex]; let extraClass = element.classList.contains('badge-inline') ? ' badge-inline' : ''; element.className = 'badge ' + nextState.class + extraClass; element.innerText = nextState.text; if (type === 'operacaoGlobal') { let emojiEl = document.querySelector('.status-emoji'); if (nextState.class === 'badge-normal') emojiEl.innerText = '🟢'; else if (nextState.class === 'badge-andamento') emojiEl.innerText = '🟡'; else emojiEl.innerText = '🔴'; } }
