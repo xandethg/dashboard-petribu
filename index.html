@@ -524,6 +524,7 @@
                                     </select>
                                     Mês de Ref:
                                     <input type="month" id="filtro-mes-clima" onchange="gerarTabelaMensal()" style="padding:4px; border:1px solid #cbd5e1; border-radius:4px; outline:none; font-weight:bold;">
+                                    <span id="label-mes-mensal" style="margin-left: 10px; color: var(--primary-blue);"></span>
                                 </div>
                                 <button class="btn-add" onclick="calcularCoresMensal()" style="background:#f59e0b; color:white; border:none; padding:6px 12px; border-radius:4px;">🎨 Colorir Máximas/Mínimas</button>
                             </div>
@@ -664,6 +665,10 @@
 
         let isHistoryMode = false;
         let isDevolucaoHistoryMode = false;
+
+        // DECLARAÇÃO DAS VARIÁVEIS DOS GRÁFICOS
+        let chartClimaT = null; let chartClimaU = null;
+        let chartClientesInst = null; let chartMotivosInst = null;
 
         function updateClock() {
             if(isHistoryMode) return; 
@@ -909,7 +914,12 @@
             
             let p = filtroMes.split('-');
             let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            document.getElementById('label-mes-mensal').innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
+            
+            // CORREÇÃO: Evitar erro caso o label-mes-mensal não exista na aba atual
+            let labelMesMensal = document.getElementById('label-mes-mensal');
+            if (labelMesMensal) {
+                labelMesMensal.innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
+            }
             
             let tbody = document.getElementById('tb-clima-mensal');
             tbody.innerHTML = "<tr><td colspan='25'>Buscando dados consolidados no servidor...</td></tr>";
@@ -969,7 +979,6 @@
             });
         }
 
-        let chartClimaT = null; let chartClimaU = null;
         async function atualizarDashboardClima() {
             let filtroMes = document.getElementById('dash-mes-clima').value; 
             if(!filtroMes) return;
