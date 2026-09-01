@@ -254,7 +254,6 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
     <div id="login-screen">
         <div class="login-box">
             <img src="logo-petribu.png" alt="Petribu" style="max-width: 220px; height: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
@@ -268,7 +267,6 @@
 
     <div id="app-container">
         
-        <!-- MODAIS (Históricos e Cadastro) -->
         <div id="history-modal" class="modal-overlay no-print"><div class="modal-content"><h3>🗄️ Histórico da Safra</h3><ul id="history-list" style="list-style:none; padding:0; margin-bottom: 20px;"></ul><button onclick="closeHistoryModal()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button></div></div>
         <div id="modal-historico-devolucoes" class="modal-overlay no-print"><div class="modal-content"><h3>📂 Histórico de Devoluções</h3><ul id="lista-historico-devolucoes" style="list-style:none; padding:0; margin-bottom: 20px;"></ul><button onclick="closeDevolucoesHistory()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button></div></div>
         <div id="modal-historico-transporte" class="modal-overlay no-print"><div class="modal-content"><h3>📂 Histórico de Transporte</h3><ul id="lista-historico-transporte" style="list-style:none; padding:0; margin-bottom: 20px;"></ul><button onclick="closeTransporteHistory()" style="padding:10px 15px; cursor:pointer; width:100%; background:#ef4444; color:white; border:none; border-radius:4px; font-weight:bold;">Fechar</button></div></div>
@@ -305,7 +303,6 @@
         </div>
 
         <div class="main-content">
-            <!-- HEADER DA PÁGINA -->
             <div class="top-header">
                 <div class="title-area"><h1>RELATÓRIO DIÁRIO DE SAFRA</h1><h3>Armazenagem e Logística</h3></div>
                 <div class="header-widgets">
@@ -316,7 +313,6 @@
                 </div>
             </div>
 
-            <!-- ================= ABA 1: RESUMO GERAL ================= -->
             <div id="tab-resumo">
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-icon" style="color:#3b82f6;">🚚</div><div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
@@ -393,7 +389,6 @@
                 </div>
             </div>
 
-            <!-- ================= ABA 2: QUADRO DE PESSOAL ================= -->
             <div id="tab-pessoal" style="display: none;">
                 <div id="grid-pessoal">
                     <div class="col col-ta"><div class="card flex-grow-1"><div class="card-header" style="background-color: #3b82f6;">TURMA A (TA)<button class="btn-add" onclick="addEmployeeRow('tb-ta')" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid white; color:white;">+ Funcionário</button></div><div class="card-body" style="padding: 10px;"><div class="info-box" style="margin-bottom: 5px;"><strong>👤 Líder:</strong> Erivaldo<br><strong>🛠️ Assistente:</strong> Silvio</div><table class="tabela-pessoal"><thead><tr><th class="col-mat">MAT.</th><th class="col-nome">NOME</th><th class="col-cargo">CARGO</th><th class="col-acao"></th></tr></thead><tbody id="tb-ta"></tbody></table></div></div></div>
@@ -402,7 +397,6 @@
                 </div>
             </div>
 
-            <!-- ================= ABA 3: TRANSPORTE DE AÇÚCAR ================= -->
             <div id="tab-transporte" style="display: none;">
                 <div class="card">
                     <div class="card-header no-print" style="background-color: #2563eb;">
@@ -433,7 +427,6 @@
                 </div>
             </div>
 
-            <!-- ================= ABA 4: DEVOLUÇÕES ================= -->
             <div id="tab-devolucoes" style="display: none;">
                 <div class="card">
                     <div class="card-header no-print" style="background-color: #f59e0b;">
@@ -453,11 +446,10 @@
                 </div>
             </div>
 
-            <!-- ================= NOVA ABA: CLIMA E ARMAZENAGEM ================= -->
             <div id="tab-clima" style="display: none;">
                 <div class="card">
                     <div class="card-header no-print" style="background-color: #172a5a;">
-                        <span contenteditable="true" id="clima-mes-ano" onblur="salvarClima()" style="padding: 4px; border-radius: 4px; min-width: 150px; display: inline-block;">Agosto/2026</span>
+                        <span id="clima-mes-ano" style="padding: 4px; font-weight: bold;">--</span>
                         <div id="clima-tabs-container" style="border:none; margin:0; padding:0;">
                             <button class="clima-tab-btn active" onclick="switchClimaView('diario', this)" style="background: #3b82f6 !important;">📝 Lançamento Diário</button>
                             <button class="clima-tab-btn" onclick="switchClimaView('mensal', this)">📊 Tabela Consolidada (Mensal)</button>
@@ -466,7 +458,6 @@
                     </div>
                     <div class="card-body" style="background: #f8fafc;">
                         
-                        <!-- VISÃO DIÁRIA -->
                         <div id="clima-diario" class="clima-pane active">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                                 <div style="font-size: 14px; font-weight:bold; color:var(--header-blue);">Selecione o Dia: <input type="date" id="clima-dia-input" onchange="carregarDiaClima()" style="padding:4px; border:1px solid var(--border); border-radius:4px; outline:none;"></div>
@@ -482,7 +473,6 @@
                                         <th rowspan="2" class="col-acao no-print" style="background-color:#172a5a; color:white;"></th>
                                     </tr>
                                     <tr>
-                                        <!-- Repetir Temp/Umid 12 vezes -->
                                         <th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th>
                                         <th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th><th class="header-sub">T ºC</th><th class="header-sub">U %</th>
                                     </tr>
@@ -523,16 +513,17 @@
                             </div>
                         </div>
 
-                        <!-- VISÃO MENSAL (CONSOLIDADA) -->
                         <div id="clima-mensal" class="clima-pane">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                <div style="font-size: 14px; font-weight:bold; color:var(--header-blue);">
-                                    Visualizando Mês de <span id="label-mes-mensal">Agosto/2026</span> - Armazém: 
-                                    <select id="select-armazem-mensal" onchange="gerarTabelaMensal()" style="padding:4px; font-weight:bold; border-radius:4px;">
+                                <div style="font-size: 14px; font-weight:bold; color:var(--header-blue); display:flex; gap:10px; align-items:center;">
+                                    Armazém:
+                                    <select id="select-armazem-mensal" onchange="gerarTabelaMensal()" style="padding:4px; font-weight:bold; border-radius:4px; border:1px solid #cbd5e1;">
                                         <option value="Armazém 01">Armazém 01</option>
                                         <option value="Armazém Anexo">Armazém Anexo</option>
                                         <option value="Armazém Estruturado">Armazém Estruturado</option>
                                     </select>
+                                    Mês de Ref:
+                                    <input type="month" id="filtro-mes-clima" onchange="gerarTabelaMensal()" style="padding:4px; border:1px solid #cbd5e1; border-radius:4px; outline:none; font-weight:bold;">
                                 </div>
                                 <button class="btn-add" onclick="calcularCoresMensal()" style="background:#f59e0b; color:white; border:none; padding:6px 12px; border-radius:4px;">🎨 Colorir Máximas/Mínimas</button>
                             </div>
@@ -561,45 +552,43 @@
                             </div>
                         </div>
 
-                        <!-- DASHBOARD CLIMA -->
                         <div id="clima-dash" class="clima-pane">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                                <div style="font-size: 14px; font-weight:bold; color:var(--header-blue);">
+                                    Análise Mensal: <input type="month" id="dash-mes-clima" onchange="atualizarDashboardClima()" style="padding:4px; border:1px solid #cbd5e1; border-radius:4px; outline:none;">
+                                </div>
+                            </div>
                             <div class="analytics-kpi-grid">
                                 <div class="analytics-kpi-card" style="border-top-color: #ef4444;">
-                                    <h3>🔥 Pico de Calor Hoje</h3>
+                                    <h3>🔥 Pico de Calor no Mês</h3>
                                     <div class="analytics-value" id="dash-pico-temp" style="color: #ef4444; font-size:24px; font-weight:900;">-- ºC</div>
                                     <span id="dash-pico-local" style="font-size: 11px; color: var(--text-muted);">---</span>
                                 </div>
                                 <div class="analytics-kpi-card" style="border-top-color: #3b82f6;">
-                                    <h3>💧 Pico de Umidade Hoje</h3>
+                                    <h3>💧 Pico de Umidade no Mês</h3>
                                     <div class="analytics-value" id="dash-pico-umid" style="color: #3b82f6; font-size:24px; font-weight:900;">-- %</div>
                                     <span id="dash-pico-umid-local" style="font-size: 11px; color: var(--text-muted);">---</span>
                                 </div>
                                 <div class="analytics-kpi-card" style="border-top-color: #10b981;">
-                                    <h3>🛡️ Status de Armazenagem</h3>
-                                    <div class="analytics-value" style="color: #10b981; font-size:16px; font-weight:bold; margin-top:10px;">DENTRO DA NORMALIDADE</div>
+                                    <h3>🛡️ Status Geral do Mês</h3>
+                                    <div class="analytics-value" style="color: #10b981; font-size:16px; font-weight:bold; margin-top:10px;">DADOS COMPILADOS</div>
                                 </div>
                             </div>
                             <div class="charts-container" style="grid-template-columns: 1fr 1fr;">
                                 <div class="chart-box">
-                                    <h3>📈 Curva Térmica Diária (Média)</h3>
+                                    <h3>📈 Curva Térmica Mensal (Média de todos os dias)</h3>
                                     <canvas id="chartClimaTemp" height="150"></canvas>
                                 </div>
                                 <div class="chart-box">
-                                    <h3>📊 Umidade Média por Armazém</h3>
+                                    <h3>📊 Umidade Média do Mês por Armazém</h3>
                                     <canvas id="chartClimaUmid" height="150"></canvas>
                                 </div>
-                            </div>
-                            <div style="text-align:center; margin-top:15px;">
-                                <button onclick="atualizarDashboardClima()" style="background:#172a5a; color:white; border:none; padding:8px 15px; border-radius:4px; cursor:pointer; font-weight:bold;">🔄 Atualizar Gráficos com os dados de Hoje</button>
                             </div>
                         </div>
 
                     </div>
                 </div>
-            </div> <!-- FIM TAB CLIMA -->
-
-            <!-- ================= ABA 5: DASHBOARD ANALÍTICO (Devoluções) ================= -->
-            <div id="tab-analytics" style="display: none;">
+            </div> <div id="tab-analytics" style="display: none;">
                 <div class="card">
                     <div class="card-header no-print" style="background-color: #10b981;">
                         <span>📈 ANÁLISE DE DEVOLUÇÕES</span>
@@ -642,19 +631,12 @@
                         </div>
                     </div>
                 </div>
-            </div> <!-- FIM TAB ANALYTICS -->
-
-        </div>
-    </div> <!-- FIM DO APP-CONTAINER -->
-
-    <!-- Importando o Firebase e Chart.js -->
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+            </div> </div>
+    </div> <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
 
-    <!-- SCRIPTS DE LÓGICA -->
     <script>
-        // CONFIGURAÇÕES GERAIS E PLUGINS
         const datalabelsPlugin = {
             id: 'datalabels',
             afterDatasetsDraw(chart) {
@@ -682,34 +664,25 @@
         let isHistoryMode = false;
         let isDevolucaoHistoryMode = false;
 
-        // O RELÓGIO QUE FAZ O PAINEL LIGAR (Não deletar essa função)
         function updateClock() {
             if(isHistoryMode) return; 
             const now = new Date();
             const dateStr = now.toLocaleDateString('pt-BR');
             const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
             const dateEl = document.getElementById('dash-date'); 
             const timeEl = document.getElementById('dash-time');
-            
             if(dateEl && dateEl.innerText !== dateStr) dateEl.innerText = dateStr;
             if(timeEl && timeEl.innerText !== timeStr) timeEl.innerText = timeStr;
-
             const siloHoje = document.getElementById('silo-data-hoje');
             const siloOntem = document.getElementById('silo-data-ontem');
-            
             if(siloHoje && siloHoje.innerText !== dateStr) siloHoje.innerText = dateStr;
-            
-            let ontem = new Date(now);
-            ontem.setDate(ontem.getDate() - 1);
+            let ontem = new Date(now); ontem.setDate(ontem.getDate() - 1);
             let ontemStr = ontem.toLocaleDateString('pt-BR');
             if(siloOntem && siloOntem.innerText !== ontemStr) siloOntem.innerText = ontemStr;
         }
         setInterval(updateClock, 1000);
 
-        // AUTENTICAÇÃO E CARREGAMENTO
         auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(console.error);
-
         auth.onAuthStateChanged(async user => {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
@@ -718,10 +691,16 @@
                 document.getElementById('display-username').innerText = nomeFormatado;
                 document.body.setAttribute('data-user', nomeFormatado);
                 
-                // Configura input de data inicial para o clima
-                let today = new Date().toISOString().split('T')[0];
-                document.getElementById('clima-dia-input').value = today;
+                // Configura inputs de data para o clima com o dia e mês atual
+                let today = new Date();
+                let isoDate = today.toISOString().split('T')[0]; // YYYY-MM-DD
+                let isoMonth = isoDate.substring(0, 7); // YYYY-MM
                 
+                document.getElementById('clima-dia-input').value = isoDate;
+                document.getElementById('filtro-mes-clima').value = isoMonth;
+                document.getElementById('dash-mes-clima').value = isoMonth;
+                atualizaLabelMesClima(isoDate);
+
                 await carregarDadosDaNuvem();
                 iniciarSalvamentoAutomaticoResumo();
             } else {
@@ -731,29 +710,27 @@
             }
         });
 
-        function handleLoginEnter(e) { if (e.key === 'Enter') efetuarLogin(); }
-        
-        function efetuarLogin() {
-            const userBox = document.getElementById('login-username').value.trim().toLowerCase().replace(/\s/g, ''); const passBox = document.getElementById('login-password').value; const errorMsg = document.getElementById('login-error');
-            if(!userBox || !passBox) { errorMsg.innerText = "Preencha o usuário e a senha!"; errorMsg.style.display = "block"; return; }
-            auth.signInWithEmailAndPassword(userBox + "@petribu.local", passBox).then(() => { errorMsg.style.display = "none"; document.getElementById('login-username').value = ""; document.getElementById('login-password').value = ""; }).catch(() => { errorMsg.innerText = "Usuário ou senha incorretos!"; errorMsg.style.display = "block"; });
+        function atualizaLabelMesClima(isoDate) {
+            let p = isoDate.split('-');
+            let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            document.getElementById('clima-mes-ano').innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
         }
-        
+
+        function handleLoginEnter(e) { if (e.key === 'Enter') efetuarLogin(); }
+        function efetuarLogin() { const userBox = document.getElementById('login-username').value.trim().toLowerCase().replace(/\s/g, ''); const passBox = document.getElementById('login-password').value; const errorMsg = document.getElementById('login-error'); if(!userBox || !passBox) { errorMsg.innerText = "Preencha o usuário e a senha!"; errorMsg.style.display = "block"; return; } auth.signInWithEmailAndPassword(userBox + "@petribu.local", passBox).then(() => { errorMsg.style.display = "none"; document.getElementById('login-username').value = ""; document.getElementById('login-password').value = ""; }).catch(() => { errorMsg.innerText = "Usuário ou senha incorretos!"; errorMsg.style.display = "block"; }); }
         function efetuarLogout() { auth.signOut(); }
-        
         function alterarMinhaSenha() { const novaSenha = prompt("Digite a sua NOVA senha (obrigatório ter no mínimo 6 caracteres):"); if(novaSenha && novaSenha.length >= 6) { auth.currentUser.updatePassword(novaSenha).then(() => alert("✅ Senha alterada com sucesso!")).catch(() => alert("Erro. Saia do sistema e tente de novo.")); } }
 
         function switchTab(tabId, menuElement) {
             ['resumo', 'pessoal', 'devolucoes', 'transporte', 'analytics', 'clima'].forEach(id => { document.getElementById('tab-' + id).style.display = 'none'; });
             document.getElementById('tab-' + tabId).style.display = 'block';
             let items = document.querySelectorAll('.menu li'); items.forEach(item => item.classList.remove('active')); menuElement.classList.add('active');
-            if(tabId === 'devolucoes' || tabId === 'transporte' || tabId === 'clima') { document.getElementById('widget-escala').style.display = 'none'; document.getElementById('widget-status').style.display = 'none'; } 
-            else { document.getElementById('widget-escala').style.display = 'flex'; document.getElementById('widget-status').style.display = 'flex'; }
+            if(tabId === 'devolucoes' || tabId === 'transporte' || tabId === 'clima') { document.getElementById('widget-escala').style.display = 'none'; document.getElementById('widget-status').style.display = 'none'; } else { document.getElementById('widget-escala').style.display = 'flex'; document.getElementById('widget-status').style.display = 'flex'; }
             if(tabId === 'analytics') { atualizarDashboardAnalytics(); }
             if(tabId === 'clima') { carregarDiaClima(); }
         }
 
-        // CARREGAMENTO PRINCIPAL DE DADOS (Aqui os seus dados voltam a aparecer)
+        // CARREGAMENTO PRINCIPAL
         async function carregarDadosDaNuvem() { 
             updateClock(); 
             if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); } 
@@ -766,17 +743,13 @@
                     document.getElementById('drivers-content').innerHTML = docTrans.data().html; 
                     if(docTrans.data().tabs) document.getElementById('driver-tabs-container').innerHTML = docTrans.data().tabs; 
                     if(docTrans.data().mesNome) document.getElementById('nome-mes-transporte').innerText = docTrans.data().mesNome; 
-                    
                     let tabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn'); 
                     let panes = document.querySelectorAll('#drivers-content .driver-pane'); 
                     tabs.forEach((tab, index) => { if(!tab.hasAttribute('onclick')) { if(panes[index]) { let paneId = panes[index].id; tab.setAttribute('onclick', `switchDriver(this, '${paneId}')`); } } }); 
-                    
                     let ghostTabs = document.querySelectorAll('#driver-tabs-container .driver-tab-btn'); 
                     ghostTabs.forEach(aba => { let scriptClique = aba.getAttribute('onclick') || ''; let idMatch = scriptClique.match(/'([^']+)'/); if (idMatch) { let painel = document.getElementById(idMatch[1]); if (!painel || painel.innerHTML.trim().length < 100) { aba.remove(); if (painel) painel.remove(); } } }); 
-                    
                     let primeiraAba = document.querySelector('#driver-tabs-container .driver-tab-btn'); 
                     if(primeiraAba) primeiraAba.click(); 
-                    
                     panes = document.querySelectorAll('#drivers-content .driver-pane'); 
                     panes.forEach(pane => { 
                         let nameEl = pane.querySelector('.driver-name-header'); if (nameEl) { nameEl.removeAttribute('contenteditable'); nameEl.removeAttribute('onblur'); } 
@@ -803,7 +776,6 @@
             btn.classList.add('active');
             document.querySelectorAll('.clima-pane').forEach(p => p.classList.remove('active'));
             document.getElementById('clima-' + viewId).classList.add('active');
-            
             if(viewId === 'dash') atualizarDashboardClima();
             if(viewId === 'mensal') gerarTabelaMensal();
         }
@@ -857,15 +829,21 @@
         }
 
         async function carregarDiaClima() {
+            // Antes de carregar o novo dia, salva o dia atual (caso tenha havido mudanças pendentes)
+            // A função salvarClima pega a data atual do input antes de ela ser alterada (se chamada no click)
+            // No nosso caso o onchange já mudou o value do input. Então assumimos que o onchange em cada input já salvou.
+            
             let dateVal = document.getElementById('clima-dia-input').value;
             if(!dateVal) return;
+            
+            atualizaLabelMesClima(dateVal); // Muda o titulo superior baseado na data selecionada
+
             try {
                 const docSnap = await db.collection('clima_diario').doc(dateVal).get();
                 if (docSnap.exists && docSnap.data().html) {
                     let oldInput = document.getElementById('clima-dia-input').value;
                     document.getElementById('clima-diario').innerHTML = docSnap.data().html;
                     document.getElementById('clima-dia-input').value = oldInput; 
-                    document.getElementById('clima-mes-ano').innerText = docSnap.data().mesAno || "Agosto/2026";
                 } else {
                     document.querySelectorAll('#tb-clima-diario input').forEach(i => i.value = "0");
                     document.getElementById('clima-obs').value = "";
@@ -889,17 +867,21 @@
 
         async function gerarTabelaMensal() {
             let armazemSelecionado = document.getElementById('select-armazem-mensal').value;
-            let mesAtualStr = document.getElementById('clima-mes-ano').innerText;
-            document.getElementById('label-mes-mensal').innerText = mesAtualStr;
+            let filtroMes = document.getElementById('filtro-mes-clima').value; // Ex: "2026-08"
+            
+            let p = filtroMes.split('-');
+            let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            document.getElementById('label-mes-mensal').innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
+            
             let tbody = document.getElementById('tb-clima-mensal');
-            tbody.innerHTML = "<tr><td colspan='25'>Buscando dados no servidor...</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='25'>Buscando dados consolidados no servidor...</td></tr>";
 
             try {
                 const snapshot = await db.collection('clima_diario').get();
                 let diasMes = [];
                 snapshot.forEach(doc => {
-                    let dataDoDoc = doc.id; 
-                    if(doc.data().mesAno === mesAtualStr) {
+                    let dataDoDoc = doc.id; // "2026-08-03"
+                    if(dataDoDoc.startsWith(filtroMes)) {
                         diasMes.push({ data: dataDoDoc, dados: doc.data().dados });
                     }
                 });
@@ -907,7 +889,7 @@
                 diasMes.sort((a,b) => new Date(a.data) - new Date(b.data));
 
                 if(diasMes.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='25'>Nenhum dado encontrado para este mês.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='25'>Nenhum dado de clima registrado para este mês.</td></tr>";
                     return;
                 }
 
@@ -928,92 +910,94 @@
                     tbody.appendChild(tr);
                 });
                 
-            } catch(e) {
-                console.log(e);
-                tbody.innerHTML = "<tr><td colspan='25'>Erro ao buscar dados.</td></tr>";
-            }
+            } catch(e) { console.log(e); tbody.innerHTML = "<tr><td colspan='25'>Erro ao buscar dados.</td></tr>"; }
         }
 
         function calcularCoresMensal() {
             let trs = document.querySelectorAll('#tb-clima-mensal tr');
             if(trs.length === 0 || trs[0].innerText.includes('Nenhum')) return;
-
             document.querySelectorAll('#tb-clima-mensal td').forEach(td => { td.classList.remove('bg-max-temp', 'bg-min-temp', 'bg-max-umid', 'bg-min-umid'); });
-
             trs.forEach(tr => {
                 let temps = Array.from(tr.querySelectorAll('.mensal-temp')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
                 let umids = Array.from(tr.querySelectorAll('.mensal-umid')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
-                
                 if(temps.length > 0) {
                     let maxT = Math.max(...temps); let minT = Math.min(...temps);
-                    tr.querySelectorAll('.mensal-temp').forEach(td => {
-                        let v = parseFloat(td.innerText.replace(',','.'));
-                        if(v === maxT) td.classList.add('bg-max-temp');
-                        else if(v === minT) td.classList.add('bg-min-temp');
-                    });
+                    tr.querySelectorAll('.mensal-temp').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxT) td.classList.add('bg-max-temp'); else if(v === minT) td.classList.add('bg-min-temp'); });
                 }
-                
                 if(umids.length > 0) {
                     let maxU = Math.max(...umids); let minU = Math.min(...umids);
-                    tr.querySelectorAll('.mensal-umid').forEach(td => {
-                        let v = parseFloat(td.innerText.replace(',','.'));
-                        if(v === maxU) td.classList.add('bg-max-umid');
-                        else if(v === minU) td.classList.add('bg-min-umid');
-                    });
+                    tr.querySelectorAll('.mensal-umid').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxU) td.classList.add('bg-max-umid'); else if(v === minU) td.classList.add('bg-min-umid'); });
                 }
             });
         }
 
         let chartClimaT = null; let chartClimaU = null;
-        function atualizarDashboardClima() {
-            let armazens = []; let maxTempGeral = 0; let localMaxT = "-"; let maxUmidGeral = 0; let localMaxU = "-";
-            let mediasUmid = []; let mediasTempDia = [0,0,0,0,0,0,0,0,0,0,0,0]; 
+        async function atualizarDashboardClima() {
+            let filtroMes = document.getElementById('dash-mes-clima').value; // Ex: "2026-08"
+            let armazensSet = new Set();
+            let mediasTempDia = [0,0,0,0,0,0,0,0,0,0,0,0]; // Soma das temps em cada horario para gerar curva média do mes
+            let contagemTempDia = [0,0,0,0,0,0,0,0,0,0,0,0];
+            let umidadePorArmazem = {}; // { "Armazem 1": {soma: 0, count: 0} }
+            let maxTempGeral = 0; let localMaxT = "-"; 
+            let maxUmidGeral = 0; let localMaxU = "-";
 
-            let trs = document.querySelectorAll('#tb-clima-diario tr');
-            trs.forEach(tr => {
-                let nome = tr.querySelector('td div[contenteditable]').innerText.trim();
-                armazens.push(nome);
-                
-                let inputs = tr.querySelectorAll('input.clima-input');
-                let somaUmid = 0; let countUmid = 0;
+            try {
+                const snapshot = await db.collection('clima_diario').get();
+                snapshot.forEach(doc => {
+                    let dataDoDoc = doc.id; 
+                    if(dataDoDoc.startsWith(filtroMes)) {
+                        let [, , diaBr] = dataDoDoc.split('-');
+                        let dados = doc.data().dados;
+                        
+                        dados.forEach(linha => {
+                            let nomeArm = linha.nome;
+                            armazensSet.add(nomeArm);
+                            if(!umidadePorArmazem[nomeArm]) umidadePorArmazem[nomeArm] = {soma: 0, count: 0};
 
-                inputs.forEach((inp, idx) => {
-                    let val = parseFloat(inp.value.replace(',','.')) || 0;
-                    if(val > 0) {
-                        if(idx % 2 === 0) { 
-                            mediasTempDia[idx/2] += val;
-                            if(val > maxTempGeral) { maxTempGeral = val; localMaxT = `${nome} às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][idx/2]}`; }
-                        } else { 
-                            somaUmid += val; countUmid++;
-                            if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = `${nome} às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)]}`; }
-                        }
+                            linha.valores.forEach((valStr, idx) => {
+                                let val = parseFloat(valStr.replace(',','.')) || 0;
+                                if(val > 0) {
+                                    if(idx % 2 === 0) { // Temperatura
+                                        mediasTempDia[idx/2] += val;
+                                        contagemTempDia[idx/2]++;
+                                        if(val > maxTempGeral) { maxTempGeral = val; localMaxT = `${nomeArm} (Dia ${diaBr}) às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][idx/2]}`; }
+                                    } else { // Umidade
+                                        umidadePorArmazem[nomeArm].soma += val;
+                                        umidadePorArmazem[nomeArm].count++;
+                                        if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = `${nomeArm} (Dia ${diaBr}) às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)]}`; }
+                                    }
+                                }
+                            });
+                        });
                     }
                 });
-                mediasUmid.push(countUmid > 0 ? (somaUmid/countUmid).toFixed(1) : 0);
-            });
 
-            document.getElementById('dash-pico-temp').innerText = maxTempGeral > 0 ? maxTempGeral + ' ºC' : '-- ºC';
-            document.getElementById('dash-pico-local').innerText = localMaxT;
-            document.getElementById('dash-pico-umid').innerText = maxUmidGeral > 0 ? maxUmidGeral + ' %' : '-- %';
-            document.getElementById('dash-pico-umid-local').innerText = localMaxU;
+                document.getElementById('dash-pico-temp').innerText = maxTempGeral > 0 ? maxTempGeral + ' ºC' : '-- ºC';
+                document.getElementById('dash-pico-local').innerText = localMaxT;
+                document.getElementById('dash-pico-umid').innerText = maxUmidGeral > 0 ? maxUmidGeral + ' %' : '-- %';
+                document.getElementById('dash-pico-umid-local').innerText = localMaxU;
 
-            let labelsHoras = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'];
-            let qtdArmazens = armazens.length || 1;
-            let tempFinal = mediasTempDia.map(v => (v/qtdArmazens).toFixed(1));
+                let labelsHoras = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'];
+                let tempFinal = mediasTempDia.map((soma, i) => contagemTempDia[i] > 0 ? (soma/contagemTempDia[i]).toFixed(1) : 0);
 
-            if(chartClimaT) chartClimaT.destroy();
-            chartClimaT = new Chart(document.getElementById('chartClimaTemp').getContext('2d'), {
-                type: 'line',
-                data: { labels: labelsHoras, datasets: [{ label: 'Média ºC', data: tempFinal, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4 }] },
-                options: { responsive: true, plugins: { datalabels: {display: false}, legend: { display: false } }, scales: { y: { beginAtZero: false, suggestedMin: 20 } } }
-            });
+                if(chartClimaT) chartClimaT.destroy();
+                chartClimaT = new Chart(document.getElementById('chartClimaTemp').getContext('2d'), {
+                    type: 'line',
+                    data: { labels: labelsHoras, datasets: [{ label: 'Média ºC (Mês)', data: tempFinal, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4 }] },
+                    options: { responsive: true, plugins: { datalabels: {display: false}, legend: { display: false } }, scales: { y: { beginAtZero: false, suggestedMin: 20 } } }
+                });
 
-            if(chartClimaU) chartClimaU.destroy();
-            chartClimaU = new Chart(document.getElementById('chartClimaUmid').getContext('2d'), {
-                type: 'bar',
-                data: { labels: armazens, datasets: [{ label: 'Umidade %', data: mediasUmid, backgroundColor: '#3b82f6', borderRadius: 4 }] },
-                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMax: 100 } } }
-            });
+                let armazensArr = Array.from(armazensSet);
+                let mediasUmid = armazensArr.map(arm => umidadePorArmazem[arm].count > 0 ? (umidadePorArmazem[arm].soma / umidadePorArmazem[arm].count).toFixed(1) : 0);
+
+                if(chartClimaU) chartClimaU.destroy();
+                chartClimaU = new Chart(document.getElementById('chartClimaUmid').getContext('2d'), {
+                    type: 'bar',
+                    data: { labels: armazensArr.length > 0 ? armazensArr : ['Nenhum'], datasets: [{ label: 'Umidade Média %', data: mediasUmid.length > 0 ? mediasUmid : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMax: 100 } } }
+                });
+
+            } catch (error) { console.log(error); }
         }
         // --- FIM LÓGICA DO CLIMA ---
 
@@ -1039,7 +1023,11 @@
         function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_oficial').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
         function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_oficial').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
         function iniciarSalvamentoAutomaticoResumo() { let saveTimeoutResumo; const observerResumo = new MutationObserver((mutations) => { if(isHistoryMode) return; let shouldSave = false; for(let m of mutations) { if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && m.target.id !== 'silo-data-hoje' && m.target.id !== 'silo-data-ontem') { shouldSave = true; break; } } if (shouldSave) { clearTimeout(saveTimeoutResumo); saveTimeoutResumo = setTimeout(() => { db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 1500); } }); observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true }); }
-        async function atualizarDashboardAnalytics() { let filtro = document.getElementById('analytics-filter').value; let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0; let motivosFreq = {}; let motivosVol = {}; let clientesVol = {}; let produtosVol = {}; function processarLinhas(trs) { trs.forEach(tr => { let tds = tr.querySelectorAll('td'); if(tds.length >= 7) { let cliente = tds[1].innerText.trim(); let tipo = tds[4].innerText.trim().toLowerCase(); let qtde = parseInt(tds[5].innerText.trim()) || 0; let motivo = tds[6].innerText.trim(); let selectProd = tds[3].querySelector('select'); let produto = selectProd ? selectProd.value : tds[3].innerText.trim(); if(qtde > 0) { totalGeral += qtde; if(tipo.includes('saco') || tipo === 'sc') totalSacos += qtde; else if(tipo.includes('bag') || tipo === 'bb') totalBigBags += qtde; else totalFardos += qtde; if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; } if(motivo && motivo !== '---') { motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; } if(produto && produto !== 'Produto X' && produto !== 'Selecione...') { produtosVol[produto] = (produtosVol[produto] || 0) + qtde; } } } }); } if (filtro === 'atual') { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } else { let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText; if(descobreSafra(nomeMesAtual) === filtro) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } try { const snapAno = await db.collection('historico_mensal_devolucoes').get(); snapAno.forEach(doc => { let safraDoHistorico = descobreSafra(doc.data().mes); if(safraDoHistorico === filtro) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = doc.data().html; processarLinhas(tempTbody.querySelectorAll('tr')); } }); } catch(e) { console.error(e); } } document.getElementById('kpi-total-fardos').innerText = totalFardos.toLocaleString('pt-BR'); document.getElementById('kpi-total-sacos').innerText = totalSacos.toLocaleString('pt-BR'); document.getElementById('kpi-total-bags').innerText = totalBigBags.toLocaleString('pt-BR'); if (filtro === 'atual') { let ultimoTotal = 0; try { const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get(); if(!snapAnt.empty) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = snapAnt.docs[0].data().html; tempTbody.querySelectorAll('tr').forEach(tr => { let divs = tr.querySelectorAll('div[contenteditable="true"]'); if(divs.length >= 7) ultimoTotal += (parseInt(divs[5].innerText.trim()) || 0); }); } } catch(e) {} let elVar = document.getElementById('kpi-variacao'); if(ultimoTotal > 0) { let perc = ((totalGeral - ultimoTotal) / ultimoTotal) * 100; if(perc > 0) { elVar.innerText = `🔺 +${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--danger)"; } else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; } else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; } } else if(ultimoTotal === 0 && totalGeral > 0) { elVar.innerText = "🔺 100% (Sem devoluções no mês passado)"; elVar.style.color = "var(--danger)"; } else { elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)"; } } else { let txtSafra = document.getElementById('analytics-filter').options[document.getElementById('analytics-filter').selectedIndex].text; document.getElementById('kpi-variacao').innerText = txtSafra; document.getElementById('kpi-variacao').style.color = "var(--text-muted)"; } let topMotivo = '---'; let maxFreq = 0; for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } } document.getElementById('kpi-motivo').innerText = topMotivo; document.getElementById('kpi-motivo-sub').innerText = maxFreq > 0 ? `${maxFreq} ocorrências registradas` : 'Causa raiz principal'; let topCliente = '---'; let maxVol = 0; for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } } document.getElementById('kpi-cliente').innerText = topCliente; let detalhesHtml = ""; for(let p in produtosVol) { detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`; } let detalheEl = document.getElementById('kpi-detalhe-produtos'); if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.'; if(chartClientesInst) chartClientesInst.destroy(); let ctxC = document.getElementById('chartClientes').getContext('2d'); chartClientesInst = new Chart(ctxC, { type: 'bar', data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false, grid: { display: false } } } } }); if(chartMotivosInst) chartMotivosInst.destroy(); let ctxM = document.getElementById('chartMotivos').getContext('2d'); chartMotivosInst = new Chart(ctxM, { type: 'pie', data: { labels: Object.keys(motivosVol).length > 0 ? Object.keys(motivosVol) : ['Nenhum dado'], datasets: [{ data: Object.values(motivosVol).length > 0 ? Object.values(motivosVol) : [1], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#64748b'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } }); }
+        
+        // GRÁFICOS DE DEVOLUÇÃO
+        function descobreSafra(textoMes) { let str = textoMes.toLowerCase(); let yearMatch = str.match(/\d{2,4}/); if(!yearMatch) return "desconhecida"; let ano = parseInt(yearMatch[0]); if(ano < 100) ano += 2000; let meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']; let indexMes = meses.findIndex(m => str.includes(m)); if(indexMes === -1) return "desconhecida"; let anoInicioSafra = (indexMes >= 7) ? ano : ano - 1; let final1 = anoInicioSafra.toString().slice(-2); let final2 = (anoInicioSafra + 1).toString().slice(-2); return `safra${final1}${final2}`; }
+        async function atualizarDashboardAnalytics() { let filtro = document.getElementById('analytics-filter').value; let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0; let motivosFreq = {}; let motivosVol = {}; let clientesVol = {}; let produtosVol = {}; function processarLinhas(trs) { trs.forEach(tr => { let tds = tr.querySelectorAll('td'); if(tds.length >= 7) { let cliente = tds[1].innerText.trim(); let tipo = tds[4].innerText.trim().toLowerCase(); let divQtde = tds[5].querySelector('div'); let qtdeTexto = divQtde ? divQtde.innerText.trim() : tds[5].innerText.trim(); let qtde = parseInt(qtdeTexto) || 0; let divMotivo = tds[6].querySelector('div'); let motivo = divMotivo ? divMotivo.innerText.trim() : tds[6].innerText.trim(); let selectProd = tds[3].querySelector('select'); let produto = selectProd ? selectProd.value : tds[3].innerText.trim(); if(qtde > 0) { totalGeral += qtde; if(tipo.includes('saco') || tipo === 'sc') totalSacos += qtde; else if(tipo.includes('bag') || tipo === 'bb') totalBigBags += qtde; else totalFardos += qtde; if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; } if(motivo && motivo !== '---') { motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; } if(produto && produto !== 'Produto X' && produto !== 'Selecione...') { produtosVol[produto] = (produtosVol[produto] || 0) + qtde; } } } }); } if (filtro === 'atual') { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } else { let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText; if(descobreSafra(nomeMesAtual) === filtro) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } try { const snapAno = await db.collection('historico_mensal_devolucoes').get(); snapAno.forEach(doc => { let safraDoHistorico = descobreSafra(doc.data().mes); if(safraDoHistorico === filtro) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = doc.data().html; processarLinhas(tempTbody.querySelectorAll('tr')); } }); } catch(e) { console.error(e); } } document.getElementById('kpi-total-fardos').innerText = totalFardos.toLocaleString('pt-BR'); document.getElementById('kpi-total-sacos').innerText = totalSacos.toLocaleString('pt-BR'); document.getElementById('kpi-total-bags').innerText = totalBigBags.toLocaleString('pt-BR'); if (filtro === 'atual') { let ultimoTotal = 0; try { const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get(); if(!snapAnt.empty) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = snapAnt.docs[0].data().html; tempTbody.querySelectorAll('tr').forEach(tr => { let divs = tr.querySelectorAll('div[contenteditable="true"]'); if(divs.length >= 7) ultimoTotal += (parseInt(divs[5].innerText.trim()) || 0); }); } } catch(e) {} let elVar = document.getElementById('kpi-variacao'); if(ultimoTotal > 0) { let perc = ((totalGeral - ultimoTotal) / ultimoTotal) * 100; if(perc > 0) { elVar.innerText = `🔺 +${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--danger)"; } else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; } else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; } } else if(ultimoTotal === 0 && totalGeral > 0) { elVar.innerText = "🔺 100% (Sem devoluções no mês passado)"; elVar.style.color = "var(--danger)"; } else { elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)"; } } else { let txtSafra = document.getElementById('analytics-filter').options[document.getElementById('analytics-filter').selectedIndex].text; document.getElementById('kpi-variacao').innerText = txtSafra; document.getElementById('kpi-variacao').style.color = "var(--text-muted)"; } let topMotivo = '---'; let maxFreq = 0; for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } } document.getElementById('kpi-motivo').innerText = topMotivo; document.getElementById('kpi-motivo-sub').innerText = maxFreq > 0 ? `${maxFreq} ocorrências registradas` : 'Causa raiz principal'; let topCliente = '---'; let maxVol = 0; for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } } document.getElementById('kpi-cliente').innerText = topCliente; let detalhesHtml = ""; for(let p in produtosVol) { detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`; } let detalheEl = document.getElementById('kpi-detalhe-produtos'); if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.'; if(chartClientesInst) chartClientesInst.destroy(); let ctxC = document.getElementById('chartClientes').getContext('2d'); chartClientesInst = new Chart(ctxC, { type: 'bar', data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false, grid: { display: false } } } } }); if(chartMotivosInst) chartMotivosInst.destroy(); let ctxM = document.getElementById('chartMotivos').getContext('2d'); chartMotivosInst = new Chart(ctxM, { type: 'pie', data: { labels: Object.keys(motivosVol).length > 0 ? Object.keys(motivosVol) : ['Nenhum dado'], datasets: [{ data: Object.values(motivosVol).length > 0 ? Object.values(motivosVol) : [1], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#64748b'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } }); }
+        
         async function encerrarMes() { let nomeMesEl = document.getElementById('nome-mes-devolucao'); let nomeMes = nomeMesEl.innerText.trim(); if(confirm("Deseja salvar a tabela de devoluções de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) { let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML; let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_"); try { await db.collection('historico_mensal_devolucoes').doc(docId).set({ html: htmlParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); document.getElementById('tb-devolucao').innerHTML = ""; nomeMesEl.innerText = "Mês/Ano"; salvarDevolucoes(); alert("✅ Mês encerrado com sucesso! Histórico arquivado."); } catch(error) { alert("Erro ao encerrar o mês."); } } }
         async function openDevolucoesHistory() { let listEl = document.getElementById('lista-historico-devolucoes'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-devolucoes').style.display = 'flex'; try { const snapshot = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadDevolucaoHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteDevolucaoHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; } }
         function closeDevolucoesHistory() { document.getElementById('modal-historico-devolucoes').style.display = 'none'; }
