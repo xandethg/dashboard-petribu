@@ -165,10 +165,10 @@
     .clima-table th.header-sub { background-color: #cbd5e1; color: #1e293b; font-size: 10px; }
     .clima-input { width: 100%; border: none; text-align: center; background: transparent; outline: none; font-weight: bold; }
     .clima-input:focus { background: #f1f5f9; }
-    .bg-max-temp { background-color: #fca5a5 !important; color: #7f1d1d !important; }
-    .bg-min-temp { background-color: #fef08a !important; color: #713f12 !important; }
-    .bg-max-umid { background-color: #93c5fd !important; color: #1e3a8a !important; }
-    .bg-min-umid { background-color: #bae6fd !important; color: #1e3a8a !important; }
+    .bg-max-temp { background-color: #fca5a5 !important; color: #7f1d1d !important; font-weight: 900 !important; }
+    .bg-min-temp { background-color: #fef08a !important; color: #713f12 !important; font-weight: 900 !important; }
+    .bg-max-umid { background-color: #93c5fd !important; color: #1e3a8a !important; font-weight: 900 !important; }
+    .bg-min-umid { background-color: #bae6fd !important; color: #1e3a8a !important; font-weight: 900 !important; }
 
     #driver-tabs-container, #clima-tabs-container { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; overflow-x: auto; white-space: nowrap; }
     .driver-tab-btn, .clima-tab-btn { background: var(--bg-main); color: var(--text-muted); border: 1px solid var(--border); padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; white-space: nowrap; display: inline-block; }
@@ -559,20 +559,26 @@
                                     Análise Mensal: <input type="month" id="dash-mes-clima" onchange="atualizarDashboardClima()" style="padding:4px; border:1px solid #cbd5e1; border-radius:4px; outline:none;">
                                 </div>
                             </div>
-                            <div class="analytics-kpi-grid">
+                            <div class="analytics-kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
                                 <div class="analytics-kpi-card" style="border-top-color: #ef4444;">
-                                    <h3>🔥 Pico de Calor no Mês</h3>
-                                    <div class="analytics-value" id="dash-pico-temp" style="color: #ef4444; font-size:24px; font-weight:900;">-- ºC</div>
-                                    <span id="dash-pico-local" style="font-size: 11px; color: var(--text-muted);">---</span>
+                                    <h3>🔥 Temp. Max Registrada</h3>
+                                    <div class="analytics-value" id="dash-max-temp" style="color: #ef4444; font-size:24px; font-weight:900;">-- ºC</div>
+                                    <span id="dash-max-temp-local" style="font-size: 11px; color: var(--text-muted);">---</span>
+                                </div>
+                                <div class="analytics-kpi-card" style="border-top-color: #f59e0b;">
+                                    <h3>❄️ Temp. Min Registrada</h3>
+                                    <div class="analytics-value" id="dash-min-temp" style="color: #f59e0b; font-size:24px; font-weight:900;">-- ºC</div>
+                                    <span id="dash-min-temp-local" style="font-size: 11px; color: var(--text-muted);">---</span>
                                 </div>
                                 <div class="analytics-kpi-card" style="border-top-color: #3b82f6;">
-                                    <h3>💧 Pico de Umidade no Mês</h3>
-                                    <div class="analytics-value" id="dash-pico-umid" style="color: #3b82f6; font-size:24px; font-weight:900;">-- %</div>
-                                    <span id="dash-pico-umid-local" style="font-size: 11px; color: var(--text-muted);">---</span>
+                                    <h3>💧 Umidade Max Registrada</h3>
+                                    <div class="analytics-value" id="dash-max-umid" style="color: #3b82f6; font-size:24px; font-weight:900;">-- %</div>
+                                    <span id="dash-max-umid-local" style="font-size: 11px; color: var(--text-muted);">---</span>
                                 </div>
-                                <div class="analytics-kpi-card" style="border-top-color: #10b981;">
-                                    <h3>🛡️ Status Geral do Mês</h3>
-                                    <div class="analytics-value" style="color: #10b981; font-size:16px; font-weight:bold; margin-top:10px;">DADOS COMPILADOS</div>
+                                <div class="analytics-kpi-card" style="border-top-color: #0ea5e9;">
+                                    <h3>🌵 Umidade Min Registrada</h3>
+                                    <div class="analytics-value" id="dash-min-umid" style="color: #0ea5e9; font-size:24px; font-weight:900;">-- %</div>
+                                    <span id="dash-min-umid-local" style="font-size: 11px; color: var(--text-muted);">---</span>
                                 </div>
                             </div>
                             <div class="charts-container" style="grid-template-columns: 1fr 1fr;">
@@ -803,7 +809,6 @@
             const savedShift = localStorage.getItem('petribu_shift_type_oficial'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } } 
         }
 
-        // --- LÓGICA DO CLIMA E ARMAZENAGEM CORRIGIDA ---
         function switchClimaView(viewId, btn) {
             document.querySelectorAll('.clima-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -843,7 +848,6 @@
             let dateVal = document.getElementById('clima-dia-input').value;
             if(!dateVal) return;
             
-            // FIX: Força todos os inputs a salvarem seus valores no HTML nativo (innerHTML)
             document.querySelectorAll('#tb-clima-diario input.clima-input').forEach(inp => {
                 inp.setAttribute('value', inp.value);
             });
@@ -882,7 +886,6 @@
                     document.getElementById('clima-diario').innerHTML = docSnap.data().html;
                     document.getElementById('clima-dia-input').value = oldInput; 
                 } else {
-                    // Limpa apenas os inputs se for um dia novo
                     document.querySelectorAll('#tb-clima-diario input').forEach(i => {
                         i.value = "0";
                         i.setAttribute('value', '0');
@@ -908,14 +911,13 @@
 
         async function gerarTabelaMensal() {
             let armazemSelecionado = document.getElementById('select-armazem-mensal').value;
-            let filtroMes = document.getElementById('filtro-mes-clima').value; // Formato YYYY-MM
+            let filtroMes = document.getElementById('filtro-mes-clima').value; 
             
             if(!filtroMes) return;
             
             let p = filtroMes.split('-');
             let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
             
-            // CORREÇÃO: Evitar erro caso o label-mes-mensal não exista na aba atual
             let labelMesMensal = document.getElementById('label-mes-mensal');
             if (labelMesMensal) {
                 labelMesMensal.innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
@@ -928,7 +930,7 @@
                 const snapshot = await db.collection('clima_diario').get();
                 let diasMes = [];
                 snapshot.forEach(doc => {
-                    let dataDoDoc = doc.id; // YYYY-MM-DD
+                    let dataDoDoc = doc.id;
                     if(dataDoDoc.startsWith(filtroMes)) {
                         diasMes.push({ data: dataDoDoc, dados: doc.data().dados });
                     }
@@ -953,10 +955,15 @@
                     tr.innerHTML = `<td style="font-weight:bold;">${dataBr}</td>`;
                     valores.forEach((val, idx) => {
                         let classTipo = (idx % 2 === 0) ? 'mensal-temp' : 'mensal-umid';
-                        tr.innerHTML += `<td class="${classTipo}">${val}</td>`;
+                        let displayVal = val;
+                        // Adiciona o % se for umidade e não estiver zerado
+                        if(idx % 2 !== 0 && val !== "0" && val !== "") displayVal += "%";
+                        tr.innerHTML += `<td class="${classTipo}">${displayVal}</td>`;
                     });
                     tbody.appendChild(tr);
                 });
+                
+                calcularCoresMensal();
                 
             } catch(e) { console.log(e); tbody.innerHTML = "<tr><td colspan='25'>Erro ao buscar dados.</td></tr>"; }
         }
@@ -967,14 +974,14 @@
             document.querySelectorAll('#tb-clima-mensal td').forEach(td => { td.classList.remove('bg-max-temp', 'bg-min-temp', 'bg-max-umid', 'bg-min-umid'); });
             trs.forEach(tr => {
                 let temps = Array.from(tr.querySelectorAll('.mensal-temp')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
-                let umids = Array.from(tr.querySelectorAll('.mensal-umid')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
+                let umids = Array.from(tr.querySelectorAll('.mensal-umid')).map(td => parseFloat(td.innerText.replace(',','.').replace('%','')) || 0).filter(v => v > 0);
                 if(temps.length > 0) {
                     let maxT = Math.max(...temps); let minT = Math.min(...temps);
                     tr.querySelectorAll('.mensal-temp').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxT) td.classList.add('bg-max-temp'); else if(v === minT) td.classList.add('bg-min-temp'); });
                 }
                 if(umids.length > 0) {
                     let maxU = Math.max(...umids); let minU = Math.min(...umids);
-                    tr.querySelectorAll('.mensal-umid').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxU) td.classList.add('bg-max-umid'); else if(v === minU) td.classList.add('bg-min-umid'); });
+                    tr.querySelectorAll('.mensal-umid').forEach(td => { let v = parseFloat(td.innerText.replace(',','.').replace('%','')); if(v === maxU) td.classList.add('bg-max-umid'); else if(v === minU) td.classList.add('bg-min-umid'); });
                 }
             });
         }
@@ -987,8 +994,13 @@
             let mediasTempDia = [0,0,0,0,0,0,0,0,0,0,0,0]; 
             let contagemTempDia = [0,0,0,0,0,0,0,0,0,0,0,0];
             let umidadePorArmazem = {}; 
-            let maxTempGeral = 0; let localMaxT = "-"; 
-            let maxUmidGeral = 0; let localMaxU = "-";
+            
+            // Variáveis para rastrear os picos
+            let maxTempGeral = -999; let localMaxT = "-"; 
+            let minTempGeral = 999;  let localMinT = "-";
+            let maxUmidGeral = -999; let localMaxU = "-";
+            let minUmidGeral = 999;  let localMinU = "-";
+            let achouTemp = false;   let achouUmid = false;
 
             try {
                 const snapshot = await db.collection('clima_diario').get();
@@ -1004,16 +1016,23 @@
                             if(!umidadePorArmazem[nomeArm]) umidadePorArmazem[nomeArm] = {soma: 0, count: 0};
 
                             linha.valores.forEach((valStr, idx) => {
-                                let val = parseFloat(valStr.replace(',','.')) || 0;
+                                let val = parseFloat(valStr.replace(',','.').replace('%','')) || 0;
                                 if(val > 0) {
+                                    let horaLabel = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)];
+                                    let locText = `${nomeArm} (Dia ${diaBr}) às ${horaLabel}`;
+                                    
                                     if(idx % 2 === 0) { 
+                                        achouTemp = true;
                                         mediasTempDia[idx/2] += val;
                                         contagemTempDia[idx/2]++;
-                                        if(val > maxTempGeral) { maxTempGeral = val; localMaxT = `${nomeArm} (Dia ${diaBr}) às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][idx/2]}`; }
+                                        if(val > maxTempGeral) { maxTempGeral = val; localMaxT = locText; }
+                                        if(val < minTempGeral) { minTempGeral = val; localMinT = locText; }
                                     } else { 
+                                        achouUmid = true;
                                         umidadePorArmazem[nomeArm].soma += val;
                                         umidadePorArmazem[nomeArm].count++;
-                                        if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = `${nomeArm} (Dia ${diaBr}) às ${['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)]}`; }
+                                        if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = locText; }
+                                        if(val < minUmidGeral) { minUmidGeral = val; localMinU = locText; }
                                     }
                                 }
                             });
@@ -1021,10 +1040,16 @@
                     }
                 });
 
-                document.getElementById('dash-pico-temp').innerText = maxTempGeral > 0 ? maxTempGeral + ' ºC' : '-- ºC';
-                document.getElementById('dash-pico-local').innerText = localMaxT;
-                document.getElementById('dash-pico-umid').innerText = maxUmidGeral > 0 ? maxUmidGeral + ' %' : '-- %';
-                document.getElementById('dash-pico-umid-local').innerText = localMaxU;
+                // Atualizando os textos na tela
+                document.getElementById('dash-max-temp').innerText = achouTemp ? maxTempGeral + ' ºC' : '-- ºC';
+                document.getElementById('dash-max-temp-local').innerText = localMaxT;
+                document.getElementById('dash-min-temp').innerText = achouTemp ? minTempGeral + ' ºC' : '-- ºC';
+                document.getElementById('dash-min-temp-local').innerText = localMinT;
+
+                document.getElementById('dash-max-umid').innerText = achouUmid ? maxUmidGeral + ' %' : '-- %';
+                document.getElementById('dash-max-umid-local').innerText = localMaxU;
+                document.getElementById('dash-min-umid').innerText = achouUmid ? minUmidGeral + ' %' : '-- %';
+                document.getElementById('dash-min-umid-local').innerText = localMinU;
 
                 let labelsHoras = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'];
                 let tempFinal = mediasTempDia.map((soma, i) => contagemTempDia[i] > 0 ? (soma/contagemTempDia[i]).toFixed(1) : 0);
@@ -1049,7 +1074,6 @@
             } catch (error) { console.log(error); }
         }
 
-        // --- DASHBOARD ANALÍTICO DE DEVOLUÇÕES (Corrigido) ---
         async function atualizarDashboardAnalytics() { 
             let filtro = document.getElementById('analytics-filter').value; 
             let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0; 
@@ -1172,6 +1196,40 @@
         function addStatusItem(containerId) { let container = document.getElementById(containerId); let div = document.createElement('div'); div.className = 'status-item'; div.innerHTML = `<span class="status-name" contenteditable="true">🏢 Novo Equipamento/Área</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(div); }
         function addSimpleItem(containerId) { let container = document.getElementById(containerId); let li = document.createElement('li'); li.innerHTML = `<span contenteditable="true">Escreva aqui...</span><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(li); }
         function addRecebimentoTerceiros() { let container = document.getElementById('informativo-container'); let div = document.createElement('div'); div.className = 'info-box'; div.innerHTML = `<div class="info-title" style="justify-content: space-between;"><span contenteditable="true">🚛 USINA ESTIVAS - BIG BAG</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()" style="opacity:1;">✖ Remover</button></div><div class="flex-row"><div class="flex-col"><strong>Ontem</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div><div class="flex-col"><strong>Hoje</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div></div><div style="margin-top: 8px; font-weight: bold; border-top: 1px dashed #cbd5e1; padding-top: 5px;">Total acumulado: <span contenteditable="true" style="color:var(--primary-blue);">0t</span></div>`; container.insertBefore(div, document.getElementById('row-ausentes-paradas')); }
+        
+        function changeShiftLayout(shiftType) {
+            localStorage.setItem('petribu_shift_type_oficial', shiftType);
+
+            // Define os cabeçalhos padrão baseados na escolha
+            let h1 = "23h às 07h", h2 = "07h às 15h", h3 = "15h às 23h";
+            
+            if (shiftType === 'sex') {
+                h1 = "23h às 07h";
+                h2 = "07h às 19h";
+                h3 = "19h às 07h";
+            } else if (shiftType === 'sab-dom') {
+                h1 = "07h às 19h";
+                h2 = "19h às 07h";
+            }
+
+            // Aplica a lógica em todas as tabelas de expedição da tela
+            document.querySelectorAll('.expedicao-table').forEach(table => {
+                let ths = table.querySelectorAll('th');
+                if(ths.length > 3) {
+                    ths[1].innerText = h1;
+                    ths[2].innerText = h2;
+                    
+                    if(shiftType === 'sab-dom') {
+                        // Esconde a terceira coluna para o final de semana
+                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = 'none');
+                    } else {
+                        // Mostra a terceira coluna e aplica o texto (Seg a Qui e Sexta)
+                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = ''); // Retorna ao display normal
+                        ths[3].innerText = h3;
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
