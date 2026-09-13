@@ -697,6 +697,8 @@
             ontem.setDate(ontem.getDate() - 1);
             let ontemStr = ontem.toLocaleDateString('pt-BR');
             if(siloOntem && siloOntem.innerText !== ontemStr) siloOntem.innerText = ontemStr;
+            
+            travarHorasFuturas();
         }
         setInterval(updateClock, 1000);
 
@@ -759,7 +761,6 @@
             else { document.getElementById('widget-escala').style.display = 'flex'; document.getElementById('widget-status').style.display = 'flex'; }
             
             if(tabId === 'analytics') { 
-                // Pequeno delay para garantir que a aba de gráfico abriu antes de desenhar (Conserta os gráficos em branco)
                 setTimeout(() => { atualizarDashboardAnalytics(); }, 100); 
             }
             if(tabId === 'clima') { carregarDiaClima(); }
@@ -843,6 +844,82 @@
             atualizaSelectMensal();
         }
 
+        function travarHorasFuturas() {
+            let hoje = new Date();
+            let dataInput = document.getElementById('clima-dia-input').value; 
+            let isHoje = false;
+            
+            if (dataInput) {
+                let tzOffset = hoje.getTimezoneOffset() * 60000;
+                let dataLocalFormatada = (new Date(hoje - tzOffset)).toISOString().split('T')[0];
+                isHoje = (dataInput === dataLocalFormatada);
+            }
+
+            let horaAtual = hoje.getHours();
+            let trs = document.querySelectorAll('#tb-clima-diario tr');
+
+            trs.forEach(tr => {
+                let inputs = tr.querySelectorAll('input.clima-input');
+                inputs.forEach((inp, idx) => {
+                    let horaDaColuna = (Math.floor(idx / 2) + 1) * 2; 
+                    if (isHoje && horaDaColuna > horaAtual) {
+                        inp.disabled = true;
+                        inp.style.backgroundColor = "rgba(0,0,0,0.05)";
+                        inp.style.cursor = "not-allowed";
+                        inp.title = "Aguarde o horário para preencher";
+                    } else {
+                        inp.disabled = false;
+                        inp.style.backgroundColor = "transparent";
+                        inp.style.cursor = "text";
+                        inp.title = "";
+                    }
+                });
+            });
+        }
+
+        function destacarVariacoesSuspeitas() {
+            let trs = document.querySelectorAll('#tb-clima-diario tr');
+            
+            trs.forEach(tr => {
+                let temps = tr.querySelectorAll('.val-temp');
+                let umids = tr.querySelectorAll('.val-umid');
+                
+                let ultimaTemp = 0;
+                temps.forEach(inp => {
+                    inp.style.border = "none"; 
+                    if(!inp.disabled) inp.style.backgroundColor = "transparent";
+                    inp.title = "";
+                    let val = parseFloat(inp.value.replace(',','.')) || 0;
+                    
+                    if (val > 0) {
+                        if (ultimaTemp > 0 && Math.abs(val - ultimaTemp) >= 4) {
+                            inp.style.backgroundColor = "#fee2e2";
+                            inp.style.border = "2px solid #ef4444";
+                            inp.title = "⚠️ Salto de temperatura suspeito (mais de 4ºC de diferença da hora anterior)!";
+                        }
+                        ultimaTemp = val;
+                    }
+                });
+
+                let ultimaUmid = 0;
+                umids.forEach(inp => {
+                    inp.style.border = "none";
+                    if(!inp.disabled) inp.style.backgroundColor = "transparent";
+                    inp.title = "";
+                    let val = parseFloat(inp.value.replace(',','.').replace('%','')) || 0;
+                    
+                    if (val > 0) {
+                        if (ultimaUmid > 0 && Math.abs(val - ultimaUmid) >= 15) {
+                            inp.style.backgroundColor = "#fef3c7";
+                            inp.style.border = "2px solid #f59e0b";
+                            inp.title = "⚠️ Salto de umidade suspeito (mais de 15% de diferença da hora anterior)!";
+                        }
+                        ultimaUmid = val;
+                    }
+                });
+            });
+        }
+
         async function salvarClima() {
             if(isHistoryMode) return;
             let dateVal = document.getElementById('clima-dia-input').value;
@@ -870,6 +947,7 @@
                     mesAno: document.getElementById('clima-mes-ano').innerText,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                destacarVariacoesSuspeitas();
             } catch(e) { console.log("Erro ao salvar clima", e); }
         }
 
@@ -893,6 +971,8 @@
                     document.getElementById('clima-obs').value = "";
                 }
                 atualizaSelectMensal();
+                destacarVariacoesSuspeitas();
+                travarHorasFuturas();
             } catch(e) { console.log(e); }
         }
 
@@ -1171,7 +1251,6 @@
         function addDevolucaoRow() { 
             let tbody = document.getElementById('tb-devolucao'); 
             let tr = document.createElement('tr'); 
-            // CORREÇÃO: Forçando a aba de devoluções a salvar o select marcado no HTML.
             const listaProdutos = `<select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:normal; outline:none; font-family:inherit; font-size:11px; color:inherit; padding:0; cursor:pointer;"><option value="" disabled selected>Selecione...</option><option value="Cristal Petribu">Cristal Petribu</option><option value="Demerara Petribu">Demerara Petribu</option><option value="Açúcar Glacê">Açúcar Glacê</option><option value="Refinado Especiale">Refinado Especiale</option><option value="Mascavo Petribu 1Kg">Mascavo Petribu 1Kg</option><option value="Mascavo Petribu 500g">Mascavo Petribu 500g</option><option value="Demerara Salute">Demerara Salute</option><option value="Açúcar Triturado">Açúcar Triturado</option><option value="Demerara Q. Almofada">Demerara Q. Almofada</option><option value="Demerara Q. Fundo Chato">Demerara Q. Fundo Chato</option><option value="Refinado Qualita">Refinado Qualita</option><option value="Cristal Qualita">Cristal Qualita</option><option value="Demerara Vida">Demerara Vida</option><option value="Demerara Nordestão">Demerara Nordestão</option><option value="Demerara G. Barbosa">Demerara G. Barbosa</option><option value="Mascavo G. B. 8x1">Mascavo G. B. 8x1</option><option value="Cristal Confiare">Cristal Confiare</option><option value="Demerara Confiare">Demerara Confiare</option><option value="Refinado Confiare">Refinado Confiare</option><option value="Cristal Carrefour">Cristal Carrefour</option><option value="Demerara Carrefour">Demerara Carrefour</option><option value="Refinado Carrefour">Refinado Carrefour</option><option value="Mascavo Carr. 1Kg">Mascavo Carr. 1Kg</option><option value="Mascavo Carr. 500g">Mascavo Carr. 500g</option><option value="Demerara Escogido">Demerara Escogido</option><option value="Refinado Escogido">Refinado Escogido</option><option value="Mascavo Escogido">Mascavo Escogido</option><option value="Sachê Cristal">Sachê Cristal</option><option value="Sachê Demerara">Sachê Demerara</option><option value="Sachê Cristal FD 10x400g">Sachê Cristal FD 10x400g</option><option value="Cristal P. Big Bag">Cristal P. Big Bag</option><option value="Demerara P. Big Bag">Demerara P. Big Bag</option><option value="Refinado Big Bag">Refinado Big Bag</option><option value="Malha 20/45">Malha 20/45</option><option value="Malha 30/60">Malha 30/60</option><option value="Especial Big Bag">Especial Big Bag</option><option value="Mascavo Big Bag">Mascavo Big Bag</option><option value="Cristal P. SC 50Kg">Cristal P. SC 50Kg</option><option value="Cristal P. SC 25Kg">Cristal P. SC 25Kg</option><option value="Demerara P. SC 50Kg">Demerara P. SC 50Kg</option><option value="Demerara P. SC 25Kg">Demerara P. SC 25Kg</option><option value="Triturado SC 50Kg">Triturado SC 50Kg</option><option value="Refinado P. SC 50Kg">Refinado P. SC 50Kg</option><option value="Refinado P. SC 25Kg">Refinado P. SC 25Kg</option><option value="Açúcar Glacê SC 25Kg">Açúcar Glacê SC 25Kg</option><option value="Amorfo 25Kg">Amorfo 25Kg</option><option value="Malha 20/45 25Kg">Malha 20/45 25Kg</option></select>`; 
             tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`; 
             tbody.appendChild(tr); 
@@ -1191,7 +1270,6 @@
                 } 
                 if (shouldSave) { 
                     clearTimeout(saveTimeoutResumo); 
-                    // CORREÇÃO: Tempo de delay aumentado de 1500 para 3000ms
                     saveTimeoutResumo = setTimeout(() => { 
                         db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); 
                     }, 3000); 
@@ -1208,7 +1286,73 @@
         async function deleteDevolucaoHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de ${mesStr}?`)) { try { await db.collection('historico_mensal_devolucoes').doc(docId).delete(); openDevolucoesHistory(); } catch (error) { alert("Erro."); } } }
         async function loadDevolucaoHistory(docId, mesStr) { if(!confirm(`Carregar o histórico de ${mesStr}? O salvamento atual será pausado.`)) return; try { const docSnap = await db.collection('historico_mensal_devolucoes').doc(docId).get(); if (docSnap.exists) { document.getElementById('tb-devolucao').innerHTML = docSnap.data().html; document.getElementById('nome-mes-devolucao').innerText = docSnap.data().mes + " (LEITURA)"; isDevolucaoHistoryMode = true; closeDevolucoesHistory(); let banner = document.createElement('div'); banner.id = 'banner-dev-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de ${mesStr}</span> <button onclick="exitDevolucaoHistoryMode()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-devolucoes').prepend(banner); } } catch(error) { alert("Erro ao carregar o relatório."); } }
         function exitDevolucaoHistoryMode() { isDevolucaoHistoryMode = false; let banner = document.getElementById('banner-dev-history'); if(banner) banner.remove(); carregarDadosDaNuvem(); }
-        async function clearDashboard() { if(isHistoryMode) return; if (confirm("APAGAR APENAS OS NÚMEROS DO RESUMO DIÁRIO para começar uma nova safra?")) { const template = localStorage.getItem('template_resumo_oficial'); if (template) { document.getElementById('tab-resumo').innerHTML = template; await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: template, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); const selector = document.getElementById('shift-selector'); if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } updateClock(); alert("✅ Resumo zerado!"); } else { location.reload(); } } }
+        
+        async function clearDashboard() { 
+            if(isHistoryMode) return; 
+            
+            if (confirm("Deseja ZERAR APENAS OS DADOS numéricos e status do Resumo Diário para iniciar um novo dia?\n(Isso manterá os blocos e as tabelas que você adicionou intactos).")) { 
+                
+                let resumo = document.getElementById('tab-resumo');
+
+                resumo.querySelectorAll('.kpi-card p[contenteditable="true"]').forEach(p => p.innerText = '0');
+
+                resumo.querySelectorAll('.expedicao-table .data-row div[contenteditable="true"]').forEach(div => {
+                    if (div.parentElement.classList.contains('total-cell')) {
+                        div.innerText = '0';
+                    } else {
+                        div.innerHTML = '-';
+                    }
+                });
+
+                resumo.querySelectorAll('.expedicao-table .status-row .badge').forEach(badge => {
+                    badge.className = 'badge badge-inativo badge-inline';
+                    badge.innerText = '-';
+                });
+
+                ['lista-moagem', 'lista-ausentes', 'lista-paradas', 'lista-patio'].forEach(id => {
+                    let ul = document.getElementById(id);
+                    if (ul) {
+                        ul.innerHTML = `<li><span contenteditable="true">Nenhum registro.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>`;
+                    }
+                });
+
+                ['list-limpeza', 'list-operacao', 'list-manut'].forEach(id => {
+                    let div = document.getElementById(id);
+                    if (div) {
+                        div.innerHTML = `<div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>`;
+                    }
+                });
+
+                let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]');
+                siloSpans.forEach(span => {
+                    if(span.innerText.includes('S1')) span.innerText = 'S1: Vazio';
+                    else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
+                    else span.innerText = 'Vazio';
+                });
+
+                resumo.querySelectorAll('#lista-status .badge').forEach(badge => {
+                    badge.className = 'badge badge-normal';
+                    badge.innerText = 'Normal';
+                });
+
+                updateClock();
+
+                try {
+                    await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({
+                        html: resumo.innerHTML,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    const selector = document.getElementById('shift-selector'); 
+                    if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } 
+                    
+                    alert("✅ Resumo diário zerado e pronto para o novo dia!");
+                } catch(e) {
+                    alert("Erro ao limpar painel.");
+                }
+            } 
+        }
+
         async function saveDay() { if(isHistoryMode) return; let dateStr = document.getElementById('dash-date').innerText.trim(); if(!dateStr || dateStr === '--/--/----') return; if(confirm(`Salvar Resumo de Safra do dia ${dateStr}?`)) { let currentHTML = document.querySelector('.main-content').innerHTML; let docId = dateStr.replaceAll('/', '-'); try { await db.collection('historico_safra').doc(docId).set({ html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ Salvo!`); } catch(error) { alert("Erro."); } } }
         async function openHistoryModal() { let listEl = document.getElementById('history-list'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando... ⏳</li>'; document.getElementById('history-modal').style.display = 'flex'; try { const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center;">Nenhum salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { } }
         function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
@@ -1225,7 +1369,6 @@
         function changeShiftLayout(shiftType) {
             localStorage.setItem('petribu_shift_type_oficial', shiftType);
 
-            // Define os cabeçalhos padrão baseados na escolha
             let h1 = "23h às 07h", h2 = "07h às 15h", h3 = "15h às 23h";
             
             if (shiftType === 'sex') {
@@ -1237,7 +1380,6 @@
                 h2 = "19h às 07h";
             }
 
-            // Aplica a lógica em todas as tabelas de expedição da tela
             document.querySelectorAll('.expedicao-table').forEach(table => {
                 let ths = table.querySelectorAll('th');
                 if(ths.length > 3) {
@@ -1245,11 +1387,9 @@
                     ths[2].innerText = h2;
                     
                     if(shiftType === 'sab-dom') {
-                        // Esconde a terceira coluna para o final de semana
                         table.querySelectorAll('.shift-3').forEach(el => el.style.display = 'none');
                     } else {
-                        // Mostra a terceira coluna e aplica o texto (Seg a Qui e Sexta)
-                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = ''); // Retorna ao display normal
+                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = '');
                         ths[3].innerText = h3;
                     }
                 }
