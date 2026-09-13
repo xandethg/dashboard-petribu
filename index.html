@@ -305,7 +305,7 @@
                 <!-- NOVA IDENTIFICAÇÃO DE DESENVOLVEDOR E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v1.0.0
+                    v2.1.0
                 </div>
             </div>
         </div>
@@ -339,7 +339,7 @@
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <div style="flex: 3; display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="flex: 2.2; display: flex; flex-direction: column; gap: 5px;">
                                             <div style="display: flex; gap: 10px;">
                                                 <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
                                                     <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
@@ -365,11 +365,11 @@
                                         </div>
                                         
                                         <!-- DESENHO VETORIAL DOS SILOS BASEADO NO ESQUEMA -->
-                                        <div style="flex: 1.4; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 10px;" class="no-print">
+                                        <div style="flex: 1.8; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 15px;" class="no-print">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
-                                                <svg viewBox="0 0 100 100" style="width: 70px; height: 100px; display: block;">
+                                                <svg viewBox="0 0 100 100" style="width: 80px; height: 110px; display: block;">
                                                     <defs><clipPath id="shape-silo1"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
                                                     <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
                                                     <rect id="silo1-fill" clip-path="url(#shape-silo1)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
@@ -390,7 +390,7 @@
                                             <!-- SILO 2 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S2</strong>
-                                                <svg viewBox="0 0 100 100" style="width: 70px; height: 100px; display: block;">
+                                                <svg viewBox="0 0 100 100" style="width: 80px; height: 110px; display: block;">
                                                     <defs><clipPath id="shape-silo2"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
                                                     <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
                                                     <rect id="silo2-fill" clip-path="url(#shape-silo2)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
@@ -409,7 +409,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="silo-totals" style="font-size: 10px; text-align: right; color: var(--text-muted); margin-top: 5px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
+                                    <div id="silo-totals" style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 5px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
                                 </div>
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -714,7 +714,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
 
     <script>
-        // CONFIGURAÇÕES GERAIS E PLUGINS
         const datalabelsPlugin = {
             id: 'datalabels',
             afterDatasetsDraw(chart) {
@@ -760,7 +759,6 @@
             const siloHoje = document.getElementById('silo-data-hoje');
             const siloOntem = document.getElementById('silo-data-ontem');
             
-            // As caixinhas HTML mantêm "--/--/----", e esta linha preenche com as datas reais automaticamente
             if(siloHoje && siloHoje.innerText !== dateStr) siloHoje.innerText = dateStr;
             
             let ontem = new Date(now);
@@ -837,8 +835,21 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); } 
-            try { const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); if (docResumo.exists) { document.getElementById('tab-resumo').innerHTML = docResumo.data().html; } } catch(e) {} 
+            if (!localStorage.getItem('template_resumo_v210')) { localStorage.setItem('template_resumo_v210', document.getElementById('tab-resumo').innerHTML); } 
+            
+            try { 
+                const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
+                if (docResumo.exists) { 
+                    let htmlResumo = docResumo.data().html;
+                    // Se for HTML antigo (sem desenho do silo), nós IGNORAMOS para não destruir o layout da versão nova
+                    if(htmlResumo.includes('id="silo1-fill"')) {
+                        document.getElementById('tab-resumo').innerHTML = htmlResumo; 
+                    } else {
+                        console.log("Atualização de versão detectada. O HTML antigo foi descartado para não quebrar o layout.");
+                    }
+                } 
+            } catch(e) {} 
+            
             try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_oficial').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {} 
             try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_oficial').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {} 
             try { 
@@ -1378,7 +1389,16 @@
                 if(isHistoryMode) return; 
                 let shouldSave = false; 
                 for(let m of mutations) { 
-                    if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && m.target.id !== 'silo-data-hoje' && m.target.id !== 'silo-data-ontem' && m.target.id !== 'silo1-fill' && m.target.id !== 'silo2-fill') { shouldSave = true; break; } 
+                    if (m.target.id !== 'dash-time' && 
+                        m.target.id !== 'dash-date' && 
+                        m.target.id !== 'silo-data-hoje' && 
+                        m.target.id !== 'silo-data-ontem' && 
+                        m.target.id !== 'silo1-fill' && 
+                        m.target.id !== 'silo2-fill' &&
+                        m.target.id !== 'silo1-pct' &&
+                        m.target.id !== 'silo2-pct') { 
+                        shouldSave = true; break; 
+                    } 
                 } 
                 if (shouldSave) { 
                     clearTimeout(saveTimeoutResumo); 
