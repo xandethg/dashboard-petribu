@@ -95,13 +95,23 @@
 
     .flex-col { flex: 1; min-width: 0; } 
     ul.simple-list { padding-left: 15px; margin: 4px 0; }
-    ul.simple-list li { margin-bottom: 3px; font-size: 10.5px; }
+    ul.simple-list li { margin-bottom: 3px; font-size: 11px; }
     ul.simple-list li span[contenteditable="true"] {
         display: inline-block;
         max-width: calc(100% - 25px); 
         vertical-align: top;
         white-space: pre-wrap; 
         word-break: break-word; 
+    }
+
+    /* REGRAS ESPECÍFICAS PARA A CAIXA DO SILO NÃO QUEBRAR LINHA */
+    #box-silo-main ul.simple-list li {
+        white-space: nowrap !important;
+    }
+    #box-silo-main ul.simple-list li span[contenteditable="true"] {
+        white-space: nowrap !important;
+        word-break: normal !important;
+        max-width: none !important;
     }
 
     .table-title { font-size: 11px; font-weight: bold; color: var(--primary-blue); margin: 15px 0 5px 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
@@ -195,7 +205,8 @@
 
     /* --- IMPRESSÃO (BLINDAGEM CONTRA DISTORÇÕES EM 107%) --- */
     @media print {
-        @page { size: A4 landscape; margin: 5mm; }
+        /* Removemos o size: A4 landscape para não bloquear a opção de escala no navegador! */
+        @page { margin: 5mm; }
         
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
@@ -223,6 +234,9 @@
         ul.simple-list { padding-left: 10px !important; margin: 2px 0 !important; }
         ul.simple-list li { margin-bottom: 0px !important; font-size: 8.5px !important; white-space: normal !important; word-wrap: break-word !important;}
         
+        #box-silo-main ul.simple-list li { white-space: nowrap !important; word-wrap: normal !important; }
+        #box-silo-main ul.simple-list li span { white-space: nowrap !important; word-break: normal !important; }
+
         .table-title { margin: 4px 0 2px 0 !important; font-size: 9px !important; }
         .expedicao-table { margin-bottom: 4px !important; font-size: 8.5px !important; border-collapse: collapse !important; table-layout: fixed !important; width: 100% !important; }
         .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; } .total-cell { font-size: 11px !important; }
@@ -230,12 +244,12 @@
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
         /* SILO COMPACTO PARA IMPRESSÃO 107% */
-        #silo-container-v225 { 
-            display: flex !important; justify-content: center !important; gap: 30px !important;
+        #silo-container-v230 { 
+            display: flex !important; justify-content: center !important; gap: 20px !important;
             border-top: 0.5px dashed #cbd5e1 !important; padding-top: 4px !important; margin-top: 4px !important; visibility: visible !important;
         }
-        #silo-container-v225 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
-        #silo-container-v225 svg { width: 30px !important; height: 50px !important; display: block !important; }
+        #silo-container-v230 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
+        #silo-container-v230 svg { width: 30px !important; height: 50px !important; display: block !important; }
 
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
@@ -339,7 +353,7 @@
                 <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.2.5
+                    v2.3.0
                 </div>
             </div>
         </div>
@@ -355,9 +369,9 @@
                 </div>
             </div>
 
-            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.2.5 -->
+            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.3.0 -->
             <div id="tab-resumo">
-                <div id="flag-v225" style="display:none;"></div>
+                <div id="flag-v230" style="display:none;"></div>
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-icon" style="color:#3b82f6;">🚚</div><div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
                     <div class="kpi-card"><div class="kpi-icon" style="color:#8b5cf6;">🌾</div><div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
@@ -389,38 +403,38 @@
                                             <div class="flex-col">
                                                 <strong>12:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
-                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S1: Vazio</span></li>
+                                                    <li><span contenteditable="true">S2: Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 18h -->
                                             <div class="flex-col" style="border-right: 1px dashed var(--border); padding-right: 5px;">
                                                 <strong>18:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
-                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S1: Vazio</span></li>
+                                                    <li><span contenteditable="true">S2: Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 00h -->
                                             <div class="flex-col" style="padding-left: 5px;">
                                                 <strong>00:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
-                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S1: Vazio</span></li>
+                                                    <li><span contenteditable="true">S2: Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 05h -->
                                             <div class="flex-col">
                                                 <strong>05:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1:<br>Vazio</span></li>
-                                                    <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2:<br>Vazio</span></li>
+                                                    <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1: Vazio</span></li>
+                                                    <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2: Vazio</span></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHOS DOS SILOS v225 -->
-                                        <div id="silo-container-v225" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
+                                        <!-- DESENHOS DOS SILOS v230 -->
+                                        <div id="silo-container-v230" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -892,17 +906,17 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_v225')) { localStorage.setItem('template_resumo_v225', document.getElementById('tab-resumo').innerHTML); } 
+            if (!localStorage.getItem('template_resumo_v230')) { localStorage.setItem('template_resumo_v230', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
                     
-                    if (htmlResumo.includes('id="flag-v225"')) {
+                    if (htmlResumo.includes('id="flag-v230"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        console.log("Migrando para v2.2.5 (Impressão Ajustada)...");
+                        console.log("Migrando para v2.3.0 (Correção Silos Linha Reta e Escala Chrome)...");
                         let temp = document.createElement('div');
                         temp.innerHTML = htmlResumo;
 
@@ -930,13 +944,17 @@
                         transferValues('#silo-data-ontem');
                         transferValues('#silo-data-hoje');
                         
+                        // Garante que o texto migrado tire os <br> e fique na mesma linha (S1: Vazio)
                         let oldSpans = temp.querySelectorAll('#silo-data-ontem ~ div ul li span, #silo-data-hoje ~ div ul li span, #box-silo-main ul li span');
                         let newSpans = document.querySelectorAll('#tab-resumo #box-silo-main ul li span');
                         oldSpans.forEach((s, i) => { 
                             if (newSpans[i]) {
-                                let txt = s.innerText;
-                                if(txt.includes('S1: ') && !txt.includes('\n')) txt = txt.replace('S1: ', 'S1:\n');
-                                if(txt.includes('S2: ') && !txt.includes('\n')) txt = txt.replace('S2: ', 'S2:\n');
+                                let txt = s.innerHTML.trim();
+                                // Remove os breaks indesejados da versão anterior
+                                txt = txt.replace(/<br\s*\/?>/gi, ' '); 
+                                txt = txt.replace(/\n/g, ' ');
+                                // Remove espaços duplos
+                                txt = txt.replace(/\s+/g, ' ');
                                 newSpans[i].innerText = txt;
                             } 
                         });
@@ -1565,9 +1583,9 @@
 
             let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]');
             siloSpans.forEach(span => {
-                if(span.innerText.includes('S1')) span.innerHTML = 'S1:<br>Vazio';
-                else if(span.innerText.includes('S2')) span.innerHTML = 'S2:<br>Vazio';
-                else span.innerHTML = 'Vazio';
+                if(span.innerText.includes('S1')) span.innerText = 'S1: Vazio';
+                else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
+                else span.innerText = 'Vazio';
             });
             
             atualizarGraficoSilos();
