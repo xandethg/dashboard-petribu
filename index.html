@@ -177,16 +177,16 @@
     .driver-pane, .clima-pane { display: none; }
     .driver-pane.active, .clima-pane.active { display: block; }
 
-    /* --- IMPRESSÃO --- */
+    /* --- IMPRESSÃO (AJUSTADO PARA ESCALA 107%) --- */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
         .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay, #login-screen { display: none !important; }
         .col-acao { display: none !important; }
         .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; }
-        .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 12px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
         
-        /* Ajuste de colunas para comportar a escala de 107% */
+        /* Ajuste de colunas para comportar a escala de 107% perfeitamente */
+        .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 8px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
         .dashboard-grid > .col:nth-child(1) { width: 31% !important; } 
         .dashboard-grid > .col:nth-child(2) { width: 36% !important; } 
         .dashboard-grid > .col:nth-child(3) { width: 33% !important; }
@@ -194,39 +194,43 @@
         .card { box-shadow: none !important; border: 0.5px solid #cbd5e1 !important; margin: 0 !important; display: flex !important; flex-direction: column !important; break-inside: avoid !important; page-break-inside: avoid !important; background-color: #ffffff !important;}
         .card-header { padding: 4px 8px !important; font-size: 10px !important; border-bottom: 0.5px solid #cbd5e1 !important; }
         .card-body { padding: 6px 8px !important; flex: 1 !important; display: flex !important; flex-direction: column !important;}
-        .top-header { margin-bottom: 12px !important; }
+        .top-header { margin-bottom: 8px !important; }
         .title-area h1 { font-size: 20px !important; margin: 0 !important; }
         .title-area h3 { font-size: 12px !important; margin: 0 !important; }
-        .kpi-grid { display: flex !important; gap: 8px !important; margin-bottom: 15px !important;}
-        .kpi-card { flex: 1 !important; padding: 8px 10px !important; gap: 8px !important; border: 0.5px solid #cbd5e1 !important; box-shadow: none !important; border-top: none !important;}
-        .kpi-icon { font-size: 18px !important; } .kpi-info h4 { font-size: 9px !important;} .kpi-info p { font-size: 16px !important; margin: 0 !important; } .kpi-info span { font-size: 9px !important; }
-        .info-box { padding: 4px 6px !important; margin-bottom: 5px !important; font-size: 9px !important; border: 0.5px solid #e2e8f0 !important;} .info-title { font-size: 9px !important; margin-bottom: 2px !important;}
-        ul.simple-list li { margin-bottom: 1px !important; font-size: 8.5px !important; }
-        .table-title { margin: 6px 0 2px 0 !important; font-size: 9px !important; }
+        .kpi-grid { display: flex !important; gap: 8px !important; margin-bottom: 12px !important;}
+        .kpi-card { flex: 1 !important; padding: 6px 8px !important; gap: 6px !important; border: 0.5px solid #cbd5e1 !important; box-shadow: none !important; border-top: none !important;}
+        .kpi-icon { font-size: 16px !important; } .kpi-info h4 { font-size: 8px !important;} .kpi-info p { font-size: 14px !important; margin: 0 !important; } .kpi-info span { font-size: 8px !important; }
+        
+        /* Enxugando margens das caixas para caber tudo na folha */
+        .info-box { padding: 4px 6px !important; margin-bottom: 4px !important; font-size: 8.5px !important; border: 0.5px solid #e2e8f0 !important;} 
+        .info-title { font-size: 8.5px !important; margin-bottom: 2px !important;}
+        ul.simple-list { padding-left: 10px !important; margin: 2px 0 !important; }
+        ul.simple-list li { margin-bottom: 0px !important; font-size: 8px !important; }
+        .table-title { margin: 4px 0 2px 0 !important; font-size: 9px !important; }
         .expedicao-table { margin-bottom: 4px !important; font-size: 8.5px !important; border-collapse: collapse !important; table-layout: fixed !important; width: 100% !important; }
         .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; } .total-cell { font-size: 11px !important; }
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        /* Otimização da visualização do silo na impressão (menor para não estourar) */
-        #silo-container-v214 { 
+        /* SILO COMPACTO PARA IMPRESSÃO */
+        #silo-container-v215 { 
             display: flex !important;
             justify-content: center !important;
-            gap: 40px !important;
-            border-top: 1px dashed #cbd5e1 !important;
-            padding-top: 8px !important; 
-            margin-top: 8px !important;
+            gap: 20px !important;
+            border-top: 0.5px dashed #cbd5e1 !important;
+            padding-top: 2px !important; 
+            margin-top: 2px !important;
             visibility: visible !important;
         }
-        #silo-container-v214 > div {
+        #silo-container-v215 > div {
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            gap: 2px !important;
+            gap: 0px !important; 
         }
-        #silo-container-v214 svg { 
-            width: 35px !important;  
-            height: 60px !important; 
+        #silo-container-v215 svg { 
+            width: 25px !important;  
+            height: 45px !important; 
             display: block !important;
         }
 
@@ -332,7 +336,7 @@
                 <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.1.4
+                    v2.1.5
                 </div>
             </div>
         </div>
@@ -370,16 +374,16 @@
                                         
                                         <!-- TEXTOS -->
                                         <div style="display: flex; gap: 10px; width: 100%;">
-                                            <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
+                                            <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 5px;">
                                                 <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                                <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                <div style="display: flex; justify-content: space-between; gap: 2px;">
                                                     <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
                                                     <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
                                                 </div>
                                             </div>
-                                            <div style="flex: 1; padding-left: 5px;">
+                                            <div style="flex: 1; padding-left: 2px;">
                                                 <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                                <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                <div style="display: flex; justify-content: space-between; gap: 2px;">
                                                     <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
                                                     <div class="flex-col">
                                                         <strong>05:00h</strong>
@@ -392,12 +396,12 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHOS DOS SILOS (PEQUENOS E ABAIXO) -->
-                                        <div id="silo-container-v214" style="display: flex; justify-content: center; gap: 50px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 10px;">
+                                        <!-- DESENHOS DOS SILOS OTIMIZADOS PARA TELA E IMPRESSÃO -->
+                                        <div id="silo-container-v215" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
                                             <!-- SILO 1 -->
-                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
-                                                <svg viewBox="0 0 100 155" preserveAspectRatio="xMidYMid meet" style="width: 45px; height: 75px; display: block;">
+                                                <svg viewBox="0 0 100 155" preserveAspectRatio="xMidYMid meet" style="width: 35px; height: 60px; display: block;">
                                                     <defs><clipPath id="shape-silo1"><polygon points="44,0 56,0 56,12 88,38 88,95 58,148 62,148 62,153 38,153 38,148 42,148 12,95 12,38 44,12" /></clipPath></defs>
                                                     <polygon points="44,0 56,0 56,12 88,38 88,95 58,148 62,148 62,153 38,153 38,148 42,148 12,95 12,38 44,12" fill="#e2e8f0" />
                                                     <rect id="silo1-fill" clip-path="url(#shape-silo1)" x="0" y="155" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
@@ -417,9 +421,9 @@
                                             </div>
 
                                             <!-- SILO 2 -->
-                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S2</strong>
-                                                <svg viewBox="0 0 100 155" preserveAspectRatio="xMidYMid meet" style="width: 45px; height: 75px; display: block;">
+                                                <svg viewBox="0 0 100 155" preserveAspectRatio="xMidYMid meet" style="width: 35px; height: 60px; display: block;">
                                                     <defs><clipPath id="shape-silo2"><polygon points="44,0 56,0 56,12 88,38 88,95 58,148 62,148 62,153 38,153 38,148 42,148 12,95 12,38 44,12" /></clipPath></defs>
                                                     <polygon points="44,0 56,0 56,12 88,38 88,95 58,148 62,148 62,153 38,153 38,148 42,148 12,95 12,38 44,12" fill="#e2e8f0" />
                                                     <rect id="silo2-fill" clip-path="url(#shape-silo2)" x="0" y="155" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
@@ -439,7 +443,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="silo-totals" style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 5px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
+                                    <div id="silo-totals" style="font-size: 10px; text-align: center; color: var(--text-muted); margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 2px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
                                 </div>
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -865,18 +869,16 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_v214')) { localStorage.setItem('template_resumo_v214', document.getElementById('tab-resumo').innerHTML); } 
+            if (!localStorage.getItem('template_resumo_v215')) { localStorage.setItem('template_resumo_v215', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
                     
-                    // Se for a versão v2.1.4 real, carrega normalmente
-                    if (htmlResumo.includes('id="silo-container-v214"')) {
+                    if (htmlResumo.includes('id="silo-container-v215"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        // MIGRAÇÃO INTELIGENTE
                         const tempDiv = document.createElement('div');
                         tempDiv.innerHTML = htmlResumo;
 
@@ -907,7 +909,7 @@
                         });
                     }
                 } 
-            } catch(e) { console.log(e); } 
+            } catch(e) {} 
             
             try { const docPessoal = await db.collection('estado_atual').doc('quadro_pessoal_oficial').get(); if (docPessoal.exists) { document.getElementById('grid-pessoal').innerHTML = docPessoal.data().html; } } catch(e) {} 
             try { const docDevolucao = await db.collection('estado_atual').doc('devolucoes_oficial').get(); if (docDevolucao.exists) { document.getElementById('tb-devolucao').innerHTML = docDevolucao.data().html; if(docDevolucao.data().mesNome) { document.getElementById('nome-mes-devolucao').innerText = docDevolucao.data().mesNome; } } } catch(e) {} 
@@ -953,7 +955,7 @@
         let graficoAtualizando = false;
 
         function atualizarGraficoSilos() {
-            graficoAtualizando = true; // Trava salvamento automático
+            graficoAtualizando = true; 
             
             let maxSilo = 8500; 
 
@@ -972,7 +974,6 @@
             let pctS1 = Math.round((exibirS1 / maxSilo) * 100);
             let pctS2 = Math.round((exibirS2 / maxSilo) * 100);
 
-            // A altura do ViewBox do SVG agora é 155
             let fillS1 = document.getElementById('silo1-fill');
             let textS1 = document.getElementById('silo1-pct');
             if (fillS1 && textS1) {
@@ -998,7 +999,6 @@
                 rotuloTotais.innerHTML = `Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: ${valS1.toLocaleString('pt-BR')} sacos | S2: ${valS2.toLocaleString('pt-BR')} sacos</strong>`;
             }
 
-            // Destrava após a animação (600ms)
             setTimeout(() => { graficoAtualizando = false; }, 600);
         }
 
