@@ -302,10 +302,10 @@
                     <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
                     <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
                 </div>
-                <!-- NOVA IDENTIFICAÇÃO DE DESENVOLVEDOR E VERSÃO -->
+                <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.1.0
+                    v2.1.1
                 </div>
             </div>
         </div>
@@ -339,7 +339,7 @@
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <div style="flex: 2.2; display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="flex: 2.5; display: flex; flex-direction: column; gap: 5px;">
                                             <div style="display: flex; gap: 10px;">
                                                 <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
                                                     <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
@@ -365,24 +365,24 @@
                                         </div>
                                         
                                         <!-- DESENHO VETORIAL DOS SILOS BASEADO NO ESQUEMA -->
-                                        <div style="flex: 1.8; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 15px;" class="no-print">
+                                        <div style="flex: 1.5; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 10px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
-                                                <svg viewBox="0 0 100 100" style="width: 80px; height: 110px; display: block;">
-                                                    <defs><clipPath id="shape-silo1"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
-                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
-                                                    <rect id="silo1-fill" clip-path="url(#shape-silo1)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
+                                                <svg viewBox="0 0 100 140" style="width: 70px; height: auto; display: block; max-height: 120px;">
+                                                    <defs><clipPath id="shape-silo1"><polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" /></clipPath></defs>
+                                                    <polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" fill="#e2e8f0" />
+                                                    <rect id="silo1-fill" clip-path="url(#shape-silo1)" x="0" y="140" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
                                                     <g clip-path="url(#shape-silo1)">
-                                                        <line x1="0" y1="35" x2="100" y2="35" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
                                                         <line x1="0" y1="45" x2="100" y2="45" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="55" x2="100" y2="55" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="65" x2="100" y2="65" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="60" x2="100" y2="60" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
                                                         <line x1="0" y1="75" x2="100" y2="75" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="85" x2="100" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="50" y1="0" x2="50" y2="100" stroke="#94a3b8" stroke-width="0.5" /> 
+                                                        <line x1="0" y1="90" x2="100" y2="90" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="105" x2="100" y2="105" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="120" x2="100" y2="120" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="50" y1="0" x2="50" y2="140" stroke="#94a3b8" stroke-width="0.5" /> 
                                                     </g>
-                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="none" stroke="#475569" stroke-width="2" />
+                                                    <polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" fill="none" stroke="#475569" stroke-width="2" />
                                                 </svg>
                                                 <span id="silo1-pct" style="font-size: 11px; font-weight: 900; color: var(--text-dark);">0%</span>
                                             </div>
@@ -390,20 +390,20 @@
                                             <!-- SILO 2 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S2</strong>
-                                                <svg viewBox="0 0 100 100" style="width: 80px; height: 110px; display: block;">
-                                                    <defs><clipPath id="shape-silo2"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
-                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
-                                                    <rect id="silo2-fill" clip-path="url(#shape-silo2)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
+                                                <svg viewBox="0 0 100 140" style="width: 70px; height: auto; display: block; max-height: 120px;">
+                                                    <defs><clipPath id="shape-silo2"><polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" /></clipPath></defs>
+                                                    <polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" fill="#e2e8f0" />
+                                                    <rect id="silo2-fill" clip-path="url(#shape-silo2)" x="0" y="140" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
                                                     <g clip-path="url(#shape-silo2)">
-                                                        <line x1="0" y1="35" x2="100" y2="35" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
                                                         <line x1="0" y1="45" x2="100" y2="45" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="55" x2="100" y2="55" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="65" x2="100" y2="65" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="60" x2="100" y2="60" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
                                                         <line x1="0" y1="75" x2="100" y2="75" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="0" y1="85" x2="100" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-                                                        <line x1="50" y1="0" x2="50" y2="100" stroke="#94a3b8" stroke-width="0.5" />
+                                                        <line x1="0" y1="90" x2="100" y2="90" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="105" x2="100" y2="105" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="120" x2="100" y2="120" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="50" y1="0" x2="50" y2="140" stroke="#94a3b8" stroke-width="0.5" />
                                                     </g>
-                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="none" stroke="#475569" stroke-width="2" />
+                                                    <polygon points="40,0 60,0 60,15 95,40 95,105 65,135 65,140 35,140 35,135 5,105 5,40 40,15" fill="none" stroke="#475569" stroke-width="2" />
                                                 </svg>
                                                 <span id="silo2-pct" style="font-size: 11px; font-weight: 900; color: var(--text-dark);">0%</span>
                                             </div>
@@ -841,11 +841,11 @@
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
-                    // Se for HTML antigo (sem desenho do silo), nós IGNORAMOS para não destruir o layout da versão nova
+                    // IGNORA DADOS DO PASSADO QUE NÃO TEM OS SILOS PARA NÃO QUEBRAR O LAYOUT
                     if(htmlResumo.includes('id="silo1-fill"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        console.log("Atualização de versão detectada. O HTML antigo foi descartado para não quebrar o layout.");
+                        console.log("Atualização de versão detectada. O HTML antigo foi descartado para preservar o novo layout do Silo.");
                     }
                 } 
             } catch(e) {} 
@@ -891,7 +891,12 @@
             atualizarGraficoSilos();
         }
 
+        // VARIÁVEL DE CONTROLE PARA EVITAR LOOP
+        let graficoAtualizando = false;
+
         function atualizarGraficoSilos() {
+            graficoAtualizando = true; // Trava o salvamento automático
+            
             let maxSilo = 8500; 
 
             let spanS1 = document.getElementById('silo1-05h');
@@ -909,11 +914,13 @@
             let pctS1 = Math.round((exibirS1 / maxSilo) * 100);
             let pctS2 = Math.round((exibirS2 / maxSilo) * 100);
 
+            // A altura do ViewBox do SVG agora é 140
             let fillS1 = document.getElementById('silo1-fill');
             let textS1 = document.getElementById('silo1-pct');
             if (fillS1 && textS1) {
-                fillS1.setAttribute('y', 100 - pctS1);
-                fillS1.setAttribute('height', pctS1);
+                let h1 = (pctS1 / 100) * 140;
+                fillS1.setAttribute('y', 140 - h1);
+                fillS1.setAttribute('height', h1);
                 textS1.innerText = pctS1 + '%';
                 fillS1.setAttribute('fill', pctS1 > 90 ? '#ef4444' : (pctS1 > 50 ? '#f59e0b' : '#3b82f6'));
             }
@@ -921,8 +928,9 @@
             let fillS2 = document.getElementById('silo2-fill');
             let textS2 = document.getElementById('silo2-pct');
             if (fillS2 && textS2) {
-                fillS2.setAttribute('y', 100 - pctS2);
-                fillS2.setAttribute('height', pctS2);
+                let h2 = (pctS2 / 100) * 140;
+                fillS2.setAttribute('y', 140 - h2);
+                fillS2.setAttribute('height', h2);
                 textS2.innerText = pctS2 + '%';
                 fillS2.setAttribute('fill', pctS2 > 90 ? '#ef4444' : (pctS2 > 50 ? '#f59e0b' : '#3b82f6'));
             }
@@ -931,6 +939,9 @@
             if (rotuloTotais) {
                 rotuloTotais.innerHTML = `Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: ${valS1.toLocaleString('pt-BR')} sacos | S2: ${valS2.toLocaleString('pt-BR')} sacos</strong>`;
             }
+
+            // Destrava o salvamento automático com segurança após a animação do CSS iniciar
+            setTimeout(() => { graficoAtualizando = false; }, 600);
         }
 
         function switchClimaView(viewId, btn) {
@@ -961,574 +972,575 @@
                 <td><input type="text" class="clima-input val-temp" onchange="this.setAttribute('value', this.value); salvarClima()" value="0"></td><td><input type="text" class="clima-input val-umid" onchange="this.setAttribute('value', this.value); salvarClima()" value="0"></td>
                 <td><input type="text" class="clima-input val-temp" onchange="this.setAttribute('value', this.value); salvarClima()" value="0"></td><td><input type="text" class="clima-input val-umid" onchange="this.setAttribute('value', this.value); salvarClima()" value="0"></td>
                 <td class="col-acao no-print"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarClima();" style="margin:0;">✖</button></td>
-            `;
-            tbody.appendChild(tr);
-            salvarClima();
-            atualizaSelectMensal();
+            </tr>
+        `;
+        tbody.appendChild(tr);
+        salvarClima();
+        atualizaSelectMensal();
+    }
+
+    function travarHorasFuturas() {
+        let hoje = new Date();
+        let dataInput = document.getElementById('clima-dia-input').value; 
+        let isHoje = false;
+        
+        if (dataInput) {
+            let tzOffset = hoje.getTimezoneOffset() * 60000;
+            let dataLocalFormatada = (new Date(hoje - tzOffset)).toISOString().split('T')[0];
+            isHoje = (dataInput === dataLocalFormatada);
         }
 
-        function travarHorasFuturas() {
-            let hoje = new Date();
-            let dataInput = document.getElementById('clima-dia-input').value; 
-            let isHoje = false;
-            
-            if (dataInput) {
-                let tzOffset = hoje.getTimezoneOffset() * 60000;
-                let dataLocalFormatada = (new Date(hoje - tzOffset)).toISOString().split('T')[0];
-                isHoje = (dataInput === dataLocalFormatada);
-            }
+        let horaAtual = hoje.getHours();
+        let trs = document.querySelectorAll('#tb-clima-diario tr');
 
-            let horaAtual = hoje.getHours();
-            let trs = document.querySelectorAll('#tb-clima-diario tr');
-
-            trs.forEach(tr => {
-                let inputs = tr.querySelectorAll('input.clima-input');
-                inputs.forEach((inp, idx) => {
-                    let horaDaColuna = (Math.floor(idx / 2) + 1) * 2; 
-                    if (isHoje && horaDaColuna > horaAtual) {
-                        inp.disabled = true;
-                        inp.style.backgroundColor = "rgba(0,0,0,0.05)";
-                        inp.style.cursor = "not-allowed";
-                        inp.title = "Aguarde o horário para preencher";
-                    } else {
-                        inp.disabled = false;
-                        inp.style.backgroundColor = "transparent";
-                        inp.style.cursor = "text";
-                        inp.title = "";
-                    }
-                });
-            });
-        }
-
-        function destacarVariacoesSuspeitas() {
-            let trs = document.querySelectorAll('#tb-clima-diario tr');
-            
-            trs.forEach(tr => {
-                let temps = tr.querySelectorAll('.val-temp');
-                let umids = tr.querySelectorAll('.val-umid');
-                
-                let ultimaTemp = 0;
-                temps.forEach(inp => {
-                    inp.style.border = "none"; 
-                    if(!inp.disabled) inp.style.backgroundColor = "transparent";
-                    inp.title = "";
-                    let val = parseFloat(inp.value.replace(',','.')) || 0;
-                    
-                    if (val > 0) {
-                        if (ultimaTemp > 0 && Math.abs(val - ultimaTemp) >= 4) {
-                            inp.style.backgroundColor = "#fee2e2";
-                            inp.style.border = "2px solid #ef4444";
-                            inp.title = "⚠️ Salto de temperatura suspeito (mais de 4ºC de diferença da hora anterior)!";
-                        }
-                        ultimaTemp = val;
-                    }
-                });
-
-                let ultimaUmid = 0;
-                umids.forEach(inp => {
-                    inp.style.border = "none";
-                    if(!inp.disabled) inp.style.backgroundColor = "transparent";
-                    inp.title = "";
-                    let val = parseFloat(inp.value.replace(',','.').replace('%','')) || 0;
-                    
-                    if (val > 0) {
-                        if (ultimaUmid > 0 && Math.abs(val - ultimaUmid) >= 15) {
-                            inp.style.backgroundColor = "#fef3c7";
-                            inp.style.border = "2px solid #f59e0b";
-                            inp.title = "⚠️ Salto de umidade suspeito (mais de 15% de diferença da hora anterior)!";
-                        }
-                        ultimaUmid = val;
-                    }
-                });
-            });
-        }
-
-        async function salvarClima() {
-            if(isHistoryMode) return;
-            let dateVal = document.getElementById('clima-dia-input').value;
-            if(!dateVal) return;
-            
-            document.querySelectorAll('#tb-clima-diario input.clima-input').forEach(inp => {
-                inp.setAttribute('value', inp.value);
-            });
-
-            let dadosDiarios = [];
-            document.querySelectorAll('#tb-clima-diario tr').forEach(tr => {
-                let divNome = tr.querySelector('td div[contenteditable]');
-                if(!divNome) return;
-                let nome = divNome.innerText.trim();
-                let inputs = tr.querySelectorAll('input.clima-input');
-                let rowData = { nome: nome, valores: [] };
-                inputs.forEach(inp => rowData.valores.push(inp.value));
-                dadosDiarios.push(rowData);
-            });
-
-            try {
-                await db.collection('clima_diario').doc(dateVal).set({
-                    html: document.getElementById('clima-diario').innerHTML,
-                    dados: dadosDiarios,
-                    mesAno: document.getElementById('clima-mes-ano').innerText,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                destacarVariacoesSuspeitas();
-            } catch(e) { console.log("Erro ao salvar clima", e); }
-        }
-
-        async function carregarDiaClima() {
-            let dateVal = document.getElementById('clima-dia-input').value;
-            if(!dateVal) return;
-            
-            atualizaLabelMesClima(dateVal);
-
-            try {
-                const docSnap = await db.collection('clima_diario').doc(dateVal).get();
-                if (docSnap.exists && docSnap.data().html) {
-                    let oldInput = document.getElementById('clima-dia-input').value;
-                    document.getElementById('clima-diario').innerHTML = docSnap.data().html;
-                    document.getElementById('clima-dia-input').value = oldInput; 
+        trs.forEach(tr => {
+            let inputs = tr.querySelectorAll('input.clima-input');
+            inputs.forEach((inp, idx) => {
+                let horaDaColuna = (Math.floor(idx / 2) + 1) * 2; 
+                if (isHoje && horaDaColuna > horaAtual) {
+                    inp.disabled = true;
+                    inp.style.backgroundColor = "rgba(0,0,0,0.05)";
+                    inp.style.cursor = "not-allowed";
+                    inp.title = "Aguarde o horário para preencher";
                 } else {
-                    document.querySelectorAll('#tb-clima-diario input').forEach(i => {
-                        i.value = "0";
-                        i.setAttribute('value', '0');
-                    });
-                    document.getElementById('clima-obs').value = "";
+                    inp.disabled = false;
+                    inp.style.backgroundColor = "transparent";
+                    inp.style.cursor = "text";
+                    inp.title = "";
                 }
-                atualizaSelectMensal();
-                destacarVariacoesSuspeitas();
-                travarHorasFuturas();
-            } catch(e) { console.log(e); }
-        }
-
-        function atualizaSelectMensal() {
-            let select = document.getElementById('select-armazem-mensal');
-            let valAtual = select.value;
-            select.innerHTML = "";
-            document.querySelectorAll('#tb-clima-diario tr td div[contenteditable]').forEach(div => {
-                let opt = document.createElement('option');
-                opt.value = div.innerText.trim();
-                opt.innerText = div.innerText.trim();
-                select.appendChild(opt);
             });
-            if(Array.from(select.options).some(o => o.value === valAtual)) { select.value = valAtual; }
-        }
+        });
+    }
 
-        async function gerarTabelaMensal() {
-            let armazemSelecionado = document.getElementById('select-armazem-mensal').value;
-            let filtroMes = document.getElementById('filtro-mes-clima').value; 
+    function destacarVariacoesSuspeitas() {
+        let trs = document.querySelectorAll('#tb-clima-diario tr');
+        
+        trs.forEach(tr => {
+            let temps = tr.querySelectorAll('.val-temp');
+            let umids = tr.querySelectorAll('.val-umid');
             
-            if(!filtroMes) return;
-            
-            let p = filtroMes.split('-');
-            let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            
-            let labelMesMensal = document.getElementById('label-mes-mensal');
-            if (labelMesMensal) {
-                labelMesMensal.innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
+            let ultimaTemp = 0;
+            temps.forEach(inp => {
+                inp.style.border = "none"; 
+                if(!inp.disabled) inp.style.backgroundColor = "transparent";
+                inp.title = "";
+                let val = parseFloat(inp.value.replace(',','.')) || 0;
+                
+                if (val > 0) {
+                    if (ultimaTemp > 0 && Math.abs(val - ultimaTemp) >= 4) {
+                        inp.style.backgroundColor = "#fee2e2";
+                        inp.style.border = "2px solid #ef4444";
+                        inp.title = "⚠️ Salto de temperatura suspeito (mais de 4ºC de diferença da hora anterior)!";
+                    }
+                    ultimaTemp = val;
+                }
+            });
+
+            let ultimaUmid = 0;
+            umids.forEach(inp => {
+                inp.style.border = "none";
+                if(!inp.disabled) inp.style.backgroundColor = "transparent";
+                inp.title = "";
+                let val = parseFloat(inp.value.replace(',','.').replace('%','')) || 0;
+                
+                if (val > 0) {
+                    if (ultimaUmid > 0 && Math.abs(val - ultimaUmid) >= 15) {
+                        inp.style.backgroundColor = "#fef3c7";
+                        inp.style.border = "2px solid #f59e0b";
+                        inp.title = "⚠️ Salto de umidade suspeito (mais de 15% de diferença da hora anterior)!";
+                    }
+                    ultimaUmid = val;
+                }
+            });
+        });
+    }
+
+    async function salvarClima() {
+        if(isHistoryMode) return;
+        let dateVal = document.getElementById('clima-dia-input').value;
+        if(!dateVal) return;
+        
+        document.querySelectorAll('#tb-clima-diario input.clima-input').forEach(inp => {
+            inp.setAttribute('value', inp.value);
+        });
+
+        let dadosDiarios = [];
+        document.querySelectorAll('#tb-clima-diario tr').forEach(tr => {
+            let divNome = tr.querySelector('td div[contenteditable]');
+            if(!divNome) return;
+            let nome = divNome.innerText.trim();
+            let inputs = tr.querySelectorAll('input.clima-input');
+            let rowData = { nome: nome, valores: [] };
+            inputs.forEach(inp => rowData.valores.push(inp.value));
+            dadosDiarios.push(rowData);
+        });
+
+        try {
+            await db.collection('clima_diario').doc(dateVal).set({
+                html: document.getElementById('clima-diario').innerHTML,
+                dados: dadosDiarios,
+                mesAno: document.getElementById('clima-mes-ano').innerText,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            destacarVariacoesSuspeitas();
+        } catch(e) { console.log("Erro ao salvar clima", e); }
+    }
+
+    async function carregarDiaClima() {
+        let dateVal = document.getElementById('clima-dia-input').value;
+        if(!dateVal) return;
+        
+        atualizaLabelMesClima(dateVal);
+
+        try {
+            const docSnap = await db.collection('clima_diario').doc(dateVal).get();
+            if (docSnap.exists && docSnap.data().html) {
+                let oldInput = document.getElementById('clima-dia-input').value;
+                document.getElementById('clima-diario').innerHTML = docSnap.data().html;
+                document.getElementById('clima-dia-input').value = oldInput; 
+            } else {
+                document.querySelectorAll('#tb-clima-diario input').forEach(i => {
+                    i.value = "0";
+                    i.setAttribute('value', '0');
+                });
+                document.getElementById('clima-obs').value = "";
             }
-            
-            let tbody = document.getElementById('tb-clima-mensal');
-            tbody.innerHTML = "<tr><td colspan='25'>Buscando dados consolidados no servidor...</td></tr>";
+            atualizaSelectMensal();
+            destacarVariacoesSuspeitas();
+            travarHorasFuturas();
+        } catch(e) { console.log(e); }
+    }
 
-            try {
-                const snapshot = await db.collection('clima_diario').get();
-                let diasMes = [];
-                snapshot.forEach(doc => {
-                    let dataDoDoc = doc.id;
-                    if(dataDoDoc.startsWith(filtroMes)) {
-                        diasMes.push({ data: dataDoDoc, dados: doc.data().dados });
-                    }
-                });
+    function atualizaSelectMensal() {
+        let select = document.getElementById('select-armazem-mensal');
+        let valAtual = select.value;
+        select.innerHTML = "";
+        document.querySelectorAll('#tb-clima-diario tr td div[contenteditable]').forEach(div => {
+            let opt = document.createElement('option');
+            opt.value = div.innerText.trim();
+            opt.innerText = div.innerText.trim();
+            select.appendChild(opt);
+        });
+        if(Array.from(select.options).some(o => o.value === valAtual)) { select.value = valAtual; }
+    }
 
-                diasMes.sort((a,b) => new Date(a.data) - new Date(b.data));
-
-                if(diasMes.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='25'>Nenhum dado de clima registrado para este mês.</td></tr>";
-                    return;
-                }
-
-                tbody.innerHTML = "";
-                diasMes.forEach(item => {
-                    let [ano, mes, dia] = item.data.split('-');
-                    let dataBr = `${dia}/${mes}/${ano}`;
-                    
-                    let linhaArmazem = item.dados.find(d => d.nome === armazemSelecionado);
-                    let valores = linhaArmazem ? linhaArmazem.valores : Array(24).fill("0");
-
-                    let tr = document.createElement('tr');
-                    tr.innerHTML = `<td style="font-weight:bold;">${dataBr}</td>`;
-                    valores.forEach((val, idx) => {
-                        let classTipo = (idx % 2 === 0) ? 'mensal-temp' : 'mensal-umid';
-                        let displayVal = val;
-                        if(idx % 2 !== 0 && val !== "0" && val !== "") displayVal += "%";
-                        tr.innerHTML += `<td class="${classTipo}">${displayVal}</td>`;
-                    });
-                    tbody.appendChild(tr);
-                });
-                
-                calcularCoresMensal();
-                
-            } catch(e) { console.log(e); tbody.innerHTML = "<tr><td colspan='25'>Erro ao buscar dados.</td></tr>"; }
+    async function gerarTabelaMensal() {
+        let armazemSelecionado = document.getElementById('select-armazem-mensal').value;
+        let filtroMes = document.getElementById('filtro-mes-clima').value; 
+        
+        if(!filtroMes) return;
+        
+        let p = filtroMes.split('-');
+        let meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        
+        let labelMesMensal = document.getElementById('label-mes-mensal');
+        if (labelMesMensal) {
+            labelMesMensal.innerText = `${meses[parseInt(p[1])-1]}/${p[0]}`;
         }
+        
+        let tbody = document.getElementById('tb-clima-mensal');
+        tbody.innerHTML = "<tr><td colspan='25'>Buscando dados consolidados no servidor...</td></tr>";
 
-        function calcularCoresMensal() {
-            let trs = document.querySelectorAll('#tb-clima-mensal tr');
-            if(trs.length === 0 || trs[0].innerText.includes('Nenhum')) return;
-            document.querySelectorAll('#tb-clima-mensal td').forEach(td => { td.classList.remove('bg-max-temp', 'bg-min-temp', 'bg-max-umid', 'bg-min-umid'); });
-            trs.forEach(tr => {
-                let temps = Array.from(tr.querySelectorAll('.mensal-temp')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
-                let umids = Array.from(tr.querySelectorAll('.mensal-umid')).map(td => parseFloat(td.innerText.replace(',','.').replace('%','')) || 0).filter(v => v > 0);
-                if(temps.length > 0) {
-                    let maxT = Math.max(...temps); let minT = Math.min(...temps);
-                    tr.querySelectorAll('.mensal-temp').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxT) td.classList.add('bg-max-temp'); else if(v === minT) td.classList.add('bg-min-temp'); });
-                }
-                if(umids.length > 0) {
-                    let maxU = Math.max(...umids); let minU = Math.min(...umids);
-                    tr.querySelectorAll('.mensal-umid').forEach(td => { let v = parseFloat(td.innerText.replace(',','.').replace('%','')); if(v === maxU) td.classList.add('bg-max-umid'); else if(v === minU) td.classList.add('bg-min-umid'); });
+        try {
+            const snapshot = await db.collection('clima_diario').get();
+            let diasMes = [];
+            snapshot.forEach(doc => {
+                let dataDoDoc = doc.id;
+                if(dataDoDoc.startsWith(filtroMes)) {
+                    diasMes.push({ data: dataDoDoc, dados: doc.data().dados });
                 }
             });
-        }
 
-        async function atualizarDashboardClima() {
-            let filtroMes = document.getElementById('dash-mes-clima').value; 
-            if(!filtroMes) return;
-            
-            let armazensSet = new Set();
-            let mediasTempDia = [0,0,0,0,0,0,0,0,0,0,0,0]; 
-            let contagemTempDia = [0,0,0,0,0,0,0,0,0,0,0,0];
-            let umidadePorArmazem = {}; 
-            
-            let maxTempGeral = -999; let localMaxT = "-"; 
-            let minTempGeral = 999;  let localMinT = "-";
-            let maxUmidGeral = -999; let localMaxU = "-";
-            let minUmidGeral = 999;  let localMinU = "-";
-            let achouTemp = false;   let achouUmid = false;
+            diasMes.sort((a,b) => new Date(a.data) - new Date(b.data));
 
-            try {
-                const snapshot = await db.collection('clima_diario').get();
-                snapshot.forEach(doc => {
-                    let dataDoDoc = doc.id; 
-                    if(dataDoDoc.startsWith(filtroMes)) {
-                        let [, , diaBr] = dataDoDoc.split('-');
-                        let dados = doc.data().dados;
-                        
-                        dados.forEach(linha => {
-                            let nomeArm = linha.nome;
-                            armazensSet.add(nomeArm);
-                            if(!umidadePorArmazem[nomeArm]) umidadePorArmazem[nomeArm] = {soma: 0, count: 0};
+            if(diasMes.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='25'>Nenhum dado de clima registrado para este mês.</td></tr>";
+                return;
+            }
 
-                            linha.valores.forEach((valStr, idx) => {
-                                let val = parseFloat(valStr.replace(',','.').replace('%','')) || 0;
-                                if(val > 0) {
-                                    let horaLabel = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)];
-                                    let locText = `${nomeArm} (Dia ${diaBr}) às ${horaLabel}`;
-                                    
-                                    if(idx % 2 === 0) { 
-                                        achouTemp = true;
-                                        mediasTempDia[idx/2] += val;
-                                        contagemTempDia[idx/2]++;
-                                        if(val > maxTempGeral) { maxTempGeral = val; localMaxT = locText; }
-                                        if(val < minTempGeral) { minTempGeral = val; localMinT = locText; }
-                                    } else { 
-                                        achouUmid = true;
-                                        umidadePorArmazem[nomeArm].soma += val;
-                                        umidadePorArmazem[nomeArm].count++;
-                                        if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = locText; }
-                                        if(val < minUmidGeral) { minUmidGeral = val; localMinU = locText; }
-                                    }
-                                }
-                            });
-                        });
-                    }
-                });
-
-                document.getElementById('dash-max-temp').innerText = achouTemp ? maxTempGeral + ' ºC' : '-- ºC';
-                document.getElementById('dash-max-temp-local').innerText = localMaxT;
-                document.getElementById('dash-min-temp').innerText = achouTemp ? minTempGeral + ' ºC' : '-- ºC';
-                document.getElementById('dash-min-temp-local').innerText = localMinT;
-
-                document.getElementById('dash-max-umid').innerText = achouUmid ? maxUmidGeral + ' %' : '-- %';
-                document.getElementById('dash-max-umid-local').innerText = localMaxU;
-                document.getElementById('dash-min-umid').innerText = achouUmid ? minUmidGeral + ' %' : '-- %';
-                document.getElementById('dash-min-umid-local').innerText = localMinU;
-
-                let labelsHoras = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'];
-                let tempFinal = mediasTempDia.map((soma, i) => contagemTempDia[i] > 0 ? (soma/contagemTempDia[i]).toFixed(1) : 0);
-
-                if(chartClimaT) chartClimaT.destroy();
-                chartClimaT = new Chart(document.getElementById('chartClimaTemp').getContext('2d'), {
-                    type: 'line',
-                    data: { labels: labelsHoras, datasets: [{ label: 'Média ºC (Mês)', data: tempFinal, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4 }] },
-                    options: { responsive: true, plugins: { datalabels: {display: false}, legend: { display: false } }, scales: { y: { beginAtZero: false, suggestedMin: 20 } } }
-                });
-
-                let armazensArr = Array.from(armazensSet);
-                let mediasUmid = armazensArr.map(arm => umidadePorArmazem[arm].count > 0 ? (umidadePorArmazem[arm].soma / umidadePorArmazem[arm].count).toFixed(1) : 0);
-
-                if(chartClimaU) chartClimaU.destroy();
-                chartClimaU = new Chart(document.getElementById('chartClimaUmid').getContext('2d'), {
-                    type: 'bar',
-                    data: { labels: armazensArr.length > 0 ? armazensArr : ['Nenhum'], datasets: [{ label: 'Umidade Média %', data: mediasUmid.length > 0 ? mediasUmid : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMax: 100 } } }
-                });
-
-            } catch (error) { console.log(error); }
-        }
-
-        async function atualizarDashboardAnalytics() { 
-            let filtro = document.getElementById('analytics-filter').value; 
-            let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0; 
-            let motivosFreq = {}; let motivosVol = {}; let clientesVol = {}; let produtosVol = {}; 
-            
-            function processarLinhas(trs) { 
-                trs.forEach(tr => { 
-                    let tds = tr.querySelectorAll('td'); 
-                    if(tds.length >= 7) { 
-                        let cliente = tds[1].innerText.trim(); 
-                        let tipo = tds[4].innerText.trim().toLowerCase(); 
-                        let divQtde = tds[5].querySelector('div'); 
-                        let qtdeTexto = divQtde ? divQtde.innerText.trim() : tds[5].innerText.trim(); 
-                        let qtde = parseInt(qtdeTexto) || 0; 
-                        let divMotivo = tds[6].querySelector('div'); 
-                        let motivo = divMotivo ? divMotivo.innerText.trim() : tds[6].innerText.trim(); 
-                        let selectProd = tds[3].querySelector('select'); 
-                        let produto = selectProd ? selectProd.value : tds[3].innerText.trim(); 
-                        if(qtde > 0) { 
-                            totalGeral += qtde; 
-                            if(tipo.includes('saco') || tipo === 'sc') totalSacos += qtde; 
-                            else if(tipo.includes('bag') || tipo === 'bb') totalBigBags += qtde; 
-                            else totalFardos += qtde; 
-                            if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; } 
-                            if(motivo && motivo !== '---') { motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; } 
-                            if(produto && produto !== 'Produto X' && produto !== 'Selecione...') { produtosVol[produto] = (produtosVol[produto] || 0) + qtde; } 
-                        } 
-                    } 
-                }); 
-            } 
-            
-            if (filtro === 'atual') { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } 
-            else { 
-                let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText; 
-                if(descobreSafra(nomeMesAtual) === filtro) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } 
-                try { 
-                    const snapAno = await db.collection('historico_mensal_devolucoes').get(); 
-                    snapAno.forEach(doc => { let safraDoHistorico = descobreSafra(doc.data().mes); if(safraDoHistorico === filtro) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = doc.data().html; processarLinhas(tempTbody.querySelectorAll('tr')); } }); 
-                } catch(e) { console.error(e); } 
-            } 
-            
-            document.getElementById('kpi-total-fardos').innerText = totalFardos.toLocaleString('pt-BR'); 
-            document.getElementById('kpi-total-sacos').innerText = totalSacos.toLocaleString('pt-BR'); 
-            document.getElementById('kpi-total-bags').innerText = totalBigBags.toLocaleString('pt-BR'); 
-            
-            if (filtro === 'atual') { 
-                let ultimoTotal = 0; 
-                try { 
-                    const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get(); 
-                    if(!snapAnt.empty) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = snapAnt.docs[0].data().html; tempTbody.querySelectorAll('tr').forEach(tr => { let divs = tr.querySelectorAll('div[contenteditable="true"]'); if(divs.length >= 7) ultimoTotal += (parseInt(divs[5].innerText.trim()) || 0); }); } 
-                } catch(e) {} 
-                let elVar = document.getElementById('kpi-variacao'); 
-                if(ultimoTotal > 0) { 
-                    let perc = ((totalGeral - ultimoTotal) / ultimoTotal) * 100; 
-                    if(perc > 0) { elVar.innerText = `🔺 +${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--danger)"; } 
-                    else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; } 
-                    else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; } 
-                } else if(ultimoTotal === 0 && totalGeral > 0) { elVar.innerText = "🔺 100% (Sem devoluções no mês passado)"; elVar.style.color = "var(--danger)"; } else { elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)"; } 
-            } else { let txtSafra = document.getElementById('analytics-filter').options[document.getElementById('analytics-filter').selectedIndex].text; document.getElementById('kpi-variacao').innerText = txtSafra; document.getElementById('kpi-variacao').style.color = "var(--text-muted)"; } 
-            
-            let topMotivo = '---'; let maxFreq = 0; for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } } 
-            document.getElementById('kpi-motivo').innerText = topMotivo; document.getElementById('kpi-motivo-sub').innerText = maxFreq > 0 ? `${maxFreq} ocorrências registradas` : 'Causa raiz principal'; 
-            
-            let topCliente = '---'; let maxVol = 0; for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } } 
-            document.getElementById('kpi-cliente').innerText = topCliente; 
-            
-            let detalhesHtml = ""; for(let p in produtosVol) { detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`; } 
-            let detalheEl = document.getElementById('kpi-detalhe-produtos'); if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.'; 
-            
-            try {
-                if(chartClientesInst) chartClientesInst.destroy(); 
-                let ctxC = document.getElementById('chartClientes').getContext('2d'); 
-                chartClientesInst = new Chart(ctxC, { type: 'bar', data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false, grid: { display: false } } } } }); 
+            tbody.innerHTML = "";
+            diasMes.forEach(item => {
+                let [ano, mes, dia] = item.data.split('-');
+                let dataBr = `${dia}/${mes}/${ano}`;
                 
-                if(chartMotivosInst) chartMotivosInst.destroy(); 
-                let ctxM = document.getElementById('chartMotivos').getContext('2d'); 
-                chartMotivosInst = new Chart(ctxM, { type: 'pie', data: { labels: Object.keys(motivosVol).length > 0 ? Object.keys(motivosVol) : ['Nenhum dado'], datasets: [{ data: Object.values(motivosVol).length > 0 ? Object.values(motivosVol) : [1], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#64748b'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } }); 
-            } catch(err) { console.log("Aguardando aba de gráfico abrir na tela."); }
-        }
+                let linhaArmazem = item.dados.find(d => d.nome === armazemSelecionado);
+                let valores = linhaArmazem ? linhaArmazem.valores : Array(24).fill("0");
 
-        function openCadastroMotorista() { document.getElementById('cad-nome').value = ''; document.getElementById('cad-codigo').value = ''; document.getElementById('cad-cpf').value = ''; document.getElementById('cad-placa').value = ''; document.getElementById('cad-diaria').value = '647,50'; document.getElementById('modal-cadastro-motorista').style.display = 'flex'; }
-        function closeCadastroMotorista() { document.getElementById('modal-cadastro-motorista').style.display = 'none'; }
-        function confirmarCadastroMotorista() { let nome = document.getElementById('cad-nome').value.trim() || 'Sem Nome'; let codigo = document.getElementById('cad-codigo').value.trim() || '-'; let cpf = document.getElementById('cad-cpf').value.trim() || '-'; let placa = document.getElementById('cad-placa').value.trim() || '-'; let diaria = document.getElementById('cad-diaria').value.trim() || '647,50'; let parts = nome.split(' ').filter(p => p.length > 0); let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo'); let id = 'driver-' + Date.now(); let btn = document.createElement('button'); btn.className = 'driver-tab-btn active'; btn.innerText = tabName; btn.setAttribute('onclick', `switchDriver(this, '${id}')`); document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('driver-tabs-container').appendChild(btn); document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active')); let pane = document.createElement('div'); pane.id = id; pane.className = 'driver-pane active'; pane.innerHTML = `<div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;"><div><strong style="color:var(--text-muted);">Transportador:</strong> <span class="driver-name-header" style="font-weight:bold; font-size:14px;">${nome}</span><br><strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod">${codigo}</span><br><strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf">${cpf}</span><br><strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa">${placa}</span></div><div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;"><strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('${id}')">${diaria}</span><br><span style="font-size: 11px; color: var(--text-muted);">Valor por Hora: R$ <span class="valor-hora" style="font-weight:bold;">0,00</span></span></div></div><div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;"><button class="btn-remove" onclick="removeDriver('${id}')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button><button class="btn-add" onclick="addTransportRow('${id}')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button></div><table class="tabela-devolucao transport-table" style="text-align:center;"><thead><tr><th style="width:10%; text-align:center;">Data Início</th><th style="width:10%; text-align:center;">Hora Início</th><th style="width:10%; text-align:center;">Parada</th><th style="width:10%; text-align:center;">Entrada</th><th style="width:10%; text-align:center;">Hora Final</th><th style="width:12%; text-align:center; color:var(--primary-blue);">Quant. Horas</th><th style="width:10%; text-align:center;">Data Final</th><th style="width:23%; text-align:left;">Observação</th><th class="col-acao no-print"></th></tr></thead><tbody id="tb-${id}"><tr><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td><td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td><td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td></tr></tbody><tfoot><tr style="background-color: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;"><td colspan="5" style="text-align: right; color: var(--text-muted); padding:10px;">TOTAL MENSAL:</td><td class="total-horas-mensal" style="color: var(--primary-blue); font-size:14px; padding:10px;">24:00</td><td colspan="3" class="total-valor-mensal" style="color: var(--success); font-size:15px; text-align:right; padding-right:15px;">R$ 0,00</td></tr></tfoot></table>`; document.getElementById('drivers-content').appendChild(pane); calcularTransporte(id); closeCadastroMotorista(); salvarTransporte(); }
-        function removeDriver(driverId) { let allPanes = document.querySelectorAll('.driver-pane'); if(allPanes.length <= 1) { alert("Para manter o sistema funcionando, você deve ter pelo menos 1 motorista. Adicione um novo antes de apagar este."); return; } if(confirm("Tem certeza que deseja remover este motorista e todo o seu histórico atual?")) { let tabBtn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`); if(tabBtn) tabBtn.remove(); let pane = document.getElementById(driverId); if(pane) pane.remove(); let firstBtn = document.querySelector('#driver-tabs-container .driver-tab-btn'); if(firstBtn) { firstBtn.click(); } salvarTransporte(); } }
-        function timeStrToDec(str) { if(!str || str.trim() === '' || str.trim() === '-') return 0; str = str.replace(/[^\d:]/g, ''); let p = str.split(':'); let h = parseInt(p[0]) || 0; let m = parseInt(p[1]) || 0; return h + (m/60); }
-        function decToTimeStr(dec) { let h = Math.floor(dec); let m = Math.round((dec - h) * 60); if(m === 60) { h++; m = 0; } return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`; }
-        function calcularTransporte(driverId) { let pane = document.getElementById(driverId); if(!pane) return; let diariaStr = pane.querySelector('.valor-diaria').innerText.replace(/\./g, '').replace(',', '.'); let diaria = parseFloat(diariaStr) || 0; let vHora = Math.floor((diaria / 24) * 100) / 100; pane.querySelector('.valor-hora').innerText = vHora.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); let totalWorkedDec = 0; let rows = pane.querySelectorAll('tbody tr'); rows.forEach(tr => { let tStartEl = tr.querySelector('.t-start'); let tPauseEl = tr.querySelector('.t-pause'); let tResumeEl = tr.querySelector('.t-resume'); let tEndEl = tr.querySelector('.t-end'); let tTotalEl = tr.querySelector('.t-total'); if(!tStartEl) return; let start = timeStrToDec(tStartEl.innerText); let pStart = timeStrToDec(tPauseEl.innerText); let pEnd = timeStrToDec(tResumeEl.innerText); let end = timeStrToDec(tEndEl.innerText); if (tStartEl.innerText.trim() === '' || tStartEl.innerText.trim() === '-') { tTotalEl.innerText = '-'; return; } let worked = 0; if(end < start) end += 24; worked = end - start; if(pStart > 0 || pEnd > 0) { if(pEnd < pStart) pEnd += 24; worked -= (pEnd - pStart); } if(worked < 0) worked = 0; tTotalEl.innerText = decToTimeStr(worked); totalWorkedDec += worked; }); pane.querySelector('.total-horas-mensal').innerText = decToTimeStr(totalWorkedDec); let totalVal = totalWorkedDec * vHora; pane.querySelector('.total-valor-mensal').innerText = totalVal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); salvarTransporte(); }
-        function switchDriver(btn, driverId) { document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active')); document.getElementById(driverId).classList.add('active'); }
-        function addTransportRow(driverId) { let tbody = document.getElementById('tb-' + driverId) || document.querySelector(`#${driverId} tbody`); let tr = document.createElement('tr'); tr.innerHTML = `<td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${driverId}')" style="outline:none;">0:00</div></td><td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${driverId}')" style="outline:none;">24:00</div></td><td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${driverId}');" style="margin:0;">✖</button></td>`; tbody.appendChild(tr); calcularTransporte(driverId); }
-        function salvarTransporte() { if(isHistoryMode) return; db.collection('estado_atual').doc('transporte_oficial').set({ html: document.getElementById('drivers-content').innerHTML, tabs: document.getElementById('driver-tabs-container').innerHTML, mesNome: document.getElementById('nome-mes-transporte').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
-        async function encerrarMesTransporte() { let nomeMesEl = document.getElementById('nome-mes-transporte'); let nomeMes = nomeMesEl.innerText.trim(); if(confirm("Deseja salvar a tabela de TRANSPORTE de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) { let htmlParaSalvar = document.getElementById('drivers-content').innerHTML; let tabsParaSalvar = document.getElementById('driver-tabs-container').innerHTML; let docId = "transporte_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_"); try { await db.collection('historico_mensal_transporte').doc(docId).set({ html: htmlParaSalvar, tabs: tabsParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); document.querySelectorAll('.driver-pane tbody').forEach(tb => tb.innerHTML = ''); document.querySelectorAll('.total-horas-mensal').forEach(t => t.innerText = '00:00'); document.querySelectorAll('.total-valor-mensal').forEach(t => t.innerText = 'R$ 0,00'); nomeMesEl.innerText = "Mês/Ano"; salvarTransporte(); alert("✅ Mês do Controle de Transporte encerrado com sucesso! Histórico arquivado."); } catch(error) { alert("Erro ao encerrar o mês de transporte."); } } }
-        async function openTransporteHistory() { let listEl = document.getElementById('lista-historico-transporte'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-transporte').style.display = 'flex'; try { const snapshot = await db.collection('historico_mensal_transporte').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadTransporteHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteTransporteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; } }
-        function closeTransporteHistory() { document.getElementById('modal-historico-transporte').style.display = 'none'; }
-        async function deleteTransporteHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de transporte de ${mesStr}?`)) { try { await db.collection('historico_mensal_transporte').doc(docId).delete(); openTransporteHistory(); } catch (error) { alert("Erro."); } } }
-        async function loadTransporteHistory(docId, mesStr) { if(!confirm(`Carregar o histórico de transporte de ${mesStr}? O salvamento atual será pausado.`)) return; try { const docSnap = await db.collection('historico_mensal_transporte').doc(docId).get(); if (docSnap.exists) { document.getElementById('drivers-content').innerHTML = docSnap.data().html; document.getElementById('driver-tabs-container').innerHTML = docSnap.data().tabs; document.getElementById('nome-mes-transporte').innerText = docSnap.data().mes + " (LEITURA)"; isHistoryMode = true; closeTransporteHistory(); let banner = document.createElement('div'); banner.id = 'banner-transporte-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de Transporte de ${mesStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-transporte').prepend(banner); } } catch(error) { alert("Erro ao carregar o relatório."); } }
-        function addEmployeeRow(tableBodyId) { let tbody = document.getElementById(tableBodyId); let tr = document.createElement('tr'); tr.innerHTML = `<td class="col-mat"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">000000</div></td><td class="col-nome"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">NOME DO FUNCIONÁRIO</div></td><td class="col-cargo"><select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarPessoal();"><option>Líder de armazenagem e logística</option><option>Conferente</option><option>Operador de empilhadeira</option><option>Auxiliar operacional</option><option>Operador de manipulador</option></select></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarPessoal();" style="margin:0;">✖</button></td>`; tbody.appendChild(tr); salvarPessoal(); }
-        
-        function addDevolucaoRow() { 
-            let tbody = document.getElementById('tb-devolucao'); 
-            let tr = document.createElement('tr'); 
-            const listaProdutos = `<select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:normal; outline:none; font-family:inherit; font-size:11px; color:inherit; padding:0; cursor:pointer;"><option value="" disabled selected>Selecione...</option><option value="Cristal Petribu">Cristal Petribu</option><option value="Demerara Petribu">Demerara Petribu</option><option value="Açúcar Glacê">Açúcar Glacê</option><option value="Refinado Especiale">Refinado Especiale</option><option value="Mascavo Petribu 1Kg">Mascavo Petribu 1Kg</option><option value="Mascavo Petribu 500g">Mascavo Petribu 500g</option><option value="Demerara Salute">Demerara Salute</option><option value="Açúcar Triturado">Açúcar Triturado</option><option value="Demerara Q. Almofada">Demerara Q. Almofada</option><option value="Demerara Q. Fundo Chato">Demerara Q. Fundo Chato</option><option value="Refinado Qualita">Refinado Qualita</option><option value="Cristal Qualita">Cristal Qualita</option><option value="Demerara Vida">Demerara Vida</option><option value="Demerara Nordestão">Demerara Nordestão</option><option value="Demerara G. Barbosa">Demerara G. Barbosa</option><option value="Mascavo G. B. 8x1">Mascavo G. B. 8x1</option><option value="Cristal Confiare">Cristal Confiare</option><option value="Demerara Confiare">Demerara Confiare</option><option value="Refinado Confiare">Refinado Confiare</option><option value="Cristal Carrefour">Cristal Carrefour</option><option value="Demerara Carrefour">Demerara Carrefour</option><option value="Refinado Carrefour">Refinado Carrefour</option><option value="Mascavo Carr. 1Kg">Mascavo Carr. 1Kg</option><option value="Mascavo Carr. 500g">Mascavo Carr. 500g</option><option value="Demerara Escogido">Demerara Escogido</option><option value="Refinado Escogido">Refinado Escogido</option><option value="Mascavo Escogido">Mascavo Escogido</option><option value="Sachê Cristal">Sachê Cristal</option><option value="Sachê Demerara">Sachê Demerara</option><option value="Sachê Cristal FD 10x400g">Sachê Cristal FD 10x400g</option><option value="Cristal P. Big Bag">Cristal P. Big Bag</option><option value="Demerara P. Big Bag">Demerara P. Big Bag</option><option value="Refinado Big Bag">Refinado Big Bag</option><option value="Malha 20/45">Malha 20/45</option><option value="Malha 30/60">Malha 30/60</option><option value="Especial Big Bag">Especial Big Bag</option><option value="Mascavo Big Bag">Mascavo Big Bag</option><option value="Cristal P. SC 50Kg">Cristal P. SC 50Kg</option><option value="Cristal P. SC 25Kg">Cristal P. SC 25Kg</option><option value="Demerara P. SC 50Kg">Demerara P. SC 50Kg</option><option value="Demerara P. SC 25Kg">Demerara P. SC 25Kg</option><option value="Triturado SC 50Kg">Triturado SC 50Kg</option><option value="Refinado P. SC 50Kg">Refinado P. SC 50Kg</option><option value="Refinado P. SC 25Kg">Refinado P. SC 25Kg</option><option value="Açúcar Glacê SC 25Kg">Açúcar Glacê SC 25Kg</option><option value="Amorfo 25Kg">Amorfo 25Kg</option><option value="Malha 20/45 25Kg">Malha 20/45 25Kg</option></select>`; 
-            tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`; 
-            tbody.appendChild(tr); 
-            salvarDevolucoes(); 
-        }
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td style="font-weight:bold;">${dataBr}</td>`;
+                valores.forEach((val, idx) => {
+                    let classTipo = (idx % 2 === 0) ? 'mensal-temp' : 'mensal-umid';
+                    let displayVal = val;
+                    if(idx % 2 !== 0 && val !== "0" && val !== "") displayVal += "%";
+                    tr.innerHTML += `<td class="${classTipo}">${displayVal}</td>`;
+                });
+                tbody.appendChild(tr);
+            });
+            
+            calcularCoresMensal();
+            
+        } catch(e) { console.log(e); tbody.innerHTML = "<tr><td colspan='25'>Erro ao buscar dados.</td></tr>"; }
+    }
 
-        function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_oficial').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
-        function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_oficial').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+    function calcularCoresMensal() {
+        let trs = document.querySelectorAll('#tb-clima-mensal tr');
+        if(trs.length === 0 || trs[0].innerText.includes('Nenhum')) return;
+        document.querySelectorAll('#tb-clima-mensal td').forEach(td => { td.classList.remove('bg-max-temp', 'bg-min-temp', 'bg-max-umid', 'bg-min-umid'); });
+        trs.forEach(tr => {
+            let temps = Array.from(tr.querySelectorAll('.mensal-temp')).map(td => parseFloat(td.innerText.replace(',','.')) || 0).filter(v => v > 0);
+            let umids = Array.from(tr.querySelectorAll('.mensal-umid')).map(td => parseFloat(td.innerText.replace(',','.').replace('%','')) || 0).filter(v => v > 0);
+            if(temps.length > 0) {
+                let maxT = Math.max(...temps); let minT = Math.min(...temps);
+                tr.querySelectorAll('.mensal-temp').forEach(td => { let v = parseFloat(td.innerText.replace(',','.')); if(v === maxT) td.classList.add('bg-max-temp'); else if(v === minT) td.classList.add('bg-min-temp'); });
+            }
+            if(umids.length > 0) {
+                let maxU = Math.max(...umids); let minU = Math.min(...umids);
+                tr.querySelectorAll('.mensal-umid').forEach(td => { let v = parseFloat(td.innerText.replace(',','.').replace('%','')); if(v === maxU) td.classList.add('bg-max-umid'); else if(v === minU) td.classList.add('bg-min-umid'); });
+            }
+        });
+    }
+
+    async function atualizarDashboardClima() {
+        let filtroMes = document.getElementById('dash-mes-clima').value; 
+        if(!filtroMes) return;
         
-        function iniciarSalvamentoAutomaticoResumo() { 
-            let saveTimeoutResumo; 
-            const observerResumo = new MutationObserver((mutations) => { 
-                if(isHistoryMode) return; 
-                let shouldSave = false; 
-                for(let m of mutations) { 
-                    if (m.target.id !== 'dash-time' && 
-                        m.target.id !== 'dash-date' && 
-                        m.target.id !== 'silo-data-hoje' && 
-                        m.target.id !== 'silo-data-ontem' && 
-                        m.target.id !== 'silo1-fill' && 
-                        m.target.id !== 'silo2-fill' &&
-                        m.target.id !== 'silo1-pct' &&
-                        m.target.id !== 'silo2-pct') { 
-                        shouldSave = true; break; 
+        let armazensSet = new Set();
+        let mediasTempDia = [0,0,0,0,0,0,0,0,0,0,0,0]; 
+        let contagemTempDia = [0,0,0,0,0,0,0,0,0,0,0,0];
+        let umidadePorArmazem = {}; 
+        
+        let maxTempGeral = -999; let localMaxT = "-"; 
+        let minTempGeral = 999;  let localMinT = "-";
+        let maxUmidGeral = -999; let localMaxU = "-";
+        let minUmidGeral = 999;  let localMinU = "-";
+        let achouTemp = false;   let achouUmid = false;
+
+        try {
+            const snapshot = await db.collection('clima_diario').get();
+            snapshot.forEach(doc => {
+                let dataDoDoc = doc.id; 
+                if(dataDoDoc.startsWith(filtroMes)) {
+                    let [, , diaBr] = dataDoDoc.split('-');
+                    let dados = doc.data().dados;
+                    
+                    dados.forEach(linha => {
+                        let nomeArm = linha.nome;
+                        armazensSet.add(nomeArm);
+                        if(!umidadePorArmazem[nomeArm]) umidadePorArmazem[nomeArm] = {soma: 0, count: 0};
+
+                        linha.valores.forEach((valStr, idx) => {
+                            let val = parseFloat(valStr.replace(',','.').replace('%','')) || 0;
+                            if(val > 0) {
+                                let horaLabel = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'][Math.floor(idx/2)];
+                                let locText = `${nomeArm} (Dia ${diaBr}) às ${horaLabel}`;
+                                
+                                if(idx % 2 === 0) { 
+                                    achouTemp = true;
+                                    mediasTempDia[idx/2] += val;
+                                    contagemTempDia[idx/2]++;
+                                    if(val > maxTempGeral) { maxTempGeral = val; localMaxT = locText; }
+                                    if(val < minTempGeral) { minTempGeral = val; localMinT = locText; }
+                                } else { 
+                                    achouUmid = true;
+                                    umidadePorArmazem[nomeArm].soma += val;
+                                    umidadePorArmazem[nomeArm].count++;
+                                    if(val > maxUmidGeral) { maxUmidGeral = val; localMaxU = locText; }
+                                    if(val < minUmidGeral) { minUmidGeral = val; localMinU = locText; }
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+
+            document.getElementById('dash-max-temp').innerText = achouTemp ? maxTempGeral + ' ºC' : '-- ºC';
+            document.getElementById('dash-max-temp-local').innerText = localMaxT;
+            document.getElementById('dash-min-temp').innerText = achouTemp ? minTempGeral + ' ºC' : '-- ºC';
+            document.getElementById('dash-min-temp-local').innerText = localMinT;
+
+            document.getElementById('dash-max-umid').innerText = achouUmid ? maxUmidGeral + ' %' : '-- %';
+            document.getElementById('dash-max-umid-local').innerText = localMaxU;
+            document.getElementById('dash-min-umid').innerText = achouUmid ? minUmidGeral + ' %' : '-- %';
+            document.getElementById('dash-min-umid-local').innerText = localMinU;
+
+            let labelsHoras = ['02h','04h','06h','08h','10h','12h','14h','16h','18h','20h','22h','24h'];
+            let tempFinal = mediasTempDia.map((soma, i) => contagemTempDia[i] > 0 ? (soma/contagemTempDia[i]).toFixed(1) : 0);
+
+            if(chartClimaT) chartClimaT.destroy();
+            chartClimaT = new Chart(document.getElementById('chartClimaTemp').getContext('2d'), {
+                type: 'line',
+                data: { labels: labelsHoras, datasets: [{ label: 'Média ºC (Mês)', data: tempFinal, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4 }] },
+                options: { responsive: true, plugins: { datalabels: {display: false}, legend: { display: false } }, scales: { y: { beginAtZero: false, suggestedMin: 20 } } }
+            });
+
+            let armazensArr = Array.from(armazensSet);
+            let mediasUmid = armazensArr.map(arm => umidadePorArmazem[arm].count > 0 ? (umidadePorArmazem[arm].soma / umidadePorArmazem[arm].count).toFixed(1) : 0);
+
+            if(chartClimaU) chartClimaU.destroy();
+            chartClimaU = new Chart(document.getElementById('chartClimaUmid').getContext('2d'), {
+                type: 'bar',
+                data: { labels: armazensArr.length > 0 ? armazensArr : ['Nenhum'], datasets: [{ label: 'Umidade Média %', data: mediasUmid.length > 0 ? mediasUmid : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMax: 100 } } }
+            });
+
+        } catch (error) { console.log(error); }
+    }
+
+    async function atualizarDashboardAnalytics() { 
+        let filtro = document.getElementById('analytics-filter').value; 
+        let totalFardos = 0, totalSacos = 0, totalBigBags = 0, totalGeral = 0; 
+        let motivosFreq = {}; let motivosVol = {}; let clientesVol = {}; let produtosVol = {}; 
+        
+        function processarLinhas(trs) { 
+            trs.forEach(tr => { 
+                let tds = tr.querySelectorAll('td'); 
+                if(tds.length >= 7) { 
+                    let cliente = tds[1].innerText.trim(); 
+                    let tipo = tds[4].innerText.trim().toLowerCase(); 
+                    let divQtde = tds[5].querySelector('div'); 
+                    let qtdeTexto = divQtde ? divQtde.innerText.trim() : tds[5].innerText.trim(); 
+                    let qtde = parseInt(qtdeTexto) || 0; 
+                    let divMotivo = tds[6].querySelector('div'); 
+                    let motivo = divMotivo ? divMotivo.innerText.trim() : tds[6].innerText.trim(); 
+                    let selectProd = tds[3].querySelector('select'); 
+                    let produto = selectProd ? selectProd.value : tds[3].innerText.trim(); 
+                    if(qtde > 0) { 
+                        totalGeral += qtde; 
+                        if(tipo.includes('saco') || tipo === 'sc') totalSacos += qtde; 
+                        else if(tipo.includes('bag') || tipo === 'bb') totalBigBags += qtde; 
+                        else totalFardos += qtde; 
+                        if(cliente && cliente !== '---' && cliente !== 'Cliente Exemplo') { clientesVol[cliente] = (clientesVol[cliente] || 0) + qtde; } 
+                        if(motivo && motivo !== '---') { motivosVol[motivo] = (motivosVol[motivo] || 0) + qtde; motivosFreq[motivo] = (motivosFreq[motivo] || 0) + 1; } 
+                        if(produto && produto !== 'Produto X' && produto !== 'Selecione...') { produtosVol[produto] = (produtosVol[produto] || 0) + qtde; } 
                     } 
-                } 
-                if (shouldSave) { 
-                    clearTimeout(saveTimeoutResumo); 
-                    saveTimeoutResumo = setTimeout(() => { 
-                        db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); 
-                    }, 3000); 
                 } 
             }); 
-            observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true }); 
-        }
-
-        function descobreSafra(textoMes) { let str = textoMes.toLowerCase(); let yearMatch = str.match(/\d{2,4}/); if(!yearMatch) return "desconhecida"; let ano = parseInt(yearMatch[0]); if(ano < 100) ano += 2000; let meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']; let indexMes = meses.findIndex(m => str.includes(m)); if(indexMes === -1) return "desconhecida"; let anoInicioSafra = (indexMes >= 7) ? ano : ano - 1; let final1 = anoInicioSafra.toString().slice(-2); let final2 = (anoInicioSafra + 1).toString().slice(-2); return `safra${final1}${final2}`; }
+        } 
         
-        async function encerrarMes() { let nomeMesEl = document.getElementById('nome-mes-devolucao'); let nomeMes = nomeMesEl.innerText.trim(); if(confirm("Deseja salvar a tabela de devoluções de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) { let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML; let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_"); try { await db.collection('historico_mensal_devolucoes').doc(docId).set({ html: htmlParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); document.getElementById('tb-devolucao').innerHTML = ""; nomeMesEl.innerText = "Mês/Ano"; salvarDevolucoes(); alert("✅ Mês encerrado com sucesso! Histórico arquivado."); } catch(error) { alert("Erro ao encerrar o mês."); } } }
-        async function openDevolucoesHistory() { let listEl = document.getElementById('lista-historico-devolucoes'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-devolucoes').style.display = 'flex'; try { const snapshot = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadDevolucaoHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteDevolucaoHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; } }
-        function closeDevolucoesHistory() { document.getElementById('modal-historico-devolucoes').style.display = 'none'; }
-        async function deleteDevolucaoHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de ${mesStr}?`)) { try { await db.collection('historico_mensal_devolucoes').doc(docId).delete(); openDevolucoesHistory(); } catch (error) { alert("Erro."); } } }
-        async function loadDevolucaoHistory(docId, mesStr) { if(!confirm(`Carregar o histórico de ${mesStr}? O salvamento atual será pausado.`)) return; try { const docSnap = await db.collection('historico_mensal_devolucoes').doc(docId).get(); if (docSnap.exists) { document.getElementById('tb-devolucao').innerHTML = docSnap.data().html; document.getElementById('nome-mes-devolucao').innerText = docSnap.data().mes + " (LEITURA)"; isDevolucaoHistoryMode = true; closeDevolucoesHistory(); let banner = document.createElement('div'); banner.id = 'banner-dev-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de ${mesStr}</span> <button onclick="exitDevolucaoHistoryMode()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-devolucoes').prepend(banner); } } catch(error) { alert("Erro ao carregar o relatório."); } }
-        function exitDevolucaoHistoryMode() { isDevolucaoHistoryMode = false; let banner = document.getElementById('banner-dev-history'); if(banner) banner.remove(); carregarDadosDaNuvem(); }
+        if (filtro === 'atual') { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } 
+        else { 
+            let nomeMesAtual = document.getElementById('nome-mes-devolucao').innerText; 
+            if(descobreSafra(nomeMesAtual) === filtro) { processarLinhas(document.querySelectorAll('#tb-devolucao tr')); } 
+            try { 
+                const snapAno = await db.collection('historico_mensal_devolucoes').get(); 
+                snapAno.forEach(doc => { let safraDoHistorico = descobreSafra(doc.data().mes); if(safraDoHistorico === filtro) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = doc.data().html; processarLinhas(tempTbody.querySelectorAll('tr')); } }); 
+            } catch(e) { console.error(e); } 
+        } 
         
-        async function clearDashboard() { 
-            if(isHistoryMode) return; 
+        document.getElementById('kpi-total-fardos').innerText = totalFardos.toLocaleString('pt-BR'); 
+        document.getElementById('kpi-total-sacos').innerText = totalSacos.toLocaleString('pt-BR'); 
+        document.getElementById('kpi-total-bags').innerText = totalBigBags.toLocaleString('pt-BR'); 
+        
+        if (filtro === 'atual') { 
+            let ultimoTotal = 0; 
+            try { 
+                const snapAnt = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').limit(1).get(); 
+                if(!snapAnt.empty) { let tempTbody = document.createElement('tbody'); tempTbody.innerHTML = snapAnt.docs[0].data().html; tempTbody.querySelectorAll('tr').forEach(tr => { let divs = tr.querySelectorAll('div[contenteditable="true"]'); if(divs.length >= 7) ultimoTotal += (parseInt(divs[5].innerText.trim()) || 0); }); } 
+            } catch(e) {} 
+            let elVar = document.getElementById('kpi-variacao'); 
+            if(ultimoTotal > 0) { 
+                let perc = ((totalGeral - ultimoTotal) / ultimoTotal) * 100; 
+                if(perc > 0) { elVar.innerText = `🔺 +${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--danger)"; } 
+                else if(perc < 0) { elVar.innerText = `🔻 ${perc.toFixed(1)}% vs Mês Anterior`; elVar.style.color = "var(--success)"; } 
+                else { elVar.innerText = "⏸ Igual ao Mês Anterior"; elVar.style.color = "var(--text-muted)"; } 
+            } else if(ultimoTotal === 0 && totalGeral > 0) { elVar.innerText = "🔺 100% (Sem devoluções no mês passado)"; elVar.style.color = "var(--danger)"; } else { elVar.innerText = "Aguardando histórico para comparação..."; elVar.style.color = "var(--text-muted)"; } 
+        } else { let txtSafra = document.getElementById('analytics-filter').options[document.getElementById('analytics-filter').selectedIndex].text; document.getElementById('kpi-variacao').innerText = txtSafra; document.getElementById('kpi-variacao').style.color = "var(--text-muted)"; } 
+        
+        let topMotivo = '---'; let maxFreq = 0; for(let m in motivosFreq) { if(motivosFreq[m] > maxFreq) { maxFreq = motivosFreq[m]; topMotivo = m; } } 
+        document.getElementById('kpi-motivo').innerText = topMotivo; document.getElementById('kpi-motivo-sub').innerText = maxFreq > 0 ? `${maxFreq} ocorrências registradas` : 'Causa raiz principal'; 
+        
+        let topCliente = '---'; let maxVol = 0; for(let c in clientesVol) { if(clientesVol[c] > maxVol) { maxVol = clientesVol[c]; topCliente = c; } } 
+        document.getElementById('kpi-cliente').innerText = topCliente; 
+        
+        let detalhesHtml = ""; for(let p in produtosVol) { detalhesHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 2px;"><span>${p}</span><strong>${produtosVol[p]}</strong></div>`; } 
+        let detalheEl = document.getElementById('kpi-detalhe-produtos'); if(detalheEl) detalheEl.innerHTML = detalhesHtml || 'Nenhum produto especificado.'; 
+        
+        try {
+            if(chartClientesInst) chartClientesInst.destroy(); 
+            let ctxC = document.getElementById('chartClientes').getContext('2d'); 
+            chartClientesInst = new Chart(ctxC, { type: 'bar', data: { labels: Object.keys(clientesVol).length > 0 ? Object.keys(clientesVol) : ['Nenhum dado'], datasets: [{ label: 'Pacotes', data: Object.values(clientesVol).length > 0 ? Object.values(clientesVol) : [0], backgroundColor: '#3b82f6', borderRadius: 4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false, grid: { display: false } } } } }); 
             
-            if (confirm("Deseja ZERAR APENAS OS DADOS numéricos e status do Resumo Diário para iniciar um novo dia?\n(Isso manterá os blocos e as tabelas que você adicionou intactos).")) { 
-                
-                let resumo = document.getElementById('tab-resumo');
+            if(chartMotivosInst) chartMotivosInst.destroy(); 
+            let ctxM = document.getElementById('chartMotivos').getContext('2d'); 
+            chartMotivosInst = new Chart(ctxM, { type: 'pie', data: { labels: Object.keys(motivosVol).length > 0 ? Object.keys(motivosVol) : ['Nenhum dado'], datasets: [{ data: Object.values(motivosVol).length > 0 ? Object.values(motivosVol) : [1], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#64748b'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } }); 
+        } catch(err) { console.log("Aguardando aba de gráfico abrir na tela."); }
+    }
 
-                resumo.querySelectorAll('.kpi-card p[contenteditable="true"]').forEach(p => p.innerText = '0');
+    function openCadastroMotorista() { document.getElementById('cad-nome').value = ''; document.getElementById('cad-codigo').value = ''; document.getElementById('cad-cpf').value = ''; document.getElementById('cad-placa').value = ''; document.getElementById('cad-diaria').value = '647,50'; document.getElementById('modal-cadastro-motorista').style.display = 'flex'; }
+    function closeCadastroMotorista() { document.getElementById('modal-cadastro-motorista').style.display = 'none'; }
+    function confirmarCadastroMotorista() { let nome = document.getElementById('cad-nome').value.trim() || 'Sem Nome'; let codigo = document.getElementById('cad-codigo').value.trim() || '-'; let cpf = document.getElementById('cad-cpf').value.trim() || '-'; let placa = document.getElementById('cad-placa').value.trim() || '-'; let diaria = document.getElementById('cad-diaria').value.trim() || '647,50'; let parts = nome.split(' ').filter(p => p.length > 0); let tabName = parts.length > 1 ? parts[0] + ' ' + parts[1] : (parts[0] || 'Novo'); let id = 'driver-' + Date.now(); let btn = document.createElement('button'); btn.className = 'driver-tab-btn active'; btn.innerText = tabName; btn.setAttribute('onclick', `switchDriver(this, '${id}')`); document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('driver-tabs-container').appendChild(btn); document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active')); let pane = document.createElement('div'); pane.id = id; pane.className = 'driver-pane active'; pane.innerHTML = `<div class="info-box" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;"><div><strong style="color:var(--text-muted);">Transportador:</strong> <span class="driver-name-header" style="font-weight:bold; font-size:14px;">${nome}</span><br><strong style="color:var(--text-muted);">Código:</strong> <span class="driver-cod">${codigo}</span><br><strong style="color:var(--text-muted);">CPF:</strong> <span class="driver-cpf">${cpf}</span><br><strong style="color:var(--text-muted);">Placa:</strong> <span class="driver-placa">${placa}</span></div><div style="text-align: right; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px dashed #93c5fd;"><strong>Valor da Diária (24h):</strong> R$ <span contenteditable="true" class="valor-diaria" style="font-weight:900; color:var(--primary-blue); font-size:16px; outline:none;" onblur="calcularTransporte('${id}')">${diaria}</span><br><span style="font-size: 11px; color: var(--text-muted);">Valor por Hora: R$ <span class="valor-hora" style="font-weight:bold;">0,00</span></span></div></div><div class="no-print" style="margin-bottom: 10px; display:flex; justify-content:flex-end; gap:10px;"><button class="btn-remove" onclick="removeDriver('${id}')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; opacity:1;">🗑️ Remover Motorista</button><button class="btn-add" onclick="addTransportRow('${id}')" style="background:#3b82f6; color:white; border:none; padding:4px 8px; border-radius:4px;">+ Adicionar Dia</button></div><table class="tabela-devolucao transport-table" style="text-align:center;"><thead><tr><th style="width:10%; text-align:center;">Data Início</th><th style="width:10%; text-align:center;">Hora Início</th><th style="width:10%; text-align:center;">Parada</th><th style="width:10%; text-align:center;">Entrada</th><th style="width:10%; text-align:center;">Hora Final</th><th style="width:12%; text-align:center; color:var(--primary-blue);">Quant. Horas</th><th style="width:10%; text-align:center;">Data Final</th><th style="width:23%; text-align:left;">Observação</th><th class="col-acao no-print"></th></tr></thead><tbody id="tb-${id}"><tr><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${id}')" style="outline:none;">0:00</div></td><td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${id}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${id}')" style="outline:none;">24:00</div></td><td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${id}');" style="margin:0;">✖</button></td></tr></tbody><tfoot><tr style="background-color: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;"><td colspan="5" style="text-align: right; color: var(--text-muted); padding:10px;">TOTAL MENSAL:</td><td class="total-horas-mensal" style="color: var(--primary-blue); font-size:14px; padding:10px;">24:00</td><td colspan="3" class="total-valor-mensal" style="color: var(--success); font-size:15px; text-align:right; padding-right:15px;">R$ 0,00</td></tr></tfoot></table>`; document.getElementById('drivers-content').appendChild(pane); calcularTransporte(id); closeCadastroMotorista(); salvarTransporte(); }
+    function removeDriver(driverId) { let allPanes = document.querySelectorAll('.driver-pane'); if(allPanes.length <= 1) { alert("Para manter o sistema funcionando, você deve ter pelo menos 1 motorista. Adicione um novo antes de apagar este."); return; } if(confirm("Tem certeza que deseja remover este motorista e todo o seu histórico atual?")) { let tabBtn = document.querySelector(`button[onclick*="switchDriver(this, '${driverId}')"]`); if(tabBtn) tabBtn.remove(); let pane = document.getElementById(driverId); if(pane) pane.remove(); let firstBtn = document.querySelector('#driver-tabs-container .driver-tab-btn'); if(firstBtn) { firstBtn.click(); } salvarTransporte(); } }
+    function timeStrToDec(str) { if(!str || str.trim() === '' || str.trim() === '-') return 0; str = str.replace(/[^\d:]/g, ''); let p = str.split(':'); let h = parseInt(p[0]) || 0; let m = parseInt(p[1]) || 0; return h + (m/60); }
+    function decToTimeStr(dec) { let h = Math.floor(dec); let m = Math.round((dec - h) * 60); if(m === 60) { h++; m = 0; } return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`; }
+    function calcularTransporte(driverId) { let pane = document.getElementById(driverId); if(!pane) return; let diariaStr = pane.querySelector('.valor-diaria').innerText.replace(/\./g, '').replace(',', '.'); let diaria = parseFloat(diariaStr) || 0; let vHora = Math.floor((diaria / 24) * 100) / 100; pane.querySelector('.valor-hora').innerText = vHora.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); let totalWorkedDec = 0; let rows = pane.querySelectorAll('tbody tr'); rows.forEach(tr => { let tStartEl = tr.querySelector('.t-start'); let tPauseEl = tr.querySelector('.t-pause'); let tResumeEl = tr.querySelector('.t-resume'); let tEndEl = tr.querySelector('.t-end'); let tTotalEl = tr.querySelector('.t-total'); if(!tStartEl) return; let start = timeStrToDec(tStartEl.innerText); let pStart = timeStrToDec(tPauseEl.innerText); let pEnd = timeStrToDec(tResumeEl.innerText); let end = timeStrToDec(tEndEl.innerText); if (tStartEl.innerText.trim() === '' || tStartEl.innerText.trim() === '-') { tTotalEl.innerText = '-'; return; } let worked = 0; if(end < start) end += 24; worked = end - start; if(pStart > 0 || pEnd > 0) { if(pEnd < pStart) pEnd += 24; worked -= (pEnd - pStart); } if(worked < 0) worked = 0; tTotalEl.innerText = decToTimeStr(worked); totalWorkedDec += worked; }); pane.querySelector('.total-horas-mensal').innerText = decToTimeStr(totalWorkedDec); let totalVal = totalWorkedDec * vHora; pane.querySelector('.total-valor-mensal').innerText = totalVal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); salvarTransporte(); }
+    function switchDriver(btn, driverId) { document.querySelectorAll('.driver-tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.driver-pane').forEach(p => p.classList.remove('active')); document.getElementById(driverId).classList.add('active'); }
+    function addTransportRow(driverId) { let tbody = document.getElementById('tb-' + driverId) || document.querySelector(`#${driverId} tbody`); let tr = document.createElement('tr'); tr.innerHTML = `<td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td><div contenteditable="true" class="t-start" onblur="calcularTransporte('${driverId}')" style="outline:none;">0:00</div></td><td><div contenteditable="true" class="t-pause" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--warning); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-resume" onblur="calcularTransporte('${driverId}')" style="outline:none; color:var(--success); font-weight:bold;">-</div></td><td><div contenteditable="true" class="t-end" onblur="calcularTransporte('${driverId}')" style="outline:none;">24:00</div></td><td style="font-weight:bold; color:var(--primary-blue); background:#eff6ff;" class="t-total">24:00</td><td><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">--/--</div></td><td style="text-align:left;"><div contenteditable="true" onblur="salvarTransporte()" style="outline:none;">-</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); calcularTransporte('${driverId}');" style="margin:0;">✖</button></td>`; tbody.appendChild(tr); calcularTransporte(driverId); }
+    function salvarTransporte() { if(isHistoryMode) return; db.collection('estado_atual').doc('transporte_oficial').set({ html: document.getElementById('drivers-content').innerHTML, tabs: document.getElementById('driver-tabs-container').innerHTML, mesNome: document.getElementById('nome-mes-transporte').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+    async function encerrarMesTransporte() { let nomeMesEl = document.getElementById('nome-mes-transporte'); let nomeMes = nomeMesEl.innerText.trim(); if(confirm("Deseja salvar a tabela de TRANSPORTE de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) { let htmlParaSalvar = document.getElementById('drivers-content').innerHTML; let tabsParaSalvar = document.getElementById('driver-tabs-container').innerHTML; let docId = "transporte_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_"); try { await db.collection('historico_mensal_transporte').doc(docId).set({ html: htmlParaSalvar, tabs: tabsParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); document.querySelectorAll('.driver-pane tbody').forEach(tb => tb.innerHTML = ''); document.querySelectorAll('.total-horas-mensal').forEach(t => t.innerText = '00:00'); document.querySelectorAll('.total-valor-mensal').forEach(t => t.innerText = 'R$ 0,00'); nomeMesEl.innerText = "Mês/Ano"; salvarTransporte(); alert("✅ Mês do Controle de Transporte encerrado com sucesso! Histórico arquivado."); } catch(error) { alert("Erro ao encerrar o mês de transporte."); } } }
+    async function openTransporteHistory() { let listEl = document.getElementById('lista-historico-transporte'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-transporte').style.display = 'flex'; try { const snapshot = await db.collection('historico_mensal_transporte').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadTransporteHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteTransporteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; } }
+    function closeTransporteHistory() { document.getElementById('modal-historico-transporte').style.display = 'none'; }
+    async function deleteTransporteHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de transporte de ${mesStr}?`)) { try { await db.collection('historico_mensal_transporte').doc(docId).delete(); openTransporteHistory(); } catch (error) { alert("Erro."); } } }
+    async function loadTransporteHistory(docId, mesStr) { if(!confirm(`Carregar o histórico de transporte de ${mesStr}? O salvamento atual será pausado.`)) return; try { const docSnap = await db.collection('historico_mensal_transporte').doc(docId).get(); if (docSnap.exists) { document.getElementById('drivers-content').innerHTML = docSnap.data().html; document.getElementById('driver-tabs-container').innerHTML = docSnap.data().tabs; document.getElementById('nome-mes-transporte').innerText = docSnap.data().mes + " (LEITURA)"; isHistoryMode = true; closeTransporteHistory(); let banner = document.createElement('div'); banner.id = 'banner-transporte-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de Transporte de ${mesStr}</span> <button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-transporte').prepend(banner); } } catch(error) { alert("Erro ao carregar o relatório."); } }
+    function addEmployeeRow(tableBodyId) { let tbody = document.getElementById(tableBodyId); let tr = document.createElement('tr'); tr.innerHTML = `<td class="col-mat"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">000000</div></td><td class="col-nome"><div contenteditable="true" onblur="salvarPessoal()" style="outline:none;">NOME DO FUNCIONÁRIO</div></td><td class="col-cargo"><select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarPessoal();"><option>Líder de armazenagem e logística</option><option>Conferente</option><option>Operador de empilhadeira</option><option>Auxiliar operacional</option><option>Operador de manipulador</option></select></td><td class="col-acao" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarPessoal();" style="margin:0;">✖</button></td>`; tbody.appendChild(tr); salvarPessoal(); }
+    
+    function addDevolucaoRow() { 
+        let tbody = document.getElementById('tb-devolucao'); 
+        let tr = document.createElement('tr'); 
+        const listaProdutos = `<select class="select-cargo" onchange="Array.from(this.options).forEach(o => o.removeAttribute('selected')); this.options[this.selectedIndex].setAttribute('selected', 'selected'); salvarDevolucoes()" style="width:100%; border:none; background:transparent; font-weight:normal; outline:none; font-family:inherit; font-size:11px; color:inherit; padding:0; cursor:pointer;"><option value="" disabled selected>Selecione...</option><option value="Cristal Petribu">Cristal Petribu</option><option value="Demerara Petribu">Demerara Petribu</option><option value="Açúcar Glacê">Açúcar Glacê</option><option value="Refinado Especiale">Refinado Especiale</option><option value="Mascavo Petribu 1Kg">Mascavo Petribu 1Kg</option><option value="Mascavo Petribu 500g">Mascavo Petribu 500g</option><option value="Demerara Salute">Demerara Salute</option><option value="Açúcar Triturado">Açúcar Triturado</option><option value="Demerara Q. Almofada">Demerara Q. Almofada</option><option value="Demerara Q. Fundo Chato">Demerara Q. Fundo Chato</option><option value="Refinado Qualita">Refinado Qualita</option><option value="Cristal Qualita">Cristal Qualita</option><option value="Demerara Vida">Demerara Vida</option><option value="Demerara Nordestão">Demerara Nordestão</option><option value="Demerara G. Barbosa">Demerara G. Barbosa</option><option value="Mascavo G. B. 8x1">Mascavo G. B. 8x1</option><option value="Cristal Confiare">Cristal Confiare</option><option value="Demerara Confiare">Demerara Confiare</option><option value="Refinado Confiare">Refinado Confiare</option><option value="Cristal Carrefour">Cristal Carrefour</option><option value="Demerara Carrefour">Demerara Carrefour</option><option value="Refinado Carrefour">Refinado Carrefour</option><option value="Mascavo Carr. 1Kg">Mascavo Carr. 1Kg</option><option value="Mascavo Carr. 500g">Mascavo Carr. 500g</option><option value="Demerara Escogido">Demerara Escogido</option><option value="Refinado Escogido">Refinado Escogido</option><option value="Mascavo Escogido">Mascavo Escogido</option><option value="Sachê Cristal">Sachê Cristal</option><option value="Sachê Demerara">Sachê Demerara</option><option value="Sachê Cristal FD 10x400g">Sachê Cristal FD 10x400g</option><option value="Cristal P. Big Bag">Cristal P. Big Bag</option><option value="Demerara P. Big Bag">Demerara P. Big Bag</option><option value="Refinado Big Bag">Refinado Big Bag</option><option value="Malha 20/45">Malha 20/45</option><option value="Malha 30/60">Malha 30/60</option><option value="Especial Big Bag">Especial Big Bag</option><option value="Mascavo Big Bag">Mascavo Big Bag</option><option value="Cristal P. SC 50Kg">Cristal P. SC 50Kg</option><option value="Cristal P. SC 25Kg">Cristal P. SC 25Kg</option><option value="Demerara P. SC 50Kg">Demerara P. SC 50Kg</option><option value="Demerara P. SC 25Kg">Demerara P. SC 25Kg</option><option value="Triturado SC 50Kg">Triturado SC 50Kg</option><option value="Refinado P. SC 50Kg">Refinado P. SC 50Kg</option><option value="Refinado P. SC 25Kg">Refinado P. SC 25Kg</option><option value="Açúcar Glacê SC 25Kg">Açúcar Glacê SC 25Kg</option><option value="Amorfo 25Kg">Amorfo 25Kg</option><option value="Malha 20/45 25Kg">Malha 20/45 25Kg</option></select>`; 
+        tr.innerHTML = `<td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">--/--</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Cliente Exemplo</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">0000</div></td><td>${listaProdutos}</td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Fardos</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none; text-align:center;">0</div></td><td><div contenteditable="true" onblur="salvarDevolucoes()" style="outline:none;">Avaria</div></td><td class="col-acao no-print" style="text-align:center;"><button class="btn-remove" onclick="this.closest('tr').remove(); salvarDevolucoes();" style="margin:0;">✖</button></td>`; 
+        tbody.appendChild(tr); 
+        salvarDevolucoes(); 
+    }
 
-                resumo.querySelectorAll('.expedicao-table .data-row div[contenteditable="true"]').forEach(div => {
-                    if (div.parentElement.classList.contains('total-cell')) {
-                        div.innerText = '0';
-                    } else {
-                        div.innerHTML = '-';
-                    }
-                });
-
-                resumo.querySelectorAll('.expedicao-table .status-row .badge').forEach(badge => {
-                    badge.className = 'badge badge-inativo badge-inline';
-                    badge.innerText = '-';
-                });
-
-                ['lista-moagem', 'lista-ausentes', 'lista-paradas', 'lista-patio'].forEach(id => {
-                    let ul = document.getElementById(id);
-                    if (ul) {
-                        ul.innerHTML = `<li><span contenteditable="true">Nenhum registro.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>`;
-                    }
-                });
-
-                ['list-limpeza', 'list-operacao', 'list-manut'].forEach(id => {
-                    let div = document.getElementById(id);
-                    if (div) {
-                        div.innerHTML = `<div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>`;
-                    }
-                });
-
-                let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]');
-                siloSpans.forEach(span => {
-                    if(span.innerText.includes('S1')) span.innerText = 'S1: Vazio';
-                    else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
-                    else span.innerText = 'Vazio';
-                });
-                
-                atualizarGraficoSilos();
-
-                resumo.querySelectorAll('#lista-status .badge').forEach(badge => {
-                    badge.className = 'badge badge-normal';
-                    badge.innerText = 'Normal';
-                });
-
-                updateClock();
-
-                try {
-                    await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({
-                        html: resumo.innerHTML,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    const selector = document.getElementById('shift-selector'); 
-                    if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } 
-                    
-                    alert("✅ Resumo diário zerado e pronto para o novo dia!");
-                } catch(e) {
-                    alert("Erro ao limpar painel.");
-                }
+    function salvarPessoal() { if(isHistoryMode) return; db.collection('estado_atual').doc('quadro_pessoal_oficial').set({ html: document.getElementById('grid-pessoal').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+    function salvarDevolucoes() { if(isHistoryMode || isDevolucaoHistoryMode) return; db.collection('estado_atual').doc('devolucoes_oficial').set({ html: document.getElementById('tb-devolucao').innerHTML, mesNome: document.getElementById('nome-mes-devolucao').innerText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+    
+    function iniciarSalvamentoAutomaticoResumo() { 
+        let saveTimeoutResumo; 
+        const observerResumo = new MutationObserver((mutations) => { 
+            if(isHistoryMode || graficoAtualizando) return; 
+            let shouldSave = false; 
+            for(let m of mutations) { 
+                if (m.target.id !== 'dash-time' && 
+                    m.target.id !== 'dash-date' && 
+                    m.target.id !== 'silo-data-hoje' && 
+                    m.target.id !== 'silo-data-ontem' && 
+                    m.target.id !== 'silo1-fill' && 
+                    m.target.id !== 'silo2-fill' &&
+                    m.target.id !== 'silo1-pct' &&
+                    m.target.id !== 'silo2-pct') { 
+                    shouldSave = true; break; 
+                } 
             } 
-        }
+            if (shouldSave) { 
+                clearTimeout(saveTimeoutResumo); 
+                saveTimeoutResumo = setTimeout(() => { 
+                    db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: document.getElementById('tab-resumo').innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); 
+                }, 3000); 
+            } 
+        }); 
+        observerResumo.observe(document.getElementById('tab-resumo'), { attributes: true, childList: true, subtree: true, characterData: true }); 
+    }
 
-        async function saveDay() { if(isHistoryMode) return; let dateStr = document.getElementById('dash-date').innerText.trim(); if(!dateStr || dateStr === '--/--/----') return; if(confirm(`Salvar Resumo de Safra do dia ${dateStr}?`)) { let currentHTML = document.querySelector('.main-content').innerHTML; let docId = dateStr.replaceAll('/', '-'); try { await db.collection('historico_safra').doc(docId).set({ html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ Salvo!`); } catch(error) { alert("Erro."); } } }
-        async function openHistoryModal() { let listEl = document.getElementById('history-list'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando... ⏳</li>'; document.getElementById('history-modal').style.display = 'flex'; try { const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center;">Nenhum salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { } }
-        function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
-        async function deleteHistory(docId, dateStr) { if(confirm(`Apagar ${dateStr}?`)) { try { await db.collection('historico_safra').doc(docId).delete(); openHistoryModal(); } catch (error) {} } }
-        async function loadHistory(docId, dateStr) { if(!confirm(`Carregar o histórico do dia ${dateStr}?`)) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { document.querySelector('.main-content').innerHTML = docSnap.data().html; isHistoryMode = true; closeHistoryModal(); let mainContent = document.querySelector('.main-content'); mainContent.querySelectorAll('[contenteditable="true"]').forEach(el => el.setAttribute('contenteditable', 'false')); mainContent.querySelectorAll('.btn-add, .btn-remove').forEach(btn => btn.style.display = 'none'); mainContent.querySelectorAll('.badge').forEach(badge => badge.style.pointerEvents = 'none'); mainContent.querySelectorAll('select').forEach(sel => sel.disabled = true); let banner = document.createElement('div'); banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px; flex-wrap: wrap; gap: 10px;'; banner.innerHTML = `<span>⚠️ Arquivo de ${dateStr} (SOMENTE LEITURA)</span> <div style="display: flex; gap: 10px;"><button onclick="restoreHistory('${docId}')" style="background:#10b981; color:white; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">♻️ Trazer este dia de volta (Restaurar)</button><button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Sair do Histórico</button></div>`; document.querySelector('.main-content').prepend(banner); } } catch(error) { alert("Erro ao carregar o histórico."); } }
-        async function restoreHistory(docId) { if(!confirm("⚠️ ATENÇÃO: Isso vai substituir os dados do Resumo Atual pelos dados deste histórico.\n\nDeseja continuar e trazer este dia à vida?")) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { let tempDiv = document.createElement('div'); tempDiv.innerHTML = docSnap.data().html; let tabResumoOriginal = tempDiv.querySelector('#tab-resumo'); if (tabResumoOriginal) { await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: tabResumoOriginal.innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert("✅ Dia restaurado com sucesso! A página será atualizada para você continuar a edição."); location.reload(); } else { alert("Erro: Estrutura inválida."); } } } catch(e) { alert("Erro ao tentar restaurar o histórico."); } }
-        const stateConfig = { 'tarefa': [{ text: 'Concluído', class: 'badge-concluido' }, { text: 'Em andamento', class: 'badge-andamento' }, { text: 'Pendente', class: 'badge-parada' }], 'operacao': [{ text: 'Normal', class: 'badge-normal' }, { text: 'Operando', class: 'badge-normal' }, { text: 'Vazio', class: 'badge-andamento' }, { text: 'Parada', class: 'badge-parada' }, { text: 'Disponível', class: 'badge-normal' }], 'operacaoGlobal': [{ text: 'OPERAÇÃO NORMAL', class: 'badge-normal' }, { text: 'OPERAÇÃO PARCIAL', class: 'badge-andamento' }, { text: 'SAFRA PARADA', class: 'badge-parada' }], 'expStatus': [{ text: '-', class: 'badge-inativo' }, { text: 'Ativo', class: 'badge-concluido' }] };
-        function cycleStatus(element, type) { let states = stateConfig[type]; let currentText = element.innerText.trim(); let currentIndex = states.findIndex(s => s.text === currentText); if (currentIndex === -1) currentIndex = 0; let nextIndex = (currentIndex + 1) % states.length; let nextState = states[nextIndex]; let extraClass = element.classList.contains('badge-inline') ? ' badge-inline' : ''; element.className = 'badge ' + nextState.class + extraClass; element.innerText = nextState.text; if (type === 'operacaoGlobal') { let emojiEl = document.querySelector('.status-emoji'); if (nextState.class === 'badge-normal') emojiEl.innerText = '🟢'; else if (nextState.class === 'badge-andamento') emojiEl.innerText = '🟡'; else emojiEl.innerText = '🔴'; } }
-        function addCheckItem(containerId) { let container = document.getElementById(containerId); let div = document.createElement('div'); div.className = 'check-item'; div.innerHTML = `<span contenteditable="true">☑️ Nova tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div>`; container.appendChild(div); }
-        function addStatusItem(containerId) { let container = document.getElementById(containerId); let div = document.createElement('div'); div.className = 'status-item'; div.innerHTML = `<span class="status-name" contenteditable="true">🏢 Novo Equipamento/Área</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(div); }
-        function addSimpleItem(containerId) { let container = document.getElementById(containerId); let li = document.createElement('li'); li.innerHTML = `<span contenteditable="true">Escreva aqui...</span><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(li); }
-        function addRecebimentoTerceiros() { let container = document.getElementById('informativo-container'); let div = document.createElement('div'); div.className = 'info-box'; div.innerHTML = `<div class="info-title" style="justify-content: space-between;"><span contenteditable="true">🚛 USINA ESTIVAS - BIG BAG</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()" style="opacity:1;">✖ Remover</button></div><div class="flex-row"><div class="flex-col"><strong>Ontem</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div><div class="flex-col"><strong>Hoje</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div></div><div style="margin-top: 8px; font-weight: bold; border-top: 1px dashed #cbd5e1; padding-top: 5px;">Total acumulado: <span contenteditable="true" style="color:var(--primary-blue);">0t</span></div>`; container.insertBefore(div, document.getElementById('row-ausentes-paradas')); }
+    function descobreSafra(textoMes) { let str = textoMes.toLowerCase(); let yearMatch = str.match(/\d{2,4}/); if(!yearMatch) return "desconhecida"; let ano = parseInt(yearMatch[0]); if(ano < 100) ano += 2000; let meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']; let indexMes = meses.findIndex(m => str.includes(m)); if(indexMes === -1) return "desconhecida"; let anoInicioSafra = (indexMes >= 7) ? ano : ano - 1; let final1 = anoInicioSafra.toString().slice(-2); let final2 = (anoInicioSafra + 1).toString().slice(-2); return `safra${final1}${final2}`; }
+    
+    async function encerrarMes() { let nomeMesEl = document.getElementById('nome-mes-devolucao'); let nomeMes = nomeMesEl.innerText.trim(); if(confirm("Deseja salvar a tabela de devoluções de '" + nomeMes + "' no histórico e ZERAR a tabela para iniciar o próximo mês?")) { let htmlParaSalvar = document.getElementById('tb-devolucao').innerHTML; let docId = "devolucoes_historico_" + nomeMes.replace(/\//g, "-").replace(/\s/g, "_"); try { await db.collection('historico_mensal_devolucoes').doc(docId).set({ html: htmlParaSalvar, mes: nomeMes, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); document.getElementById('tb-devolucao').innerHTML = ""; nomeMesEl.innerText = "Mês/Ano"; salvarDevolucoes(); alert("✅ Mês encerrado com sucesso! Histórico arquivado."); } catch(error) { alert("Erro ao encerrar o mês."); } } }
+    async function openDevolucoesHistory() { let listEl = document.getElementById('lista-historico-devolucoes'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando dados... ⏳</li>'; document.getElementById('modal-historico-devolucoes').style.display = 'flex'; try { const snapshot = await db.collection('historico_mensal_devolucoes').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center; font-style:italic;">Nenhum histórico salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().mes; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadDevolucaoHistory('${doc.id}', '${d}')">📂 Histórico de ${d}</span><button onclick="deleteDevolucaoHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { listEl.innerHTML = '<li style="padding:15px; color:#ef4444; text-align:center;">Erro ao buscar histórico.</li>'; } }
+    function closeDevolucoesHistory() { document.getElementById('modal-historico-devolucoes').style.display = 'none'; }
+    async function deleteDevolucaoHistory(docId, mesStr) { if(confirm(`Tem certeza que quer apagar o histórico de ${mesStr}?`)) { try { await db.collection('historico_mensal_devolucoes').doc(docId).delete(); openDevolucoesHistory(); } catch (error) { alert("Erro."); } } }
+    async function loadDevolucaoHistory(docId, mesStr) { if(!confirm(`Carregar o histórico de ${mesStr}? O salvamento atual será pausado.`)) return; try { const docSnap = await db.collection('historico_mensal_devolucoes').doc(docId).get(); if (docSnap.exists) { document.getElementById('tb-devolucao').innerHTML = docSnap.data().html; document.getElementById('nome-mes-devolucao').innerText = docSnap.data().mes + " (LEITURA)"; isDevolucaoHistoryMode = true; closeDevolucoesHistory(); let banner = document.createElement('div'); banner.id = 'banner-dev-history'; banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px;'; banner.innerHTML = `<span>⚠️ Visualizando arquivo de ${mesStr}</span> <button onclick="exitDevolucaoHistoryMode()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Voltar para o Mês Atual</button>`; document.getElementById('tab-devolucoes').prepend(banner); } } catch(error) { alert("Erro ao carregar o relatório."); } }
+    function exitDevolucaoHistoryMode() { isDevolucaoHistoryMode = false; let banner = document.getElementById('banner-dev-history'); if(banner) banner.remove(); carregarDadosDaNuvem(); }
+    
+    async function clearDashboard() { 
+        if(isHistoryMode) return; 
         
-        function changeShiftLayout(shiftType) {
-            localStorage.setItem('petribu_shift_type_oficial', shiftType);
-
-            let h1 = "23h às 07h", h2 = "07h às 15h", h3 = "15h às 23h";
+        if (confirm("Deseja ZERAR APENAS OS DADOS numéricos e status do Resumo Diário para iniciar um novo dia?\n(Isso manterá os blocos e as tabelas que você adicionou intactos).")) { 
             
-            if (shiftType === 'sex') {
-                h1 = "23h às 07h";
-                h2 = "07h às 19h";
-                h3 = "19h às 07h";
-            } else if (shiftType === 'sab-dom') {
-                h1 = "07h às 19h";
-                h2 = "19h às 07h";
-            }
+            let resumo = document.getElementById('tab-resumo');
 
-            document.querySelectorAll('.expedicao-table').forEach(table => {
-                let ths = table.querySelectorAll('th');
-                if(ths.length > 3) {
-                    ths[1].innerText = h1;
-                    ths[2].innerText = h2;
-                    
-                    if(shiftType === 'sab-dom') {
-                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = 'none');
-                    } else {
-                        table.querySelectorAll('.shift-3').forEach(el => el.style.display = '');
-                        ths[3].innerText = h3;
-                    }
+            resumo.querySelectorAll('.kpi-card p[contenteditable="true"]').forEach(p => p.innerText = '0');
+
+            resumo.querySelectorAll('.expedicao-table .data-row div[contenteditable="true"]').forEach(div => {
+                if (div.parentElement.classList.contains('total-cell')) {
+                    div.innerText = '0';
+                } else {
+                    div.innerHTML = '-';
                 }
             });
+
+            resumo.querySelectorAll('.expedicao-table .status-row .badge').forEach(badge => {
+                badge.className = 'badge badge-inativo badge-inline';
+                badge.innerText = '-';
+            });
+
+            ['lista-moagem', 'lista-ausentes', 'lista-paradas', 'lista-patio'].forEach(id => {
+                let ul = document.getElementById(id);
+                if (ul) {
+                    ul.innerHTML = `<li><span contenteditable="true">Nenhum registro.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li>`;
+                }
+            });
+
+            ['list-limpeza', 'list-operacao', 'list-manut'].forEach(id => {
+                let div = document.getElementById(id);
+                if (div) {
+                    div.innerHTML = `<div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>`;
+                }
+            });
+
+            let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]');
+            siloSpans.forEach(span => {
+                if(span.innerText.includes('S1')) span.innerText = 'S1: Vazio';
+                else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
+                else span.innerText = 'Vazio';
+            });
+            
+            atualizarGraficoSilos();
+
+            resumo.querySelectorAll('#lista-status .badge').forEach(badge => {
+                badge.className = 'badge badge-normal';
+                badge.innerText = 'Normal';
+            });
+
+            updateClock();
+
+            try {
+                await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({
+                    html: resumo.innerHTML,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                const selector = document.getElementById('shift-selector'); 
+                if(selector) { selector.value = 'seg-qui'; changeShiftLayout('seg-qui'); } 
+                
+                alert("✅ Resumo diário zerado e pronto para o novo dia!");
+            } catch(e) {
+                alert("Erro ao limpar painel.");
+            }
+        } 
+    }
+
+    async function saveDay() { if(isHistoryMode) return; let dateStr = document.getElementById('dash-date').innerText.trim(); if(!dateStr || dateStr === '--/--/----') return; if(confirm(`Salvar Resumo de Safra do dia ${dateStr}?`)) { let currentHTML = document.querySelector('.main-content').innerHTML; let docId = dateStr.replaceAll('/', '-'); try { await db.collection('historico_safra').doc(docId).set({ html: currentHTML, dataOriginal: dateStr, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert(`✅ Salvo!`); } catch(error) { alert("Erro."); } } }
+    async function openHistoryModal() { let listEl = document.getElementById('history-list'); listEl.innerHTML = '<li style="padding:15px; text-align:center;">Buscando... ⏳</li>'; document.getElementById('history-modal').style.display = 'flex'; try { const snapshot = await db.collection('historico_safra').orderBy('timestamp', 'desc').get(); listEl.innerHTML = ''; if(snapshot.empty) { listEl.innerHTML = '<li style="padding:15px; text-align:center;">Nenhum salvo.</li>'; return; } snapshot.forEach(doc => { let d = doc.data().dataOriginal; let li = document.createElement('li'); li.className = 'history-item'; li.innerHTML = `<span class="history-item-date" onclick="loadHistory('${doc.id}', '${d}')">📄 Relatório de ${d}</span><button onclick="deleteHistory('${doc.id}', '${d}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px;">🗑️</button>`; listEl.appendChild(li); }); } catch (error) { } }
+    function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
+    async function deleteHistory(docId, dateStr) { if(confirm(`Apagar ${dateStr}?`)) { try { await db.collection('historico_safra').doc(docId).delete(); openHistoryModal(); } catch (error) {} } }
+    async function loadHistory(docId, dateStr) { if(!confirm(`Carregar o histórico do dia ${dateStr}?`)) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { document.querySelector('.main-content').innerHTML = docSnap.data().html; isHistoryMode = true; closeHistoryModal(); let mainContent = document.querySelector('.main-content'); mainContent.querySelectorAll('[contenteditable="true"]').forEach(el => el.setAttribute('contenteditable', 'false')); mainContent.querySelectorAll('.btn-add, .btn-remove').forEach(btn => btn.style.display = 'none'); mainContent.querySelectorAll('.badge').forEach(badge => badge.style.pointerEvents = 'none'); mainContent.querySelectorAll('select').forEach(sel => sel.disabled = true); let banner = document.createElement('div'); banner.className = 'no-print'; banner.style = 'background: #f59e0b; color: white; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight: bold; margin-bottom: 15px; border-radius: 8px; flex-wrap: wrap; gap: 10px;'; banner.innerHTML = `<span>⚠️ Arquivo de ${dateStr} (SOMENTE LEITURA)</span> <div style="display: flex; gap: 10px;"><button onclick="restoreHistory('${docId}')" style="background:#10b981; color:white; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">♻️ Trazer este dia de volta (Restaurar)</button><button onclick="location.reload()" style="background:white; color:#b45309; border:none; padding:8px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Sair do Histórico</button></div>`; document.querySelector('.main-content').prepend(banner); } } catch(error) { alert("Erro ao carregar o histórico."); } }
+    async function restoreHistory(docId) { if(!confirm("⚠️ ATENÇÃO: Isso vai substituir os dados do Resumo Atual pelos dados deste histórico.\n\nDeseja continuar e trazer este dia à vida?")) return; try { const docSnap = await db.collection('historico_safra').doc(docId).get(); if (docSnap.exists) { let tempDiv = document.createElement('div'); tempDiv.innerHTML = docSnap.data().html; let tabResumoOriginal = tempDiv.querySelector('#tab-resumo'); if (tabResumoOriginal) { await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({ html: tabResumoOriginal.innerHTML, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); alert("✅ Dia restaurado com sucesso! A página será atualizada para você continuar a edição."); location.reload(); } else { alert("Erro: Estrutura inválida."); } } } catch(e) { alert("Erro ao tentar restaurar o histórico."); } }
+    const stateConfig = { 'tarefa': [{ text: 'Concluído', class: 'badge-concluido' }, { text: 'Em andamento', class: 'badge-andamento' }, { text: 'Pendente', class: 'badge-parada' }], 'operacao': [{ text: 'Normal', class: 'badge-normal' }, { text: 'Operando', class: 'badge-normal' }, { text: 'Vazio', class: 'badge-andamento' }, { text: 'Parada', class: 'badge-parada' }, { text: 'Disponível', class: 'badge-normal' }], 'operacaoGlobal': [{ text: 'OPERAÇÃO NORMAL', class: 'badge-normal' }, { text: 'OPERAÇÃO PARCIAL', class: 'badge-andamento' }, { text: 'SAFRA PARADA', class: 'badge-parada' }], 'expStatus': [{ text: '-', class: 'badge-inativo' }, { text: 'Ativo', class: 'badge-concluido' }] };
+    function cycleStatus(element, type) { let states = stateConfig[type]; let currentText = element.innerText.trim(); let currentIndex = states.findIndex(s => s.text === currentText); if (currentIndex === -1) currentIndex = 0; let nextIndex = (currentIndex + 1) % states.length; let nextState = states[nextIndex]; let extraClass = element.classList.contains('badge-inline') ? ' badge-inline' : ''; element.className = 'badge ' + nextState.class + extraClass; element.innerText = nextState.text; if (type === 'operacaoGlobal') { let emojiEl = document.querySelector('.status-emoji'); if (nextState.class === 'badge-normal') emojiEl.innerText = '🟢'; else if (nextState.class === 'badge-andamento') emojiEl.innerText = '🟡'; else emojiEl.innerText = '🔴'; } }
+    function addCheckItem(containerId) { let container = document.getElementById(containerId); let div = document.createElement('div'); div.className = 'check-item'; div.innerHTML = `<span contenteditable="true">☑️ Nova tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div>`; container.appendChild(div); }
+    function addStatusItem(containerId) { let container = document.getElementById(containerId); let div = document.createElement('div'); div.className = 'status-item'; div.innerHTML = `<span class="status-name" contenteditable="true">🏢 Novo Equipamento/Área</span><div class="status-badge-container"><span class="badge badge-normal" onclick="cycleStatus(this, 'operacao')">Normal</span></div><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(div); }
+    function addSimpleItem(containerId) { let container = document.getElementById(containerId); let li = document.createElement('li'); li.innerHTML = `<span contenteditable="true">Escreva aqui...</span><button class="btn-remove" onclick="this.parentElement.remove()">✖</button>`; container.appendChild(li); }
+    function addRecebimentoTerceiros() { let container = document.getElementById('informativo-container'); let div = document.createElement('div'); div.className = 'info-box'; div.innerHTML = `<div class="info-title" style="justify-content: space-between;"><span contenteditable="true">🚛 USINA ESTIVAS - BIG BAG</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()" style="opacity:1;">✖ Remover</button></div><div class="flex-row"><div class="flex-col"><strong>Ontem</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div><div class="flex-col"><strong>Hoje</strong><ul class="simple-list"><li><span contenteditable="true">0 Veículos – 0t</span></li></ul></div></div><div style="margin-top: 8px; font-weight: bold; border-top: 1px dashed #cbd5e1; padding-top: 5px;">Total acumulado: <span contenteditable="true" style="color:var(--primary-blue);">0t</span></div>`; container.insertBefore(div, document.getElementById('row-ausentes-paradas')); }
+    
+    function changeShiftLayout(shiftType) {
+        localStorage.setItem('petribu_shift_type_oficial', shiftType);
+
+        let h1 = "23h às 07h", h2 = "07h às 15h", h3 = "15h às 23h";
+        
+        if (shiftType === 'sex') {
+            h1 = "23h às 07h";
+            h2 = "07h às 19h";
+            h3 = "19h às 07h";
+        } else if (shiftType === 'sab-dom') {
+            h1 = "07h às 19h";
+            h2 = "19h às 07h";
         }
-    </script>
+
+        document.querySelectorAll('.expedicao-table').forEach(table => {
+            let ths = table.querySelectorAll('th');
+            if(ths.length > 3) {
+                ths[1].innerText = h1;
+                ths[2].innerText = h2;
+                
+                if(shiftType === 'sab-dom') {
+                    table.querySelectorAll('.shift-3').forEach(el => el.style.display = 'none');
+                } else {
+                    table.querySelectorAll('.shift-3').forEach(el => el.style.display = '');
+                    ths[3].innerText = h3;
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>
