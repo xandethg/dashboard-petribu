@@ -87,13 +87,14 @@
     .info-title { font-weight: bold; margin-bottom: 5px; color: var(--header-blue); display: flex; align-items: center; gap: 5px; justify-content: space-between; }
     .flex-row { display: flex; justify-content: space-between; gap: 10px; }
     
-    /* TRAVA DE ALTURA: Força as caixas (Ausentes/Paradas) a ficarem apertadas */
     #row-ausentes-paradas { align-items: flex-start !important; }
     #row-ausentes-paradas .info-box { margin-bottom: 0 !important; padding: 10px !important; }
 
-    .flex-col { flex: 1; }
+    /* CORREÇÃO DO TEXTO ESTICADO: min-width: 0 garante que a flexbox respeite o limite da tela */
+    .flex-col { flex: 1; min-width: 0; } 
     ul.simple-list { padding-left: 12px; margin: 4px 0; }
-    ul.simple-list li { margin-bottom: 3px; white-space: nowrap; font-size: 10.5px; }
+    /* Adicionado white-space: normal e word-wrap para forçar a quebra da linha */
+    ul.simple-list li { margin-bottom: 3px; font-size: 10.5px; white-space: normal; word-wrap: break-word; }
 
     .table-title { font-size: 11px; font-weight: bold; color: var(--primary-blue); margin: 15px 0 5px 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
     .expedicao-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 10px; table-layout: fixed; }
@@ -182,7 +183,7 @@
     .driver-pane, .clima-pane { display: none; }
     .driver-pane.active, .clima-pane.active { display: block; }
 
-    /* --- IMPRESSÃO (AJUSTADO PARA ESCALA 107%) --- */
+    /* --- IMPRESSÃO --- */
     @media print {
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
@@ -208,20 +209,21 @@
         .info-box { padding: 4px 6px !important; margin-bottom: 4px !important; font-size: 8.5px !important; border: 0.5px solid #e2e8f0 !important;} 
         .info-title { font-size: 8.5px !important; margin-bottom: 2px !important;}
         ul.simple-list { padding-left: 10px !important; margin: 2px 0 !important; }
-        ul.simple-list li { margin-bottom: 0px !important; font-size: 8px !important; }
+        /* Impressão com quebra de linha permitida */
+        ul.simple-list li { margin-bottom: 0px !important; font-size: 8px !important; white-space: normal !important; word-wrap: break-word !important;}
+        
         .table-title { margin: 4px 0 2px 0 !important; font-size: 9px !important; }
         .expedicao-table { margin-bottom: 4px !important; font-size: 8.5px !important; border-collapse: collapse !important; table-layout: fixed !important; width: 100% !important; }
         .expedicao-table th, .expedicao-table td { padding: 2px 3px !important; border: 0.5px solid #cbd5e1 !important; } .total-cell { font-size: 11px !important; }
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        /* SILO COMPACTO PARA IMPRESSÃO */
-        #silo-container-v220 { 
+        #silo-container-v221 { 
             display: flex !important; justify-content: center !important; gap: 20px !important;
             border-top: 0.5px dashed #cbd5e1 !important; padding-top: 2px !important; margin-top: 2px !important; visibility: visible !important;
         }
-        #silo-container-v220 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
-        #silo-container-v220 svg { width: 25px !important; height: 45px !important; display: block !important; }
+        #silo-container-v221 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
+        #silo-container-v221 svg { width: 25px !important; height: 45px !important; display: block !important; }
 
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
@@ -322,9 +324,10 @@
                     <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
                     <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
                 </div>
+                <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.2.0
+                    v2.2.1
                 </div>
             </div>
         </div>
@@ -340,9 +343,9 @@
                 </div>
             </div>
 
-            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.2.0 -->
+            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.2.1 -->
             <div id="tab-resumo">
-                <div id="flag-v220" style="display:none;"></div>
+                <div id="flag-v221" style="display:none;"></div>
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-icon" style="color:#3b82f6;">🚚</div><div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
                     <div class="kpi-card"><div class="kpi-icon" style="color:#8b5cf6;">🌾</div><div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
@@ -385,8 +388,8 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHOS DOS SILOS v220 -->
-                                        <div id="silo-container-v220" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
+                                        <!-- DESENHOS DOS SILOS v221 -->
+                                        <div id="silo-container-v221" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -432,7 +435,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="silo-totals" style="font-size: 10px; text-align: center; color: var(--text-muted); margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 2px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
+                                    <div id="silo-totals" style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 2px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
                                 </div>
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -858,18 +861,19 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
+            if (!localStorage.getItem('template_resumo_v221')) { localStorage.setItem('template_resumo_v221', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
                     
-                    // TRAVA DE VERSÃO DEFINITIVA: Se achar a flag da v2.2.0, carrega a tela.
-                    if (htmlResumo.includes('id="flag-v220"')) {
+                    // TRAVA DE VERSÃO DEFINITIVA: Se achar a flag da v2.2.1, carrega a tela.
+                    if (htmlResumo.includes('id="flag-v221"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
                         // MIGRAR DADOS ANTIGOS PARA A TELA NOVA SEM QUEBRAR O LAYOUT
-                        console.log("Migrando dados antigos para a nova versão v2.2.0...");
+                        console.log("Migrando dados antigos para a nova versão v2.2.1...");
                         let temp = document.createElement('div');
                         temp.innerHTML = htmlResumo;
 
