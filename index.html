@@ -298,7 +298,15 @@
                 <button class="btn-export" style="background-color: #10b981;" onclick="saveDay()">💾 Salvar Dia (Histórico)</button>
                 <button class="btn-export btn-clear" onclick="clearDashboard()">🗑️ Limpar Painel</button>
                 <button class="btn-export btn-pdf" onclick="window.print()">🖨️ Imprimir / PDF</button>
-                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button><button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button></div>
+                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                    <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
+                    <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
+                </div>
+                <!-- NOVA IDENTIFICAÇÃO DE DESENVOLVEDOR E VERSÃO -->
+                <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
+                    Desenvolvido por Alexandre Henrique<br>
+                    v1.0.0
+                </div>
             </div>
         </div>
 
@@ -330,16 +338,78 @@
                                 <div class="info-box"><div class="info-title"><span>🟢 MOAGEM</span><button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button></div><ul class="simple-list" id="lista-moagem"><li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
-                                    <div style="display: flex; gap: 10px;">
-                                        <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
-                                            <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                            <div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <div style="flex: 3; display: flex; flex-direction: column; gap: 5px;">
+                                            <div style="display: flex; gap: 10px;">
+                                                <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
+                                                    <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                                    <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                        <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                        <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1; padding-left: 5px;">
+                                                    <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                                    <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                        <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                        <div class="flex-col">
+                                                            <strong>05:00h</strong>
+                                                            <ul class="simple-list">
+                                                                <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1: Vazio</span></li>
+                                                                <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2: Vazio</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="flex: 1; padding-left: 5px;">
-                                            <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                            <div style="display: flex; justify-content: space-between; gap: 5px;"><div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div><div class="flex-col"><strong>05:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div></div>
+                                        
+                                        <!-- DESENHO VETORIAL DOS SILOS BASEADO NO ESQUEMA -->
+                                        <div style="flex: 1.4; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 10px;" class="no-print">
+                                            <!-- SILO 1 -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                                <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
+                                                <svg viewBox="0 0 100 100" style="width: 70px; height: 100px; display: block;">
+                                                    <defs><clipPath id="shape-silo1"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
+                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
+                                                    <rect id="silo1-fill" clip-path="url(#shape-silo1)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
+                                                    <g clip-path="url(#shape-silo1)">
+                                                        <line x1="0" y1="35" x2="100" y2="35" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="45" x2="100" y2="45" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="55" x2="100" y2="55" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="65" x2="100" y2="65" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="75" x2="100" y2="75" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="85" x2="100" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="50" y1="0" x2="50" y2="100" stroke="#94a3b8" stroke-width="0.5" /> 
+                                                    </g>
+                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="none" stroke="#475569" stroke-width="2" />
+                                                </svg>
+                                                <span id="silo1-pct" style="font-size: 11px; font-weight: 900; color: var(--text-dark);">0%</span>
+                                            </div>
+
+                                            <!-- SILO 2 -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                                <strong style="font-size: 11px; color: var(--header-blue);">S2</strong>
+                                                <svg viewBox="0 0 100 100" style="width: 70px; height: 100px; display: block;">
+                                                    <defs><clipPath id="shape-silo2"><polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" /></clipPath></defs>
+                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="#e2e8f0" />
+                                                    <rect id="silo2-fill" clip-path="url(#shape-silo2)" x="0" y="100" width="100" height="0" fill="#3b82f6" style="transition: all 0.5s ease-out;" />
+                                                    <g clip-path="url(#shape-silo2)">
+                                                        <line x1="0" y1="35" x2="100" y2="35" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="45" x2="100" y2="45" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="55" x2="100" y2="55" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="65" x2="100" y2="65" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="75" x2="100" y2="75" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="0" y1="85" x2="100" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
+                                                        <line x1="50" y1="0" x2="50" y2="100" stroke="#94a3b8" stroke-width="0.5" />
+                                                    </g>
+                                                    <polygon points="40,0 60,0 60,10 95,25 95,70 65,95 65,100 35,100 35,95 5,70 5,25 40,10" fill="none" stroke="#475569" stroke-width="2" />
+                                                </svg>
+                                                <span id="silo2-pct" style="font-size: 11px; font-weight: 900; color: var(--text-dark);">0%</span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div id="silo-totals" style="font-size: 10px; text-align: right; color: var(--text-muted); margin-top: 5px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
                                 </div>
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -672,7 +742,6 @@
         let isHistoryMode = false;
         let isDevolucaoHistoryMode = false;
 
-        // DECLARAÇÃO DAS VARIÁVEIS DOS GRÁFICOS
         let chartClimaT = null; let chartClimaU = null;
         let chartClientesInst = null; let chartMotivosInst = null;
 
@@ -691,6 +760,7 @@
             const siloHoje = document.getElementById('silo-data-hoje');
             const siloOntem = document.getElementById('silo-data-ontem');
             
+            // As caixinhas HTML mantêm "--/--/----", e esta linha preenche com as datas reais automaticamente
             if(siloHoje && siloHoje.innerText !== dateStr) siloHoje.innerText = dateStr;
             
             let ontem = new Date(now);
@@ -712,7 +782,6 @@
                 document.getElementById('display-username').innerText = nomeFormatado;
                 document.body.setAttribute('data-user', nomeFormatado);
                 
-                // Configura inputs de data para o clima com o dia e mês local exato
                 let today = new Date();
                 let year = today.getFullYear();
                 let month = String(today.getMonth() + 1).padStart(2, '0');
@@ -766,7 +835,6 @@
             if(tabId === 'clima') { carregarDiaClima(); }
         }
 
-        // CARREGAMENTO PRINCIPAL DE DADOS
         async function carregarDadosDaNuvem() { 
             updateClock(); 
             if (!localStorage.getItem('template_resumo_oficial')) { localStorage.setItem('template_resumo_oficial', document.getElementById('tab-resumo').innerHTML); } 
@@ -808,6 +876,50 @@
                 } 
             } catch(e) {} 
             const savedShift = localStorage.getItem('petribu_shift_type_oficial'); if (savedShift) { const selector = document.getElementById('shift-selector'); if(selector) { selector.value = savedShift; changeShiftLayout(savedShift); } } 
+            
+            atualizarGraficoSilos();
+        }
+
+        function atualizarGraficoSilos() {
+            let maxSilo = 8500; 
+
+            let spanS1 = document.getElementById('silo1-05h');
+            let spanS2 = document.getElementById('silo2-05h');
+
+            let txtS1 = spanS1 ? spanS1.innerText.split(':').pop().replace(/[^\d]/g, '') : '';
+            let txtS2 = spanS2 ? spanS2.innerText.split(':').pop().replace(/[^\d]/g, '') : '';
+
+            let valS1 = txtS1 !== '' ? parseInt(txtS1, 10) : 0;
+            let valS2 = txtS2 !== '' ? parseInt(txtS2, 10) : 0;
+
+            let exibirS1 = valS1 > maxSilo ? maxSilo : valS1;
+            let exibirS2 = valS2 > maxSilo ? maxSilo : valS2;
+
+            let pctS1 = Math.round((exibirS1 / maxSilo) * 100);
+            let pctS2 = Math.round((exibirS2 / maxSilo) * 100);
+
+            let fillS1 = document.getElementById('silo1-fill');
+            let textS1 = document.getElementById('silo1-pct');
+            if (fillS1 && textS1) {
+                fillS1.setAttribute('y', 100 - pctS1);
+                fillS1.setAttribute('height', pctS1);
+                textS1.innerText = pctS1 + '%';
+                fillS1.setAttribute('fill', pctS1 > 90 ? '#ef4444' : (pctS1 > 50 ? '#f59e0b' : '#3b82f6'));
+            }
+
+            let fillS2 = document.getElementById('silo2-fill');
+            let textS2 = document.getElementById('silo2-pct');
+            if (fillS2 && textS2) {
+                fillS2.setAttribute('y', 100 - pctS2);
+                fillS2.setAttribute('height', pctS2);
+                textS2.innerText = pctS2 + '%';
+                fillS2.setAttribute('fill', pctS2 > 90 ? '#ef4444' : (pctS2 > 50 ? '#f59e0b' : '#3b82f6'));
+            }
+            
+            let rotuloTotais = document.getElementById('silo-totals');
+            if (rotuloTotais) {
+                rotuloTotais.innerHTML = `Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: ${valS1.toLocaleString('pt-BR')} sacos | S2: ${valS2.toLocaleString('pt-BR')} sacos</strong>`;
+            }
         }
 
         function switchClimaView(viewId, btn) {
@@ -1266,7 +1378,7 @@
                 if(isHistoryMode) return; 
                 let shouldSave = false; 
                 for(let m of mutations) { 
-                    if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && m.target.id !== 'silo-data-hoje' && m.target.id !== 'silo-data-ontem') { shouldSave = true; break; } 
+                    if (m.target.id !== 'dash-time' && m.target.id !== 'dash-date' && m.target.id !== 'silo-data-hoje' && m.target.id !== 'silo-data-ontem' && m.target.id !== 'silo1-fill' && m.target.id !== 'silo2-fill') { shouldSave = true; break; } 
                 } 
                 if (shouldSave) { 
                     clearTimeout(saveTimeoutResumo); 
@@ -1329,6 +1441,8 @@
                     else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
                     else span.innerText = 'Vazio';
                 });
+                
+                atualizarGraficoSilos();
 
                 resumo.querySelectorAll('#lista-status .badge').forEach(badge => {
                     badge.className = 'badge badge-normal';
