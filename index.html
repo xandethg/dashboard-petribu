@@ -339,7 +339,7 @@
                                 <div class="info-box">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <div style="flex: 2.5; display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="flex: 2.2; display: flex; flex-direction: column; gap: 5px;">
                                             <div style="display: flex; gap: 10px;">
                                                 <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
                                                     <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
@@ -365,7 +365,7 @@
                                         </div>
                                         
                                         <!-- DESENHO VETORIAL DOS SILOS BASEADO NO ESQUEMA -->
-                                        <div style="flex: 1.5; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 10px;">
+                                        <div style="flex: 1.8; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 15px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -835,17 +835,16 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_v210')) { localStorage.setItem('template_resumo_v210', document.getElementById('tab-resumo').innerHTML); } 
+            if (!localStorage.getItem('template_resumo_v211')) { localStorage.setItem('template_resumo_v211', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
-                    // IGNORA DADOS DO PASSADO QUE NÃO TEM OS SILOS PARA NÃO QUEBRAR O LAYOUT
                     if(htmlResumo.includes('id="silo1-fill"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        console.log("Atualização de versão detectada. O HTML antigo foi descartado para preservar o novo layout do Silo.");
+                        console.log("Atualização detectada. O HTML antigo foi descartado para preservar o novo layout do Silo.");
                     }
                 } 
             } catch(e) {} 
@@ -891,11 +890,10 @@
             atualizarGraficoSilos();
         }
 
-        // VARIÁVEL DE CONTROLE PARA EVITAR LOOP
         let graficoAtualizando = false;
 
         function atualizarGraficoSilos() {
-            graficoAtualizando = true; // Trava o salvamento automático
+            graficoAtualizando = true;
             
             let maxSilo = 8500; 
 
@@ -914,7 +912,6 @@
             let pctS1 = Math.round((exibirS1 / maxSilo) * 100);
             let pctS2 = Math.round((exibirS2 / maxSilo) * 100);
 
-            // A altura do ViewBox do SVG agora é 140
             let fillS1 = document.getElementById('silo1-fill');
             let textS1 = document.getElementById('silo1-pct');
             if (fillS1 && textS1) {
@@ -940,7 +937,6 @@
                 rotuloTotais.innerHTML = `Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: ${valS1.toLocaleString('pt-BR')} sacos | S2: ${valS2.toLocaleString('pt-BR')} sacos</strong>`;
             }
 
-            // Destrava o salvamento automático com segurança após a animação do CSS iniciar
             setTimeout(() => { graficoAtualizando = false; }, 600);
         }
 
