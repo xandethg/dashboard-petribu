@@ -57,7 +57,12 @@
     .header-widgets { display: flex; gap: 10px; flex-wrap: wrap; }
     .widget { background: var(--card-bg); padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-size: 12px; border: 1px solid var(--border); }
     
-    [contenteditable="true"] { outline: none; border-radius: 4px; transition: 0.2s; padding: 2px 4px; margin: -2px -4px; cursor: text; }
+    [contenteditable="true"] { 
+        outline: none; border-radius: 4px; transition: 0.2s; padding: 2px 4px; margin: -2px -4px; cursor: text; 
+        /* TRAVA CONTRA PALAVRAS GIGANTES */
+        word-break: break-word; 
+        overflow-wrap: break-word; 
+    }
     [contenteditable="true"]:hover { background-color: #f1f5f9; }
     [contenteditable="true"]:focus { background-color: #fff; box-shadow: 0 0 0 2px var(--primary-blue); cursor: text; }
     .widget-value { font-weight: bold; font-size: 14px; color: var(--text-dark); min-width: 80px; text-align: center; }
@@ -85,21 +90,30 @@
     
     .info-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; font-size: 12px; }
     .info-title { font-weight: bold; margin-bottom: 5px; color: var(--header-blue); display: flex; align-items: center; gap: 5px; justify-content: space-between; }
-    .flex-row { display: flex; justify-content: space-between; gap: 10px; }
     
+    .flex-row { display: flex; justify-content: space-between; gap: 10px; }
     #row-ausentes-paradas { align-items: flex-start !important; }
     #row-ausentes-paradas .info-box { margin-bottom: 0 !important; padding: 10px !important; }
 
-    /* CORREÇÃO DO TEXTO ESTICADO: min-width: 0 garante que a flexbox respeite o limite da tela */
-    .flex-col { flex: 1; min-width: 0; } 
-    ul.simple-list { padding-left: 12px; margin: 4px 0; }
-    /* Adicionado white-space: normal e word-wrap para forçar a quebra da linha */
-    ul.simple-list li { margin-bottom: 3px; font-size: 10.5px; white-space: normal; word-wrap: break-word; }
+    .flex-col { flex: 1; min-width: 0; } /* min-width: 0 impede a div de esticar além da tela */
+    ul.simple-list { padding-left: 15px; margin: 4px 0; }
+    ul.simple-list li { margin-bottom: 3px; font-size: 10.5px; }
+    
+    /* Configuração absoluta para fatiar o texto longo nas listas */
+    ul.simple-list li span[contenteditable="true"] {
+        display: inline-block;
+        max-width: calc(100% - 25px); /* Espaço para o botão de remover não ser empurrado */
+        vertical-align: top;
+        white-space: pre-wrap; 
+        word-break: break-word; /* Fatiador de 'kkkkk' */
+    }
 
     .table-title { font-size: 11px; font-weight: bold; color: var(--primary-blue); margin: 15px 0 5px 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
     .expedicao-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 10px; table-layout: fixed; }
     .expedicao-table th { background-color: #f8fafc; padding: 8px 4px; border: 1px solid var(--border); color: var(--text-muted); text-align: center; }
     .expedicao-table td { border: 1px solid var(--border); word-wrap: break-word; }
+    .expedicao-table div[contenteditable="true"] { white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; }
+    
     .col-turno { width: 16%; } .col-total { width: 12%; }
     .cell-center { text-align: center !important; vertical-align: middle !important; padding: 8px 4px !important;}
     .cell-left { text-align: left !important; padding: 8px 4px 8px 10px !important; vertical-align: top !important; }
@@ -107,7 +121,7 @@
 
     .check-item, .status-item { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding: 6px 0; border-bottom: 1px dashed var(--border); }
     .check-item:last-child, .status-item:last-child { border-bottom: none; }
-    .status-name { flex: 1; outline: none; }
+    .status-name { flex: 1; outline: none; word-break: break-word; }
     .status-badge-container { display: flex; align-items: center; justify-content: center; min-width: 80px; }
     
     .badge { padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; user-select: none; border: 1px solid transparent; width: 100%; text-align: center; }
@@ -209,7 +223,6 @@
         .info-box { padding: 4px 6px !important; margin-bottom: 4px !important; font-size: 8.5px !important; border: 0.5px solid #e2e8f0 !important;} 
         .info-title { font-size: 8.5px !important; margin-bottom: 2px !important;}
         ul.simple-list { padding-left: 10px !important; margin: 2px 0 !important; }
-        /* Impressão com quebra de linha permitida */
         ul.simple-list li { margin-bottom: 0px !important; font-size: 8px !important; white-space: normal !important; word-wrap: break-word !important;}
         
         .table-title { margin: 4px 0 2px 0 !important; font-size: 9px !important; }
@@ -218,12 +231,13 @@
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        #silo-container-v221 { 
+        /* SILO COMPACTO PARA IMPRESSÃO */
+        #silo-container-v222 { 
             display: flex !important; justify-content: center !important; gap: 20px !important;
             border-top: 0.5px dashed #cbd5e1 !important; padding-top: 2px !important; margin-top: 2px !important; visibility: visible !important;
         }
-        #silo-container-v221 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
-        #silo-container-v221 svg { width: 25px !important; height: 45px !important; display: block !important; }
+        #silo-container-v222 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
+        #silo-container-v222 svg { width: 25px !important; height: 45px !important; display: block !important; }
 
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
@@ -324,10 +338,9 @@
                     <button class="btn-export btn-logout" onclick="alterarMinhaSenha()">🔑 Trocar Senha</button>
                     <button class="btn-export btn-logout" onclick="efetuarLogout()">🚪 Sair do Sistema</button>
                 </div>
-                <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.2.1
+                    v2.2.2
                 </div>
             </div>
         </div>
@@ -343,9 +356,9 @@
                 </div>
             </div>
 
-            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.2.1 -->
+            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.2.2 -->
             <div id="tab-resumo">
-                <div id="flag-v221" style="display:none;"></div>
+                <div id="flag-v222" style="display:none;"></div>
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-icon" style="color:#3b82f6;">🚚</div><div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
                     <div class="kpi-card"><div class="kpi-icon" style="color:#8b5cf6;">🌾</div><div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
@@ -388,8 +401,8 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHOS DOS SILOS v221 -->
-                                        <div id="silo-container-v221" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
+                                        <!-- DESENHOS DOS SILOS v222 -->
+                                        <div id="silo-container-v222" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -435,7 +448,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="silo-totals" style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 2px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
+                                    <div id="silo-totals" style="font-size: 11px; text-align: center; color: var(--text-muted); margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 5px;">Volume às 05:00h ➔ <strong style="color:var(--primary-blue);">S1: 0 sacos | S2: 0 sacos</strong></div>
                                 </div>
                                 <div class="flex-row" id="row-ausentes-paradas">
                                     <div class="info-box flex-col"><div class="info-title">👥 AUSENTES <button class="btn-add" onclick="addSimpleItem('lista-ausentes')">+ Item</button></div><ul class="simple-list" id="lista-ausentes"><li><span contenteditable="true">Nenhuma ausência.</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
@@ -861,19 +874,17 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_v221')) { localStorage.setItem('template_resumo_v221', document.getElementById('tab-resumo').innerHTML); } 
+            if (!localStorage.getItem('template_resumo_v222')) { localStorage.setItem('template_resumo_v222', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
                     
-                    // TRAVA DE VERSÃO DEFINITIVA: Se achar a flag da v2.2.1, carrega a tela.
-                    if (htmlResumo.includes('id="flag-v221"')) {
+                    if (htmlResumo.includes('id="flag-v222"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        // MIGRAR DADOS ANTIGOS PARA A TELA NOVA SEM QUEBRAR O LAYOUT
-                        console.log("Migrando dados antigos para a nova versão v2.2.1...");
+                        console.log("Migrando dados antigos para a nova versão v2.2.2...");
                         let temp = document.createElement('div');
                         temp.innerHTML = htmlResumo;
 
@@ -903,7 +914,6 @@
                         transferValues('#silo-data-ontem ~ div ul li span');
                         transferValues('#silo-data-hoje ~ div ul li span');
 
-                        // Força salvar o layout NOVO imediatamente para nunca mais voltar pro velho
                         await db.collection('estado_atual').doc('dashboard_temporario_oficial').set({
                             html: document.getElementById('tab-resumo').innerHTML,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
