@@ -186,7 +186,7 @@
         .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; }
         .dashboard-grid { display: flex !important; flex-direction: row !important; gap: 12px !important; align-items: stretch !important; margin-bottom: 0 !important; break-before: avoid !important;}
         
-        /* Ajuste na largura das colunas para suportar 107% de escala sem esmagar o conteúdo */
+        /* Ajuste de colunas para comportar a escala de 107% */
         .dashboard-grid > .col:nth-child(1) { width: 31% !important; } 
         .dashboard-grid > .col:nth-child(2) { width: 36% !important; } 
         .dashboard-grid > .col:nth-child(3) { width: 33% !important; }
@@ -208,31 +208,15 @@
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        /* CORREÇÃO DO SILO PARA IMPRESSÃO 107% */
+        /* Otimização da visualização do silo na impressão (menor para não estourar) */
         #silo-container-v211 { 
-            display: flex !important; 
-            flex-direction: row !important;
-            visibility: visible !important; 
-            align-items: center !important; 
-            justify-content: center !important; 
-            gap: 4px !important;
-            width: auto !important; 
-            padding-left: 2px !important; 
-            border-left: none !important;
-            flex-wrap: nowrap !important;
-        }
-        #silo-container-v211 > div { 
-            display: flex !important; 
-            flex-direction: column !important; 
-            align-items: center !important; 
-            gap: 1px !important; 
+            padding-top: 8px !important; 
+            margin-top: 8px !important;
         }
         #silo-container-v211 svg { 
-            width: 35px !important;  /* Reduzido para caber nos 107% */
-            height: 70px !important; 
-            display: block !important; 
+            width: 45px !important;  
+            height: 75px !important; 
         }
-        #silo-container-v211 span, #silo-container-v211 strong { font-size: 8px !important; }
 
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
@@ -336,7 +320,7 @@
                 <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.1.2
+                    v2.1.3
                 </div>
             </div>
         </div>
@@ -369,34 +353,36 @@
                                 <div class="info-box"><div class="info-title"><span>🟢 MOAGEM</span><button class="btn-add" onclick="addSimpleItem('lista-moagem')">+ Item</button></div><ul class="simple-list" id="lista-moagem"><li><span contenteditable="true">Insira o status...</span> <button class="btn-remove" onclick="this.parentElement.remove()">✖</button></li></ul></div>
                                 <div class="info-box" id="box-silo-main">
                                     <div class="info-title">🏢 MEDIÇÃO DO SILO</div>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <div style="flex: 2.5; display: flex; flex-direction: column; gap: 5px;">
-                                            <div style="display: flex; gap: 10px;">
-                                                <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
-                                                    <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                                    <div style="display: flex; justify-content: space-between; gap: 5px;">
-                                                        <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                                        <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                                    </div>
+                                    
+                                    <!-- SILOS ABAIXO DO TEXTO PARA NÃO ESMAGAR A TELA -->
+                                    <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                                        
+                                        <!-- TEXTOS (ONTEM E HOJE) LARGURA TOTAL -->
+                                        <div style="display: flex; gap: 10px; width: 100%;">
+                                            <div style="flex: 1; border-right: 1px dashed var(--border); padding-right: 10px;">
+                                                <div id="silo-data-ontem" style="text-align: center; font-weight: 900; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; background: #e2e8f0; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                                <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                    <div class="flex-col"><strong>12:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                    <div class="flex-col"><strong>18:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
                                                 </div>
-                                                <div style="flex: 1; padding-left: 5px;">
-                                                    <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
-                                                    <div style="display: flex; justify-content: space-between; gap: 5px;">
-                                                        <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
-                                                        <div class="flex-col">
-                                                            <strong>05:00h</strong>
-                                                            <ul class="simple-list">
-                                                                <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1: Vazio</span></li>
-                                                                <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2: Vazio</span></li>
-                                                            </ul>
-                                                        </div>
+                                            </div>
+                                            <div style="flex: 1; padding-left: 5px;">
+                                                <div id="silo-data-hoje" style="text-align: center; font-weight: 900; color: var(--primary-blue); font-size: 11px; margin-bottom: 5px; background: #eff6ff; border-radius: 4px; padding: 2px;">--/--/----</div>
+                                                <div style="display: flex; justify-content: space-between; gap: 5px;">
+                                                    <div class="flex-col"><strong>00:00h</strong><ul class="simple-list"><li><span contenteditable="true">S1: Vazio</span></li><li><span contenteditable="true">S2: Vazio</span></li></ul></div>
+                                                    <div class="flex-col">
+                                                        <strong>05:00h</strong>
+                                                        <ul class="simple-list">
+                                                            <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1: Vazio</span></li>
+                                                            <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2: Vazio</span></li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHO VETORIAL DOS SILOS COM PRESERVE ASPECT RATIO -->
-                                        <div id="silo-container-v211" style="flex: 1.5; display: flex; justify-content: space-around; border-left: 2px solid var(--border); padding-left: 10px;">
+                                        <!-- DESENHOS DOS SILOS (AGORA EMBAIXO) -->
+                                        <div id="silo-container-v211" style="display: flex; justify-content: space-around; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 15px; margin-top: 10px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -973,8 +959,8 @@
             let fillS1 = document.getElementById('silo1-fill');
             let textS1 = document.getElementById('silo1-pct');
             if (fillS1 && textS1) {
-                let h1 = (pctS1 / 100) * 155;
-                fillS1.setAttribute('y', 155 - h1);
+                let h1 = (pctS1 / 100) * 140;
+                fillS1.setAttribute('y', 140 - h1);
                 fillS1.setAttribute('height', h1);
                 textS1.innerText = pctS1 + '%';
                 fillS1.setAttribute('fill', pctS1 > 90 ? '#ef4444' : (pctS1 > 50 ? '#f59e0b' : '#3b82f6'));
@@ -983,8 +969,8 @@
             let fillS2 = document.getElementById('silo2-fill');
             let textS2 = document.getElementById('silo2-pct');
             if (fillS2 && textS2) {
-                let h2 = (pctS2 / 100) * 155;
-                fillS2.setAttribute('y', 155 - h2);
+                let h2 = (pctS2 / 100) * 140;
+                fillS2.setAttribute('y', 140 - h2);
                 fillS2.setAttribute('height', h2);
                 textS2.innerText = pctS2 + '%';
                 fillS2.setAttribute('fill', pctS2 > 90 ? '#ef4444' : (pctS2 > 50 ? '#f59e0b' : '#3b82f6'));
