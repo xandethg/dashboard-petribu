@@ -104,15 +104,8 @@
         word-break: break-word; 
     }
 
-    /* REGRAS ESPECÍFICAS PARA A CAIXA DO SILO NÃO QUEBRAR LINHA */
-    #box-silo-main ul.simple-list li {
-        white-space: nowrap !important;
-    }
-    #box-silo-main ul.simple-list li span[contenteditable="true"] {
-        white-space: nowrap !important;
-        word-break: normal !important;
-        max-width: none !important;
-    }
+    #box-silo-main ul.simple-list li { white-space: nowrap !important; }
+    #box-silo-main ul.simple-list li span[contenteditable="true"] { white-space: nowrap !important; word-break: normal !important; max-width: none !important; }
 
     .table-title { font-size: 11px; font-weight: bold; color: var(--primary-blue); margin: 15px 0 5px 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
     .expedicao-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 10px; table-layout: fixed; }
@@ -203,11 +196,9 @@
     .driver-pane, .clima-pane { display: none; }
     .driver-pane.active, .clima-pane.active { display: block; }
 
-    /* --- IMPRESSÃO (BLINDAGEM CONTRA DISTORÇÕES EM 107%) --- */
+    /* --- IMPRESSÃO --- */
     @media print {
-        /* Removemos o size: A4 landscape para não bloquear a opção de escala no navegador! */
         @page { margin: 5mm; }
-        
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         body, html { background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
         .sidebar, .btn-add, .btn-remove, .no-print, .modal-overlay, #login-screen { display: none !important; }
@@ -243,13 +234,12 @@
         .check-item, .status-item { padding: 3px 0 !important; font-size: 8.5px !important; border-bottom: 0.5px dashed #cbd5e1 !important; }
         .badge { padding: 2px 4px !important; font-size: 7px !important; border: 0.5px solid #cbd5e1 !important;} .badge-inativo { border: none !important; } 
         
-        /* SILO COMPACTO PARA IMPRESSÃO 107% */
-        #silo-container-v230 { 
+        #silo-container-v250 { 
             display: flex !important; justify-content: center !important; gap: 20px !important;
             border-top: 0.5px dashed #cbd5e1 !important; padding-top: 4px !important; margin-top: 4px !important; visibility: visible !important;
         }
-        #silo-container-v230 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
-        #silo-container-v230 svg { width: 30px !important; height: 50px !important; display: block !important; }
+        #silo-container-v250 > div { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0px !important; }
+        #silo-container-v250 svg { width: 30px !important; height: 50px !important; display: block !important; }
 
         #grid-pessoal .col { width: 100% !important; max-width: 100% !important; flex: none !important; margin-bottom: 20px !important; }
         .tabela-pessoal, .tabela-devolucao { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
@@ -353,7 +343,7 @@
                 <!-- IDENTIFICAÇÃO E VERSÃO -->
                 <div style="margin-top: 15px; padding-top: 10px; text-align: center; color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
                     Desenvolvido por Alexandre Henrique<br>
-                    v2.3.0
+                    v2.5.0
                 </div>
             </div>
         </div>
@@ -365,13 +355,16 @@
                     <div class="widget no-print" id="widget-escala" style="background: var(--header-blue); color: white; border-color: var(--header-blue);"><span>⏱️ Escala de Turnos:</span><select id="shift-selector" onchange="changeShiftLayout(this.value)" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 4px; padding: 2px 5px; outline: none; font-size: 12px; font-weight: bold; cursor: pointer;"><option value="seg-qui" style="color: black;">Seg-Qui (3 Turnos)</option><option value="sex" style="color: black;">Sexta (3 Turnos)</option><option value="sab-dom" style="color: black;">Sáb-Dom (2 Turnos)</option></select></div>
                     <div class="widget" id="widget-data"><span style="font-size:16px;">📅</span><div><div style="color:var(--text-muted); font-size:10px;">DATA</div><div class="widget-value" id="dash-date">--/--/----</div></div></div>
                     <div class="widget" id="widget-hora"><span style="font-size:16px;">⏱️</span><div><div style="color:var(--text-muted); font-size:10px;">ÚLTIMA ATUALIZAÇÃO</div><div class="widget-value" id="dash-time">--:--</div></div></div>
+                    
+                    <div class="widget no-print" id="widget-clima-ext"><span style="font-size:16px;">⛅</span><div><div style="color:var(--text-muted); font-size:10px; font-weight:bold;">CLIMA EXTERNO (Satélite)</div><div style="font-size: 13px; font-weight: bold; color: var(--primary-blue);"><span id="dash-ext-temp">-- ºC</span> | <span id="dash-ext-umid">-- %</span></div></div></div>
+
                     <div class="widget" id="widget-status"><span style="font-size:16px;" class="status-emoji">🟢</span><div><div style="color:var(--text-muted); font-size:10px; font-weight:bold;">STATUS DA OPERAÇÃO</div><div class="badge badge-normal badge-inline" onclick="cycleStatus(this, 'operacaoGlobal')" style="margin-top:2px;">OPERAÇÃO NORMAL</div></div></div>
                 </div>
             </div>
 
-            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.3.0 -->
+            <!-- TAB RESUMO COM A BANDEIRA INVISÍVEL v2.5.0 -->
             <div id="tab-resumo">
-                <div id="flag-v230" style="display:none;"></div>
+                <div id="flag-v250" style="display:none;"></div>
                 <div class="kpi-grid">
                     <div class="kpi-card"><div class="kpi-icon" style="color:#3b82f6;">🚚</div><div class="kpi-info"><h4>Veículos Carregados</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
                     <div class="kpi-card"><div class="kpi-icon" style="color:#8b5cf6;">🌾</div><div class="kpi-info"><h4>Total de Fardos</h4><p contenteditable="true">0</p> <span>unid.</span></div></div>
@@ -403,38 +396,38 @@
                                             <div class="flex-col">
                                                 <strong>12:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1: Vazio</span></li>
-                                                    <li><span contenteditable="true">S2: Vazio</span></li>
+                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 18h -->
                                             <div class="flex-col" style="border-right: 1px dashed var(--border); padding-right: 5px;">
                                                 <strong>18:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1: Vazio</span></li>
-                                                    <li><span contenteditable="true">S2: Vazio</span></li>
+                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 00h -->
                                             <div class="flex-col" style="padding-left: 5px;">
                                                 <strong>00:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span contenteditable="true">S1: Vazio</span></li>
-                                                    <li><span contenteditable="true">S2: Vazio</span></li>
+                                                    <li><span contenteditable="true">S1:<br>Vazio</span></li>
+                                                    <li><span contenteditable="true">S2:<br>Vazio</span></li>
                                                 </ul>
                                             </div>
                                             <!-- 05h -->
                                             <div class="flex-col">
                                                 <strong>05:00h</strong>
                                                 <ul class="simple-list">
-                                                    <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1: Vazio</span></li>
-                                                    <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2: Vazio</span></li>
+                                                    <li><span id="silo1-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S1:<br>Vazio</span></li>
+                                                    <li><span id="silo2-05h" contenteditable="true" onkeyup="atualizarGraficoSilos()">S2:<br>Vazio</span></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         
-                                        <!-- DESENHOS DOS SILOS v230 -->
-                                        <div id="silo-container-v230" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
+                                        <!-- DESENHOS DOS SILOS v250 -->
+                                        <div id="silo-container-v250" style="display: flex; justify-content: center; gap: 30px; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 4px; margin-top: 4px;">
                                             <!-- SILO 1 -->
                                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                                 <strong style="font-size: 11px; color: var(--header-blue);">S1</strong>
@@ -600,9 +593,13 @@
                     <div class="card-body" style="background: #f8fafc;">
                         
                         <div id="clima-diario" class="clima-pane active">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                                <div style="font-size: 14px; font-weight:bold; color:var(--header-blue);">Selecione o Dia: <input type="date" id="clima-dia-input" onchange="carregarDiaClima()" style="padding:4px; border:1px solid var(--border); border-radius:4px; outline:none;"></div>
-                                <button class="btn-add" onclick="addWarehouse()" style="background:#10b981; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:12px;">+ Adicionar Local/Armazém</button>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                                <div style="font-size: 14px; font-weight:bold; color:var(--header-blue); display:flex; align-items:center;">
+                                    Selecione o Dia: <input type="date" id="clima-dia-input" onchange="carregarDiaClima()" style="padding:4px; border:1px solid var(--border); border-radius:4px; outline:none; margin-left:10px;">
+                                    <!-- BOTÃO DE AUTOPREENCHER CLIMA v2.5.0 -->
+                                    <button class="btn-add no-print" onclick="preencherClimaExternoAutomatico()" style="background:#0ea5e9; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:12px; margin-left: 10px;">☁️ Autopreencher Clima Externo (Satélite)</button>
+                                </div>
+                                <button class="btn-add no-print" onclick="addWarehouse()" style="background:#10b981; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:12px;">+ Adicionar Local/Armazém</button>
                             </div>
                             
                             <table class="clima-table" id="tabela-clima-diaria">
@@ -815,6 +812,92 @@
         let chartClimaT = null; let chartClimaU = null;
         let chartClientesInst = null; let chartMotivosInst = null;
 
+        // --- API DE CLIMA ---
+        async function buscarClimaExterno() {
+            try {
+                // Coordenadas da Usina Petribu (Lagoa de Itaenga - PE)
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-7.88&longitude=-35.32&current=temperature_2m,relative_humidity_2m&timezone=America%2FSao_Paulo');
+                const data = await response.json();
+                
+                if(data && data.current) {
+                    const temp = data.current.temperature_2m;
+                    const umid = data.current.relative_humidity_2m;
+                    document.getElementById('dash-ext-temp').innerText = temp + ' ºC';
+                    document.getElementById('dash-ext-umid').innerText = umid + ' %';
+                }
+            } catch (error) {
+                console.log("Erro ao buscar clima externo via satélite:", error);
+            }
+        }
+        setInterval(buscarClimaExterno, 1800000);
+
+        // --- NOVO: AUTOPREENCHER CLIMA DE 2 EM 2 HORAS ---
+        async function preencherClimaExternoAutomatico() {
+            let dataInput = document.getElementById('clima-dia-input').value;
+            if(!dataInput) return alert("Selecione um dia no calendário primeiro.");
+            
+            // Puxar a data seguinte para garantir a captura das 24:00 (00:00 do próximo dia)
+            let dataAtual = new Date(dataInput + 'T12:00:00');
+            let diaSeguinte = new Date(dataAtual);
+            diaSeguinte.setDate(diaSeguinte.getDate() + 1);
+            let dataSegStr = diaSeguinte.toISOString().split('T')[0];
+
+            let url = `https://api.open-meteo.com/v1/forecast?latitude=-7.88&longitude=-35.32&hourly=temperature_2m,relative_humidity_2m&timezone=America%2FSao_Paulo&start_date=${dataInput}&end_date=${dataSegStr}`;
+            
+            try {
+                let btn = document.querySelector('button[onclick="preencherClimaExternoAutomatico()"]');
+                let textoOriginal = btn.innerText;
+                btn.innerText = "⏳ Puxando via satélite...";
+                
+                let resp = await fetch(url);
+                let data = await resp.json();
+                
+                if(data && data.hourly) {
+                    let temps = data.hourly.temperature_2m;
+                    let umids = data.hourly.relative_humidity_2m;
+                    
+                    // Índices das 02h, 04h, 06h... até 24h (que é o índice 24 na array da API)
+                    let indices = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+                    
+                    let linhaExterno = null;
+                    document.querySelectorAll('#tb-clima-diario tr').forEach(tr => {
+                        let div = tr.querySelector('td div[contenteditable]');
+                        if(div && div.innerText.includes('CLIMA EXTERNO')) {
+                            linhaExterno = tr;
+                        }
+                    });
+                    
+                    if(!linhaExterno) {
+                        addWarehouse();
+                        let trs = document.querySelectorAll('#tb-clima-diario tr');
+                        linhaExterno = trs[trs.length - 1];
+                        linhaExterno.querySelector('td div[contenteditable]').innerText = "🌤️ CLIMA EXTERNO (Satélite)";
+                        linhaExterno.style.backgroundColor = "#e0f2fe"; // Fundo levemente azul para destacar
+                    }
+                    
+                    let inputs = linhaExterno.querySelectorAll('input.clima-input');
+                    indices.forEach((idxHora, i) => {
+                        let tVal = temps[idxHora];
+                        let uVal = umids[idxHora];
+                        
+                        // Inputs pares são Temperatura, ímpares são Umidade
+                        if(tVal !== null && tVal !== undefined) inputs[i*2].value = tVal;
+                        if(uVal !== null && uVal !== undefined) inputs[(i*2)+1].value = uVal;
+                        
+                        inputs[i*2].setAttribute('value', inputs[i*2].value);
+                        inputs[(i*2)+1].setAttribute('value', inputs[(i*2)+1].value);
+                    });
+                    
+                    salvarClima();
+                    btn.innerText = "✅ Preenchido e Salvo!";
+                    setTimeout(() => { btn.innerText = textoOriginal; }, 3000);
+                }
+            } catch(e) {
+                console.log(e);
+                alert("Erro ao conectar com o satélite.");
+            }
+        }
+
         function updateClock() {
             if(isHistoryMode) return; 
             const now = new Date();
@@ -865,6 +948,8 @@
 
                 await carregarDadosDaNuvem();
                 iniciarSalvamentoAutomaticoResumo();
+                
+                buscarClimaExterno();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('app-container').style.display = 'none';
@@ -906,17 +991,17 @@
 
         async function carregarDadosDaNuvem() { 
             updateClock(); 
-            if (!localStorage.getItem('template_resumo_v230')) { localStorage.setItem('template_resumo_v230', document.getElementById('tab-resumo').innerHTML); } 
+            if (!localStorage.getItem('template_resumo_v250')) { localStorage.setItem('template_resumo_v250', document.getElementById('tab-resumo').innerHTML); } 
             
             try { 
                 const docResumo = await db.collection('estado_atual').doc('dashboard_temporario_oficial').get(); 
                 if (docResumo.exists) { 
                     let htmlResumo = docResumo.data().html;
                     
-                    if (htmlResumo.includes('id="flag-v230"')) {
+                    if (htmlResumo.includes('id="flag-v250"')) {
                         document.getElementById('tab-resumo').innerHTML = htmlResumo; 
                     } else {
-                        console.log("Migrando para v2.3.0 (Correção Silos Linha Reta e Escala Chrome)...");
+                        console.log("Migrando para v2.5.0 (Histórico de Clima Automação)...");
                         let temp = document.createElement('div');
                         temp.innerHTML = htmlResumo;
 
@@ -944,16 +1029,13 @@
                         transferValues('#silo-data-ontem');
                         transferValues('#silo-data-hoje');
                         
-                        // Garante que o texto migrado tire os <br> e fique na mesma linha (S1: Vazio)
                         let oldSpans = temp.querySelectorAll('#silo-data-ontem ~ div ul li span, #silo-data-hoje ~ div ul li span, #box-silo-main ul li span');
                         let newSpans = document.querySelectorAll('#tab-resumo #box-silo-main ul li span');
                         oldSpans.forEach((s, i) => { 
                             if (newSpans[i]) {
                                 let txt = s.innerHTML.trim();
-                                // Remove os breaks indesejados da versão anterior
                                 txt = txt.replace(/<br\s*\/?>/gi, ' '); 
                                 txt = txt.replace(/\n/g, ' ');
-                                // Remove espaços duplos
                                 txt = txt.replace(/\s+/g, ' ');
                                 newSpans[i].innerText = txt;
                             } 
@@ -1583,9 +1665,9 @@
 
             let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]');
             siloSpans.forEach(span => {
-                if(span.innerText.includes('S1')) span.innerText = 'S1: Vazio';
-                else if(span.innerText.includes('S2')) span.innerText = 'S2: Vazio';
-                else span.innerText = 'Vazio';
+                if(span.innerText.includes('S1')) span.innerHTML = 'S1:<br>Vazio';
+                else if(span.innerText.includes('S2')) span.innerHTML = 'S2:<br>Vazio';
+                else span.innerHTML = 'Vazio';
             });
             
             atualizarGraficoSilos();
