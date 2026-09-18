@@ -100,8 +100,10 @@
     .cell-left { text-align: left !important; padding: 8px 4px 8px 10px !important; vertical-align: top !important; }
     .total-cell { font-size: 16px; font-weight: bold; color: var(--primary-blue); vertical-align: middle; text-align: center !important;}
 
-    .check-item, .status-item { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding: 6px 0; border-bottom: 1px dashed var(--border); }
+    .check-item, .status-item { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding: 6px 0; border-bottom: 1px dashed var(--border); cursor: grab; }
     .check-item:last-child, .status-item:last-child { border-bottom: none; }
+    .check-item:active { cursor: grabbing; }
+    .check-item.dragging { opacity: 0.4; background: #f8fafc; border: 1px dashed var(--primary-blue); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
     .status-name { flex: 1; outline: none; word-break: break-word; }
     .status-badge-container { display: flex; align-items: center; justify-content: center; min-width: 80px; }
     
@@ -2003,7 +2005,7 @@
                 
                 ['list-limpeza', 'list-operacao', 'list-manut'].forEach(id => { 
                     let div = document.getElementById(id); 
-                    if (div) { div.innerHTML = `<div class="check-item"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>`; } 
+                    if (div) { div.innerHTML = `<div class="check-item" draggable="true"><span contenteditable="true">☑️ Adicione uma tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div></div>`; } 
                 }); 
                 
                 let siloSpans = resumo.querySelectorAll('#silo-data-ontem ~ div ul li span[contenteditable="true"], #silo-data-hoje ~ div ul li span[contenteditable="true"]'); 
@@ -2170,6 +2172,7 @@
             let container = document.getElementById(containerId); 
             let div = document.createElement('div'); 
             div.className = 'check-item'; 
+            div.setAttribute('draggable', 'true');
             div.innerHTML = `<span contenteditable="true">☑️ Nova tarefa...</span><div><span class="badge badge-parada badge-inline" onclick="cycleStatus(this, 'tarefa')">Pendente</span><button class="btn-remove" onclick="this.parentElement.parentElement.remove()">✖</button></div>`; 
             container.appendChild(div); 
         }
@@ -2217,6 +2220,41 @@
                 } 
             }); 
         }
+
+        // --- MOTOR DE ARRASTAR E LARGAR (DRAG & DROP) ---
+        const observerDrag = new MutationObserver(() => {
+            document.querySelectorAll('.check-item:not([draggable="true"])').forEach(item => {
+                item.setAttribute('draggable', 'true');
+            });
+        });
+        observerDrag.observe(document.body, { childList: true, subtree: true });
+
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.classList && e.target.classList.contains('check-item')) {
+                window.itemArrastado = e.target;
+                setTimeout(() => e.target.classList.add('dragging'), 0);
+            }
+        });
+
+        document.addEventListener('dragend', function(e) {
+            if (e.target.classList && e.target.classList.contains('check-item')) {
+                e.target.classList.remove('dragging');
+                window.itemArrastado = null;
+            }
+        });
+
+        document.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            const target = e.target.closest('.check-item');
+            if (target && target !== window.itemArrastado && window.itemArrastado) {
+                const container = target.parentElement;
+                if (['list-limpeza', 'list-operacao', 'list-manut'].includes(container.id)) {
+                    const rect = target.getBoundingClientRect();
+                    const meio = rect.top + (rect.height / 2);
+                    container.insertBefore(window.itemArrastado, (e.clientY < meio) ? target : target.nextSibling);
+                }
+            }
+        });
 </script>
 </body>
 </html>
